@@ -1,19 +1,19 @@
 import React from "react";
-import { useRouter } from "next/router";
 import { FormControl, InputGroup, Button } from "react-bootstrap";
 import { useInput } from "hooks/useInput";
 import styles from "styles/SearchBox.module.scss";
 
 const SearchBox: React.FC = () => {
-  const router = useRouter();
   const { value: searchInput, bind: bindSearch } = useInput("");
 
-  const handleSearch = (): void => {
-    const query = searchInput.trim();
-    if (!query) return;
+  const handleSearch = async (): Promise<void> => {
+    const input = searchInput.trim();
+    if (!input) return;
 
-    const path = `/search/location/${query}`;
-    router.push(path);
+    const searchUrl = `http://localhost:3000/api/search?query=${input}`;
+    const response = await fetch(searchUrl);
+    const data = await response.json();
+    console.log({ data });
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {

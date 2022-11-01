@@ -12,8 +12,10 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@types/express": "^4.17.14",
     "bootstrap": "^5.2.2",
     "next": "12.3.1",
+    "next-auth": "^4.15.0",
     "opencage-api-client": "^1.0.0",
     "react": "18.2.0",
     "react-bootstrap": "^2.5.0",

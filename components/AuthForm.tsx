@@ -2,11 +2,7 @@ import { useState, useRef } from 'react'
 import { signIn, SignInResponse } from 'next-auth/react'
 import { getErrorMessage } from 'utils/error'
 import classes from './AuthForm.module.css'
-
-export interface IUserCredentials {
-  email: string
-  password: string
-}
+import { IUserCredentials } from 'types'
 
 export default function AuthForm() {
   const emailInputRef = useRef<HTMLInputElement | null>(null)

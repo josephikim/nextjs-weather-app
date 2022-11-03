@@ -1,5 +1,7 @@
 import NextAuth, { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
+import prisma from 'prisma/client'
+import { verifyPassword } from 'utils/auth'
 
 export const authOptions = {
   providers: [
@@ -19,19 +21,27 @@ export const authOptions = {
           throw new Error('Invalid credentials')
         }
 
-        const user = { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
+        const user = await prisma.user.findUnique({
+          where: { email: credentials?.email },
+        })
 
         if (!user) {
           return null
         }
 
         // If user found, verify password
-        const passwordIsValid = true
+        const passwordIsValid = await verifyPassword(
+          credentials.password,
+          user.password
+        )
 
         if (!passwordIsValid) {
           return null
         } else {
-          return user
+          return {
+            email: user.email,
+            id: user.id,
+          }
         }
       },
     }),
@@ -48,16 +58,12 @@ export const authOptions = {
     // @ts-ignore
     async jwt({ token, user }) {
       user && (token.user = user)
-      console.log('jwt token from callback', token)
-      console.log('jwt user from callback', user)
       return token
     },
 
     // @ts-ignore
     async session({ session, token }) {
       session.user = token.user
-      console.log('session from callback', session)
-      console.log('token from callback', token)
       return session
     },
   },

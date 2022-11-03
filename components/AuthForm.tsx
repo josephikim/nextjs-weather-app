@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react'
 import { signIn, SignInResponse } from 'next-auth/react'
 import { getErrorMessage } from 'utils/error'
-import classes from './AuthForm.module.css'
+import classes from 'styles/AuthForm.module.scss'
 import { IUserCredentials } from 'types'
 
 export default function AuthForm() {
@@ -15,7 +15,7 @@ export default function AuthForm() {
   }
 
   async function createUser(newUser: IUserCredentials) {
-    const response = await fetch('/api/signup', {
+    const response = await fetch('/api/auth/signup', {
       method: 'POST',
       body: JSON.stringify(newUser),
       headers: {
@@ -24,7 +24,7 @@ export default function AuthForm() {
     })
 
     const result = await response.json()
-    console.log('createUser result', result)
+
     if (!response.ok) {
       throw new Error(result.message || 'Something went wrong!')
     }

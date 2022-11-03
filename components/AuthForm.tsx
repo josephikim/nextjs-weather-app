@@ -34,7 +34,6 @@ export default function AuthForm() {
 
   async function loginUser(user: IUserCredentials) {
     const result = (await signIn('credentials', {
-      callbackUrl: '/',
       redirect: false,
       email: user.email,
       password: user.password,

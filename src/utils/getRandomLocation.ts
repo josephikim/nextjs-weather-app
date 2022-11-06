@@ -1,4 +1,4 @@
-import json from '../worldCities.json'
+import json from 'assets/worldCities.json'
 
 const pickRandom = (array: string[]) => {
   return array[Math.floor(Math.random() * array.length)]

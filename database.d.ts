@@ -1,4 +1,4 @@
-export interface IUserCredentials {
+interface IUserCredentials {
   email: string
   password: string
 }

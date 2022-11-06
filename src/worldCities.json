@@ -5513,13 +5513,7 @@
     "Zepce",
     "Zivinice"
   ],
-  "Botswana": [
-    "Francistown",
-    "Gaborone",
-    "Orapa",
-    "Serowe",
-    "Village"
-  ],
+  "Botswana": ["Francistown", "Gaborone", "Orapa", "Serowe", "Village"],
   "Brazil": [
     "Abadiania",
     "Abaetetuba",
@@ -12019,13 +12013,7 @@
     "Yotoco",
     "Yumbo"
   ],
-  "Congo": [
-    "Banana",
-    "Goma",
-    "Kinshasa",
-    "Likasi",
-    "Lubumbashi"
-  ],
+  "Congo": ["Banana", "Goma", "Kinshasa", "Likasi", "Lubumbashi"],
   "Costa Rica": [
     "Alajuela",
     "Alajuelita",
@@ -27438,13 +27426,7 @@
     "Pirae",
     "Punaauia"
   ],
-  "Gabon": [
-    "Gamba",
-    "Libreville",
-    "Mamagnia",
-    "Moanda",
-    "Port-Gentil"
-  ],
+  "Gabon": ["Gamba", "Libreville", "Mamagnia", "Moanda", "Port-Gentil"],
   "Georgia": [
     "Gogolesubani",
     "Kutaisi",
@@ -44084,13 +44066,7 @@
     "Turbo",
     "Wote"
   ],
-  "Kosovo": [
-    "Dunavo",
-    "Ferizaj",
-    "Mitrovica",
-    "Pristina",
-    "Prizren"
-  ],
+  "Kosovo": ["Dunavo", "Ferizaj", "Mitrovica", "Pristina", "Prizren"],
   "Kuwait": [
     "Abraq Khaytan",
     "Ad Dasmah",
@@ -44179,13 +44155,7 @@
     "Yanar",
     "Zgharta"
   ],
-  "Libya": [
-    "Benghazi",
-    "Misratah",
-    "Sabha",
-    "Tripoli",
-    "Zliten"
-  ],
+  "Libya": ["Benghazi", "Misratah", "Sabha", "Tripoli", "Zliten"],
   "Liechtenstein": [
     "Balzers",
     "Bendern",
@@ -45626,14 +45596,7 @@
     "Walvis Bay",
     "Windhoek"
   ],
-  "Nepal": [
-    "Bharatpur",
-    "Jawlakhel",
-    "Kathmandu",
-    "Lumbini",
-    "Palpa",
-    "Patan"
-  ],
+  "Nepal": ["Bharatpur", "Jawlakhel", "Kathmandu", "Lumbini", "Palpa", "Patan"],
   "Netherlands": [
     "Aagtekerke",
     "Aalburg",
@@ -47099,13 +47062,7 @@
     "Zwinderen",
     "Zwolle"
   ],
-  "New Caledonia": [
-    "Dumbea",
-    "Mont-Dore",
-    "Noumea",
-    "Nouville",
-    "Paita"
-  ],
+  "New Caledonia": ["Dumbea", "Mont-Dore", "Noumea", "Nouville", "Paita"],
   "New Zealand": [
     "Ahaura",
     "Albany",
@@ -48399,15 +48356,7 @@
     "Vraliosen",
     "Ytre Alvik"
   ],
-  "Oman": [
-    "Al Sohar",
-    "Muscat",
-    "Nizwa",
-    "Ruwi",
-    "Saham",
-    "Salalah",
-    "Samad"
-  ],
+  "Oman": ["Al Sohar", "Muscat", "Nizwa", "Ruwi", "Saham", "Salalah", "Samad"],
   "Pakistan": [
     "Abbottabad",
     "Attock",
@@ -56496,14 +56445,7 @@
     "Wattala",
     "Wellampitiya"
   ],
-  "Sudan": [
-    "Kassala",
-    "Khartoum",
-    "Nyala",
-    "Shendi",
-    "Thabit",
-    "Umm Durman"
-  ],
+  "Sudan": ["Kassala", "Khartoum", "Nyala", "Shendi", "Thabit", "Umm Durman"],
   "Suriname": [
     "Botopasi",
     "Brownsweg",
@@ -56515,13 +56457,7 @@
     "Paramaribo",
     "Totness"
   ],
-  "Swaziland": [
-    "Kwaluseni",
-    "Lobamba",
-    "Manzini",
-    "Mbabane",
-    "Piggs Peak"
-  ],
+  "Swaziland": ["Kwaluseni", "Lobamba", "Manzini", "Mbabane", "Piggs Peak"],
   "Sweden": [
     "Aby",
     "AElmhult",

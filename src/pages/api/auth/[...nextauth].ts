@@ -1,6 +1,6 @@
 import NextAuth, { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import prisma from 'prisma/client'
+import prisma from 'utils/prisma'
 import { verifyPassword } from 'utils/auth'
 
 export const authOptions = {
@@ -46,9 +46,12 @@ export const authOptions = {
       },
     }),
   ],
-  secret: process.env.NEXTAUTH_SECRET,
+  session: {
+    jwt: true,
+    maxAge: 30 * 24 * 60 * 60,
+  },
   jwt: {
-    maxAge: 60 * 60 * 24 * 2, // token duration in seconds
+    secret: process.env.NEXTAUTH_SECRET,
   },
   pages: {
     signIn: '/auth',
@@ -56,15 +59,16 @@ export const authOptions = {
   debug: true,
   callbacks: {
     // @ts-ignore
-    async jwt({ token, user }) {
-      user && (token.user = user)
-      return token
-    },
-
-    // @ts-ignore
     async session({ session, token }) {
       session.user = token.user
       return session
+    },
+    // @ts-ignore
+    async jwt({ token, user }) {
+      if (user) {
+        token.user = user
+      }
+      return token
     },
   },
 }

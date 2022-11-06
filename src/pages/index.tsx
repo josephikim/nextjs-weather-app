@@ -1,4 +1,5 @@
 import { InferGetServerSidePropsType } from 'next'
+import { trpc } from 'utils/trpc'
 import { getWeather } from 'utils/meteo'
 import Link from 'next/link'
 import styles from 'styles/Home.module.css'
@@ -11,6 +12,8 @@ type WeatherData = {
 const Home = ({
   weather,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const hello = trpc.hello.useQuery({ text: 'client' })
+
   return (
     <div className={styles.container}>
       <main className={styles.main}>
@@ -22,6 +25,11 @@ const Home = ({
           To create a dashboard of your favorite locations, please{' '}
           <Link href="/auth">create an account.</Link>
         </p>
+        {hello.data && (
+          <div>
+            <p>{hello.data.greeting}</p>
+          </div>
+        )}
         {weather && (
           <div>
             <p>weather loaded</p>
@@ -34,7 +42,7 @@ const Home = ({
   )
 }
 
-export async function getServerSideProps() {
+export const getServerSideProps = async () => {
   const weatherData: WeatherData = await getWeather('test')
 
   return {

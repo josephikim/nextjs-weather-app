@@ -1,7 +1,7 @@
 import { getErrorMessage } from 'utils/error'
 import { hashPassword } from 'utils/auth'
-import prisma from 'prisma/client'
-import { IUserCredentials } from 'types'
+import prisma from 'utils/prisma'
+import { IUserCredentials } from '../types'
 
 export class PostgresService {
   async createUser(newUser: IUserCredentials) {

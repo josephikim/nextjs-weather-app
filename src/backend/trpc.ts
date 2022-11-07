@@ -15,7 +15,6 @@ export const publicProcedure = t.procedure
  * @note Example only, yours may vary depending on how your auth is setup
  **/
 const isAuthed = t.middleware(({ next, ctx }) => {
-  console.log({ ctx })
   // @ts-ignore
   if (!ctx.session?.user?.email) {
     throw new TRPCError({

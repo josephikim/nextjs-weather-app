@@ -1,29 +1,18 @@
-import type { AppType } from 'next/app'
+import type { AppProps } from 'next/app'
+import { Session } from 'next-auth'
 import { trpc } from 'utils/trpc'
 import { SessionProvider } from 'next-auth/react'
 import Layout from 'components/Layout'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'styles/globals.css'
 
-// const MyApp = ({
-//   Component,
-//   pageProps,
-// }: AppProps<{
-//   session: Session
-// }>) => {
-//   return (
-//     <SessionProvider session={pageProps.session}>
-//       <Layout>
-//         <Component {...pageProps} />
-//       </Layout>
-//     </SessionProvider>
-//   )
-// }
-
-const MyApp: AppType = ({ Component, pageProps }) => {
-  console.log({ pageProps })
+function App({
+  Component,
+  pageProps,
+}: AppProps<{
+  session: Session
+}>) {
   return (
-    //@ts-ignore
     <SessionProvider session={pageProps.session}>
       <Layout>
         <Component {...pageProps} />
@@ -32,4 +21,4 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   )
 }
 
-export default trpc.withTRPC(MyApp)
+export default trpc.withTRPC(App)

@@ -6,7 +6,9 @@ import { verifyPassword } from 'utils/auth'
 export const authOptions = {
   providers: [
     CredentialsProvider({
+      id: 'credentials',
       name: 'credentials',
+      type: 'credentials',
       credentials: {
         email: {
           label: 'Email',
@@ -38,20 +40,14 @@ export const authOptions = {
         if (!passwordIsValid) {
           return null
         } else {
-          return {
-            email: user.email,
-            id: user.id,
-          }
+          return user
         }
       },
     }),
   ],
-  session: {
-    jwt: true,
-    maxAge: 30 * 24 * 60 * 60,
-  },
+  secret: process.env.NEXTAUTH_SECRET,
   jwt: {
-    secret: process.env.NEXTAUTH_SECRET,
+    maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   pages: {
     signIn: '/auth',
@@ -59,16 +55,19 @@ export const authOptions = {
   debug: true,
   callbacks: {
     // @ts-ignore
-    async session({ session, token }) {
-      session.user = token.user
-      return session
-    },
-    // @ts-ignore
     async jwt({ token, user }) {
       if (user) {
+        token.id = user.id
         token.user = user
       }
       return token
+    },
+    // @ts-ignore
+    async session({ session, token }) {
+      if (token) {
+        session.id = token.id
+      }
+      return session
     },
   },
 }

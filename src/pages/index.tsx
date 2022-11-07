@@ -1,4 +1,5 @@
 import { InferGetServerSidePropsType } from 'next'
+import { useSession } from 'next-auth/react'
 import { trpc } from 'utils/trpc'
 import { getWeather } from 'utils/meteo'
 import Link from 'next/link'
@@ -13,6 +14,9 @@ const Home = ({
   weather,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const hello = trpc.hello.useQuery({ text: 'client' })
+
+  const { data: session } = useSession()
+  console.log('session', session)
 
   return (
     <div className={styles.container}>

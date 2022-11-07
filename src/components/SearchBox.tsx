@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { FormControl, InputGroup, Button } from 'react-bootstrap'
 import { useInput } from 'hooks/useInput'
 import styles from 'styles/SearchBox.module.scss'
 
 const SearchBox: React.FC = () => {
+  const [searchResults, setSearchResults] = useState()
   const { value: searchInput, bind: bindSearch } = useInput('')
 
   const handleSearch = async (): Promise<void> => {
@@ -11,9 +12,8 @@ const SearchBox: React.FC = () => {
     if (!input) return
 
     const searchUrl = `http://localhost:3000/api/search?query=${input}`
-    const response = await fetch(searchUrl)
-    const data = await response.json()
-    console.log({ data })
+    const data = await (await fetch(searchUrl)).json()
+    setSearchResults(data)
   }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {

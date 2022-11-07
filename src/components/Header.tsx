@@ -1,16 +1,20 @@
 import React from 'react'
 import { Navbar, Nav, Container } from 'react-bootstrap'
 import Link from 'next/link'
+import { useSession, signOut } from 'next-auth/react'
 import SearchBox from 'components/SearchBox'
-import LoginButton from 'components/LoginButton'
 
 const Header: React.FC = () => {
+  const { data: session } = useSession()
+
   return (
     <div className="Header fixed-header">
       <Navbar collapseOnSelect bg="dark" variant="dark">
         <Container>
           <Navbar.Brand href={process.env.BASEURL}>
-            Next.js Weather App
+            <Link href="/">
+              <Nav.Link href="/">Next.js Weather App</Nav.Link>
+            </Link>
           </Navbar.Brand>
           <SearchBox />
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -20,15 +24,22 @@ const Header: React.FC = () => {
           >
             <Nav>
               <Link href="/">
-                <Nav.Link>Home</Nav.Link>
+                <Nav.Link href="/">Home</Nav.Link>
               </Link>
-              <Link href="/favorites">
-                <Nav.Link>Favorites</Nav.Link>
+              <Link href="/dashboard">
+                <Nav.Link href="/dashboard">Dashboard</Nav.Link>
               </Link>
-              <Link href="/register">
-                <Nav.Link>Register</Nav.Link>
-              </Link>
-              <LoginButton />
+              {session ? (
+                <Link href="#">
+                  <Nav.Link onClick={() => signOut({ callbackUrl: '/auth' })}>
+                    Log Out
+                  </Nav.Link>
+                </Link>
+              ) : (
+                <Link href="/auth">
+                  <Nav.Link href="/auth">Log In</Nav.Link>
+                </Link>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>

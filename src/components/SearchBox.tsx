@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { FormControl, InputGroup, Button } from 'react-bootstrap'
 import { useInput } from 'hooks/useInput'
-import styles from 'styles/SearchBox.module.scss'
+import classes from 'styles/SearchBox.module.scss'
 
 const SearchBox: React.FC = () => {
   const [searchResults, setSearchResults] = useState()
@@ -23,7 +23,7 @@ const SearchBox: React.FC = () => {
   }
 
   return (
-    <InputGroup className={styles.searchBox}>
+    <InputGroup className={classes.searchBox}>
       <FormControl
         {...bindSearch}
         placeholder="enter city, country or zip code"

@@ -14,6 +14,10 @@ a {
   box-sizing: border-box;
 }
 
+nav {
+  white-space: nowrap;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

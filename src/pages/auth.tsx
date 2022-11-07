@@ -13,7 +13,7 @@ export default function AuthPage() {
     if (status === 'unauthenticated') {
       setIsLoading(false)
     } else if (status === 'authenticated') {
-      void router.push('/secret')
+      void router.push('/dashboard')
     }
   }, [status, router])
 

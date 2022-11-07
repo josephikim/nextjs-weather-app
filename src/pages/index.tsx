@@ -16,7 +16,6 @@ const Home = ({
   const hello = trpc.hello.useQuery({ text: 'client' })
 
   const { data: session } = useSession()
-  console.log('session', session)
 
   return (
     <div className={styles.container}>

@@ -1,21 +1,14 @@
 import { InferGetServerSidePropsType } from 'next'
-import { useSession } from 'next-auth/react'
 import { trpc } from 'utils/trpc'
 import { getWeather } from 'utils/meteo'
 import Link from 'next/link'
-import styles from 'styles/Home.module.css'
-
-type WeatherData = {
-  latitude: number
-  longitude: number
-}
+import CurrentWeather from 'components/CurrentWeather'
+import styles from 'styles/css/Home.module.css'
 
 const Home = ({
   weather,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const hello = trpc.hello.useQuery({ text: 'client' })
-
-  const { data: session } = useSession()
 
   return (
     <div className={styles.container}>
@@ -28,6 +21,7 @@ const Home = ({
           To create a dashboard of your favorite locations, please{' '}
           <Link href="/auth">create an account.</Link>
         </p>
+        <CurrentWeather data={'hello'} />
         {hello.data && (
           <div>
             <p>{hello.data.greeting}</p>
@@ -46,7 +40,7 @@ const Home = ({
 }
 
 export const getServerSideProps = async () => {
-  const weatherData: WeatherData = await getWeather('test')
+  const weatherData = await getWeather('test')
 
   return {
     props: {

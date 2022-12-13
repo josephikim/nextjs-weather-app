@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { FormControl, InputGroup, Button } from 'react-bootstrap'
 import { useInput } from 'hooks/useInput'
-import classes from 'styles/SearchBox.module.scss'
+import classes from 'styles/sass/SearchBox.module.scss'
 
 const SearchBox: React.FC = () => {
   const [searchResults, setSearchResults] = useState()

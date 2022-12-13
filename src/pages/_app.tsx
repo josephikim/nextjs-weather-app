@@ -4,7 +4,8 @@ import { trpc } from 'utils/trpc'
 import { SessionProvider } from 'next-auth/react'
 import Layout from 'components/Layout'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import 'styles/globals.css'
+import 'styles/css/globals.css'
+import 'styles/sass/weather-icons.min.scss'
 
 function App({
   Component,

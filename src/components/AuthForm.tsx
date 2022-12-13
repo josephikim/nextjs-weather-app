@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react'
 import { signIn, SignInResponse } from 'next-auth/react'
 import { getErrorMessage } from 'utils/error'
-import classes from 'styles/AuthForm.module.scss'
+import classes from 'styles/sass/AuthForm.module.scss'
 
 export default function AuthForm() {
   const emailInputRef = useRef<HTMLInputElement | null>(null)

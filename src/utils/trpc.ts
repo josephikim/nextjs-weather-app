@@ -1,6 +1,6 @@
-import { httpBatchLink } from '@trpc/client'
+import type { AppRouter } from 'backend/routers/app.router'
+import { httpBatchLink, loggerLink } from '@trpc/client'
 import { createTRPCNext } from '@trpc/next'
-import type { AppRouter } from 'backend/routers/_app'
 
 function getBaseUrl() {
   if (typeof window !== 'undefined')
@@ -23,6 +23,7 @@ export const trpc = createTRPCNext<AppRouter>({
   config() {
     return {
       links: [
+        loggerLink(),
         httpBatchLink({
           /**
            * If you want to use SSR, you need to use the server's full URL
@@ -40,6 +41,6 @@ export const trpc = createTRPCNext<AppRouter>({
   /**
    * @link https://trpc.io/docs/ssr
    **/
-  ssr: true,
+  ssr: false,
 })
 // => { useQuery: ..., useMutation: ...}

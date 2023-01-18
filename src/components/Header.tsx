@@ -6,7 +6,6 @@ import SearchBox from 'components/SearchBox'
 
 const Header: React.FC = () => {
   const { data: session } = useSession()
-
   return (
     <div className="Header fixed-header">
       <Navbar collapseOnSelect bg="dark" variant="dark">

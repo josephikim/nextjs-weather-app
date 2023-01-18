@@ -1,0 +1,15 @@
+// $search-box-height: 2.5rem;
+
+.flex-container {
+  display: flex;
+  height: 300px;
+  // button {
+  //   width: $search-box-button-width;
+  // }
+}
+
+.child {
+  // width: 100px;  /* Or whatever */
+  // height: 100px; /* Or whatever */
+  margin: auto; /* Magic! */
+}

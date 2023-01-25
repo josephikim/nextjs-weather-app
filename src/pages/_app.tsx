@@ -2,6 +2,7 @@ import type { AppProps } from 'next/app'
 import { Session } from 'next-auth'
 import { trpc } from 'utils/trpc'
 import { SessionProvider } from 'next-auth/react'
+import { UserSettingsProvider } from 'hooks/useUserSettings'
 import Layout from 'components/Layout'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'styles/css/globals.css'
@@ -15,9 +16,11 @@ function App({
 }>) {
   return (
     <SessionProvider session={pageProps.session}>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <UserSettingsProvider>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </UserSettingsProvider>
     </SessionProvider>
   )
 }

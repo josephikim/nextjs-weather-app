@@ -1,14 +1,9 @@
 import type { NextPage } from 'next'
-import { trpc } from 'utils/trpc'
 import Link from 'next/link'
 import Forecast from 'components/Forecast'
 import styles from 'styles/css/Home.module.css'
 
 const Home: NextPage = () => {
-  const { data: forecast } = trpc.getForecast.useQuery({
-    coordinates: 'test',
-  })
-
   return (
     <div className={styles.container}>
       <main className={styles.main}>
@@ -20,7 +15,7 @@ const Home: NextPage = () => {
           To create a dashboard of your favorite locations, please{' '}
           <Link href="/auth">create an account.</Link>
         </p>
-        {forecast ? <Forecast {...forecast} /> : <div>Loading forecast...</div>}
+        <Forecast location="default" />
       </main>
     </div>
   )

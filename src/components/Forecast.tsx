@@ -1,29 +1,38 @@
-import type { ForecastViewModel } from 'viewModels/forecastViewModel'
-import CurrentConditions from './CurrentConditions'
-import DailyConditionsGraph from './DailyConditionsGraph'
-import WeeklyForecast from './WeeklyForecast'
+import { trpc } from 'utils/trpc'
+import CurrentWeather from './CurrentWeather'
+import HourlyWeatherGraph from './HourlyWeatherGraph'
+import DailyForecastSummary from './DailyForecastSummary'
 import classes from 'styles/sass/Forecast.module.scss'
 
-type ForecastProps = ForecastViewModel
+interface ForecastProps {
+  location: string
+}
 
-const Forecast = ({
-  current_weather,
-  hourly,
-  hourly_units,
-  daily,
-  daily_units,
-}: ForecastProps) => {
+const Forecast = ({ location }: ForecastProps) => {
+  const { data: forecast } = trpc.getForecast.useQuery({
+    coordinates: location ?? 'default',
+  })
+
+  console.log({ forecast })
+  if (!forecast) return <div>Loading forecast...</div>
+
   return (
     <div className="Forecast">
       <div className="flex-container">
         <div className="child">
-          <CurrentConditions current={current_weather} />
+          <CurrentWeather current={forecast.currentWeather} />
         </div>
         <div className="child">
-          <DailyConditionsGraph hourly={hourly} units={hourly_units} />
+          <HourlyWeatherGraph
+            hourly={forecast.hourly}
+            hourlyUnits={forecast.hourlyUnits}
+          />
         </div>
         <div className="child">
-          <WeeklyForecast daily={daily} units={daily_units} />
+          <DailyForecastSummary
+            daily={forecast.daily}
+            dailyUnits={forecast.dailyUnits}
+          />
         </div>
       </div>
     </div>

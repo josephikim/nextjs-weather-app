@@ -24,3 +24,5 @@ const AuthPage: NextPage = () => {
 
   return <AuthForm />
 }
+
+export default AuthPage

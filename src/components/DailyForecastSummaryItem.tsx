@@ -1,6 +1,6 @@
-import classes from 'styles/sass/WeeklyForecastItem.module.scss'
+import classes from 'styles/sass/DailyForecastItem.module.scss'
 
-interface WeeklyForecastItemProps {
+interface DailyForecastItemProps {
   date: string
   minTemp: number
   maxTemp: number
@@ -9,16 +9,16 @@ interface WeeklyForecastItemProps {
   maxTempUnit: string
 }
 
-const WeeklyForecastItem = ({
+const DailyForecastItem = ({
   date,
   minTemp,
   maxTemp,
   weathercode,
   minTempUnit,
   maxTempUnit,
-}: WeeklyForecastItemProps) => {
+}: DailyForecastItemProps) => {
   return (
-    <div className="WeeklyForecastItem flex-container">
+    <div className="DailyForecastItem flex-container">
       <div className="">
         <div className="child">
           {/* <div className="day-abbr">{data.dayAbbr}</div> */}
@@ -37,4 +37,4 @@ const WeeklyForecastItem = ({
   )
 }
 
-export default WeeklyForecastItem
+export default DailyForecastItem

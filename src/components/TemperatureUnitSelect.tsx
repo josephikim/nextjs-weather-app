@@ -1,10 +1,10 @@
-import { useUserSettings } from 'hooks/useUserSettings'
+import { useLocalData } from 'hooks/useLocalData'
 
 export const TemperatureUnitSelect = () => {
   const {
     state: { temperatureUnit },
     dispatch,
-  } = useUserSettings()
+  } = useLocalData()
 
   switch (temperatureUnit) {
     case 'f':

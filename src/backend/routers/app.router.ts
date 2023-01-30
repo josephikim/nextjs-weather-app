@@ -12,9 +12,27 @@ export const appRouter = router({
     )
     .query(async ({ input }) => {
       const response = await getForecast('test')
-      const forecastJson: ForecastViewModel = await response.json()
+      const json = await response.json()
 
-      return forecastJson
+      const forecastViewData: ForecastViewModel = {
+        isDefaultLocation: true,
+        location: {
+          latitude: json.latitude,
+          longitude: json.longitude,
+          generationtime_ms: json.generationtime_ms,
+          utc_offset_seconds: json.utc_offset_seconds,
+          timezone: json.timezone,
+          timezone_abbreviation: json.timezone_abbreviation,
+          elevation: json.elevation,
+        },
+        currentWeather: json.current_weather,
+        hourly: json.hourly,
+        hourlyUnits: json.hourly_units,
+        daily: json.daily,
+        dailyUnits: json.daily_units,
+      }
+
+      return forecastViewData
     }),
 })
 

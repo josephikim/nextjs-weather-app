@@ -20,7 +20,13 @@ const Forecast = ({ location }: ForecastProps) => {
     <div className="Forecast">
       <div className="flex-container">
         <div className="child">
-          <CurrentWeather current={forecast.currentWeather} />
+          <CurrentWeather
+            current={forecast.currentWeather}
+            daily={forecast.daily}
+            dailyUnits={forecast.dailyUnits}
+            hourly={forecast.hourly}
+            hourlyUnits={forecast.hourlyUnits}
+          />
         </div>
         <div className="child">
           <HourlyWeatherGraph

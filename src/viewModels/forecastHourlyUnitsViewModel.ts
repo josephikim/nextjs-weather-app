@@ -3,6 +3,7 @@ import { z } from 'zod'
 export const ForecastHourlyUnitsViewModelSchema = z.object({
   time: z.string(),
   temperature_2m: z.string(),
+  relativehumidity_2m: z.string(),
   weathercode: z.string(),
 })
 

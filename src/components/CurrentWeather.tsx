@@ -25,7 +25,7 @@ const CurrentWeather = ({
   hourlyUnits,
 }: CurrentWeatherProps) => {
   const displayDate = dayjs(daily.time[0]).format('dddd MM/DD/YYYY')
-  const displayCondition = getWmoDescription(hourly.weathercode[0])
+  const displayCondition = getWmoDescription(current.weathercode)
   return (
     <div className="CurrentWeather">
       <div className="flex-container">

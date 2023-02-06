@@ -1,6 +1,6 @@
-import classes from 'styles/sass/DailyForecastItem.module.scss'
+import classes from 'styles/sass/DailyForecastSummaryItem.module.scss'
 
-interface DailyForecastItemProps {
+interface DailyForecastSummaryItemProps {
   date: string
   minTemp: number
   maxTemp: number
@@ -9,25 +9,26 @@ interface DailyForecastItemProps {
   maxTempUnit: string
 }
 
-const DailyForecastItem = ({
+const DailyForecastSummaryItem = ({
   date,
   minTemp,
   maxTemp,
   weathercode,
   minTempUnit,
   maxTempUnit,
-}: DailyForecastItemProps) => {
+}: DailyForecastSummaryItemProps) => {
   return (
-    <div className="DailyForecastItem flex-container">
-      <div className="">
-        <div className="child">
-          {/* <div className="day-abbr">{data.dayAbbr}</div> */}
-          <div className="date-short">{date}</div>
-          <i className="wi wi-wmo4680-1"></i>
-          <div className="temp-hilo">
+    <div className={classes.flexContainer}>
+      <div className={classes.flexChild}>
+        {/* <div className="day-abbr">{data.dayAbbr}</div> */}
+        <div className={classes.date}>{date}</div>
+        <i className={`${classes.icon} wi wi-wmo4680-1`}></i>
+        <div className={classes.tempRange}>
+          <div className={classes.hi}>
             {maxTemp}
             <span>&#176;</span>
-            <span> / </span>
+          </div>
+          <div className={classes.lo}>
             {minTemp}
             <span>&#176;</span>
           </div>
@@ -37,4 +38,4 @@ const DailyForecastItem = ({
   )
 }
 
-export default DailyForecastItem
+export default DailyForecastSummaryItem

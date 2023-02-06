@@ -58,7 +58,7 @@ const HourlyWeatherGraph = ({ hourly, hourlyUnits }: HourlyWeatherProps) => {
       },
     ],
   }
-  console.log({ chartData })
+
   return (
     <div className="HourlyWeatherGraph">
       <div className={classes.chartContainer}>

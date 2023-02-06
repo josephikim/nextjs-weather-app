@@ -1,0 +1,22 @@
+.flexContainer {
+  display: flex;
+  .flexChild {
+    width: 300px;
+    &:last-of-type {
+      text-align: right;
+    }
+    .icon {
+      font-size: 3rem;
+      padding-right: 18px;
+    }
+    .alignTop {
+      display: inline-block;
+      vertical-align: top;
+      .temperature {
+        font-size: 3rem;
+        padding-right: 10px;
+        line-height: 3rem;
+      }
+    }
+  }
+}

@@ -1,7 +1,7 @@
 import { ForecastDailyDataViewModel } from 'viewModels/forecastDailyDataViewModel'
 import { ForecastDailyUnitsViewModel } from 'viewModels/forecastDailyUnitsViewModel'
 import DailyForecastSummaryItem from './DailyForecastSummaryItem'
-import classes from 'styles/sass/DailyForecast.module.scss'
+import classes from 'styles/sass/DailyForecastSummary.module.scss'
 
 interface DailyForecastSummaryProps {
   daily: ForecastDailyDataViewModel
@@ -16,22 +16,20 @@ const DailyForecastSummary = ({
 
   const jsx = dateIterator.map((index) => {
     return (
-      <div className="DailyForecastSummaryItem" key={daily.time[index]}>
-        <div className="child">
-          <DailyForecastSummaryItem
-            date={daily.time[index]}
-            minTemp={daily.temperature_2m_min[index]}
-            maxTemp={daily.temperature_2m_max[index]}
-            weathercode={daily.weathercode[index]}
-            minTempUnit={dailyUnits.temperature_2m_min}
-            maxTempUnit={dailyUnits.temperature_2m_max}
-          />
-        </div>
+      <div className={classes.flexChild} key={daily.time[index]}>
+        <DailyForecastSummaryItem
+          date={daily.time[index]}
+          minTemp={daily.temperature_2m_min[index]}
+          maxTemp={daily.temperature_2m_max[index]}
+          weathercode={daily.weathercode[index]}
+          minTempUnit={dailyUnits.temperature_2m_min}
+          maxTempUnit={dailyUnits.temperature_2m_max}
+        />
       </div>
     )
   })
 
-  return <div className="DailyForecastSummary">{jsx}</div>
+  return <div className={classes.flexContainer}>{jsx}</div>
 }
 
 export default DailyForecastSummary

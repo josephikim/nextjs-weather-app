@@ -1,0 +1,25 @@
+.flexContainer {
+  display: flex;
+  .flexChild {
+    width: 100%;
+    text-align: center;
+    .date {
+      margin-bottom: 16px;
+    }
+    .icon {
+      margin-bottom: 16px;
+      font-size: 3rem;
+    }
+    .tempRange {
+      div {
+        display: inline-block;
+      }
+    }
+    .hi {
+      padding-right: 12px;
+    }
+    .lo {
+      color: #9aa0a6;
+    }
+  }
+}

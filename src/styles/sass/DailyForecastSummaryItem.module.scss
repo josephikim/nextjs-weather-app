@@ -1,14 +1,12 @@
 .flexContainer {
   display: flex;
+  flex-direction: column;
   .flexChild {
-    width: 100%;
     text-align: center;
-    .date {
-      margin-bottom: 16px;
-    }
+    padding-top: 1rem;
+    padding-bottom: 1rem;
     .icon {
-      margin-bottom: 16px;
-      font-size: 3rem;
+      font-size: 2.5rem;
     }
     .tempRange {
       div {
@@ -16,7 +14,7 @@
       }
     }
     .hi {
-      padding-right: 12px;
+      padding-right: 10px;
     }
     .lo {
       color: #9aa0a6;

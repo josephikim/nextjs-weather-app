@@ -5,8 +5,6 @@ interface DailyForecastSummaryItemProps {
   minTemp: number
   maxTemp: number
   weathercode: number
-  minTempUnit: string
-  maxTempUnit: string
 }
 
 const DailyForecastSummaryItem = ({
@@ -14,15 +12,16 @@ const DailyForecastSummaryItem = ({
   minTemp,
   maxTemp,
   weathercode,
-  minTempUnit,
-  maxTempUnit,
 }: DailyForecastSummaryItemProps) => {
   return (
     <div className={classes.flexContainer}>
       <div className={classes.flexChild}>
-        {/* <div className="day-abbr">{data.dayAbbr}</div> */}
-        <div className={classes.date}>{date}</div>
-        <i className={`${classes.icon} wi wi-wmo4680-1`}></i>
+        <div>{date}</div>
+      </div>
+      <div className={classes.flexChild}>
+        <i className={`${classes.icon} wi wi-wmo4680-${weathercode}`}></i>
+      </div>
+      <div className={classes.flexChild}>
         <div className={classes.tempRange}>
           <div className={classes.hi}>
             {maxTemp}

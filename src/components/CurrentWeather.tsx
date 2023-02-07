@@ -10,7 +10,7 @@ import dayjs from 'dayjs'
 import classes from 'styles/sass/CurrentWeather.module.scss'
 
 interface CurrentWeatherProps {
-  current: ForecastCurrentWeatherViewModel
+  currentWeather: ForecastCurrentWeatherViewModel
   daily: ForecastDailyDataViewModel
   dailyUnits: ForecastDailyUnitsViewModel
   hourly: ForecastHourlyDataViewModel
@@ -18,20 +18,24 @@ interface CurrentWeatherProps {
 }
 
 const CurrentWeather = ({
-  current,
+  currentWeather,
   daily,
   dailyUnits,
   hourly,
   hourlyUnits,
 }: CurrentWeatherProps) => {
   const displayDate = dayjs(daily.time[0]).format('dddd MM/DD/YYYY')
-  const displayCondition = getWmoDescription(current.weathercode)
+  const displayCondition = getWmoDescription(currentWeather.weathercode)
   return (
     <div className={classes.flexContainer}>
       <div className={classes.flexChild}>
-        <i className={`${classes.icon} wi wi-wmo4680-1`}></i>
+        <i
+          className={`${classes.icon} wi wi-wmo4680-${currentWeather.weathercode}`}
+        ></i>
         <div className={classes.alignTop}>
-          <span className={classes.temperature}>{current.temperature}</span>
+          <span className={classes.temperature}>
+            {currentWeather.temperature}
+          </span>
           <TemperatureUnitSelect />
         </div>
       </div>
@@ -48,12 +52,12 @@ const CurrentWeather = ({
         </div>
         <div>
           <span className="heading">Wind Speed: </span>
-          <span>{current.windspeed}</span>
+          <span>{currentWeather.windspeed}</span>
           <span>km per hour</span>
         </div>
         <div>
           <span className="heading">Wind Direction: </span>
-          <span>{degToCompass(current.winddirection)}</span>
+          <span>{degToCompass(currentWeather.winddirection)}</span>
         </div>
       </div>
 

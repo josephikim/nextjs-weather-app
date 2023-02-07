@@ -22,8 +22,6 @@ const DailyForecastSummary = ({
           minTemp={daily.temperature_2m_min[index]}
           maxTemp={daily.temperature_2m_max[index]}
           weathercode={daily.weathercode[index]}
-          minTempUnit={dailyUnits.temperature_2m_min}
-          maxTempUnit={dailyUnits.temperature_2m_max}
         />
       </div>
     )

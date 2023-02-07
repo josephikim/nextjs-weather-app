@@ -60,25 +60,23 @@ const HourlyWeatherGraph = ({ hourly, hourlyUnits }: HourlyWeatherProps) => {
   }
 
   return (
-    <div className="HourlyWeatherGraph">
-      <div className={classes.chartContainer}>
-        <Line
-          data={chartData}
-          options={{
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              title: {
-                display: true,
-                text: 'Hourly Weather',
-              },
-              legend: {
-                display: true,
-              },
+    <div className={classes.chartContainer}>
+      <Line
+        data={chartData}
+        options={{
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Hourly Weather',
             },
-          }}
-        />
-      </div>
+            legend: {
+              display: true,
+            },
+          },
+        }}
+      />
     </div>
   )
 }

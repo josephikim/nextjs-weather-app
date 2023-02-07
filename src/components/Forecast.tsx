@@ -17,29 +17,27 @@ const Forecast = ({ location }: ForecastProps) => {
   if (!forecast) return <div>Loading forecast...</div>
 
   return (
-    <div className="Forecast">
-      <div className="flex-container">
-        <div className="child">
-          <CurrentWeather
-            current={forecast.currentWeather}
-            daily={forecast.daily}
-            dailyUnits={forecast.dailyUnits}
-            hourly={forecast.hourly}
-            hourlyUnits={forecast.hourlyUnits}
-          />
-        </div>
-        <div className="child">
-          <HourlyWeatherGraph
-            hourly={forecast.hourly}
-            hourlyUnits={forecast.hourlyUnits}
-          />
-        </div>
-        <div className="child">
-          <DailyForecastSummary
-            daily={forecast.daily}
-            dailyUnits={forecast.dailyUnits}
-          />
-        </div>
+    <div className={classes.flexContainer}>
+      <div className={classes.flexChild}>
+        <CurrentWeather
+          currentWeather={forecast.currentWeather}
+          daily={forecast.daily}
+          dailyUnits={forecast.dailyUnits}
+          hourly={forecast.hourly}
+          hourlyUnits={forecast.hourlyUnits}
+        />
+      </div>
+      <div className={classes.flexChild}>
+        <HourlyWeatherGraph
+          hourly={forecast.hourly}
+          hourlyUnits={forecast.hourlyUnits}
+        />
+      </div>
+      <div className={classes.flexChild}>
+        <DailyForecastSummary
+          daily={forecast.daily}
+          dailyUnits={forecast.dailyUnits}
+        />
       </div>
     </div>
   )

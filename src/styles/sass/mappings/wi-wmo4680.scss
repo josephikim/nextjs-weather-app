@@ -1,14 +1,14 @@
 .#{$wi-css-prefix}-wmo4680-0:before,
 .#{$wi-css-prefix}-wmo4680-00:before {
-  content: $thermometer;
+  content: $day-sunny;
 }
 .#{$wi-css-prefix}-wmo4680-1:before,
 .#{$wi-css-prefix}-wmo4680-01:before {
-  content: $cloudy;
+  content: $day-sunny;
 }
 .#{$wi-css-prefix}-wmo4680-2:before,
 .#{$wi-css-prefix}-wmo4680-02:before {
-  content: $thermometer;
+  content: $day-cloudy;
 }
 .#{$wi-css-prefix}-wmo4680-3:before,
 .#{$wi-css-prefix}-wmo4680-03:before {
@@ -98,7 +98,7 @@
   content: $rain;
 }
 .#{$wi-css-prefix}-wmo4680-45:before {
-  content: $hail;
+  content: $fog;
 }
 .#{$wi-css-prefix}-wmo4680-46:before {
   content: $hail;
@@ -107,7 +107,7 @@
   content: $snow;
 }
 .#{$wi-css-prefix}-wmo4680-48:before {
-  content: $snow;
+  content: $fog;
 }
 .#{$wi-css-prefix}-wmo4680-50:before {
   content: $sprinkle;
@@ -125,13 +125,13 @@
   content: $snowflake-cold;
 }
 .#{$wi-css-prefix}-wmo4680-55:before {
-  content: $snowflake-cold;
+  content: $rain;
 }
 .#{$wi-css-prefix}-wmo4680-56:before {
-  content: $snowflake-cold;
+  content: $rain-mix;
 }
 .#{$wi-css-prefix}-wmo4680-57:before {
-  content: $sprinkle;
+  content: $rain-mix;
 }
 .#{$wi-css-prefix}-wmo4680-58:before {
   content: $rain;
@@ -152,13 +152,13 @@
   content: $hail;
 }
 .#{$wi-css-prefix}-wmo4680-65:before {
-  content: $hail;
+  content: $rain;
 }
 .#{$wi-css-prefix}-wmo4680-66:before {
-  content: $hail;
+  content: $sleet;
 }
 .#{$wi-css-prefix}-wmo4680-67:before {
-  content: $rain-mix;
+  content: $sleet;
 }
 .#{$wi-css-prefix}-wmo4680-68:before {
   content: $rain-mix;
@@ -185,13 +185,13 @@
   content: $snowflake-cold;
 }
 .#{$wi-css-prefix}-wmo4680-77:before {
-  content: $snow;
+  content: $hail;
 }
 .#{$wi-css-prefix}-wmo4680-78:before {
   content: $snowflake-cold;
 }
 .#{$wi-css-prefix}-wmo4680-80:before {
-  content: $rain;
+  content: $sprinkle;
 }
 .#{$wi-css-prefix}-wmo4680-81:before {
   content: $sprinkle;
@@ -206,10 +206,10 @@
   content: $storm-showers;
 }
 .#{$wi-css-prefix}-wmo4680-85:before {
-  content: $rain-mix;
+  content: $snow;
 }
 .#{$wi-css-prefix}-wmo4680-86:before {
-  content: $rain-mix;
+  content: $snowflake-cold;
 }
 .#{$wi-css-prefix}-wmo4680-87:before {
   content: $rain-mix;
@@ -239,5 +239,5 @@
   content: $thunderstorm;
 }
 .#{$wi-css-prefix}-wmo4680-99:before {
-  content: $tornado;
+  content: $thunderstorm;
 }

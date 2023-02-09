@@ -10,31 +10,31 @@ import dayjs from 'dayjs'
 import classes from 'styles/sass/CurrentWeather.module.scss'
 
 interface CurrentWeatherProps {
-  currentWeather: ForecastCurrentWeatherViewModel
+  current_weather: ForecastCurrentWeatherViewModel
   daily: ForecastDailyDataViewModel
-  dailyUnits: ForecastDailyUnitsViewModel
+  daily_units: ForecastDailyUnitsViewModel
   hourly: ForecastHourlyDataViewModel
-  hourlyUnits: ForecastHourlyUnitsViewModel
+  hourly_units: ForecastHourlyUnitsViewModel
 }
 
 const CurrentWeather = ({
-  currentWeather,
+  current_weather,
   daily,
-  dailyUnits,
+  daily_units,
   hourly,
-  hourlyUnits,
+  hourly_units,
 }: CurrentWeatherProps) => {
   const displayDate = dayjs(daily.time[0]).format('dddd MM/DD/YYYY')
-  const displayCondition = getWmoDescription(currentWeather.weathercode)
+  const displayCondition = getWmoDescription(current_weather.weathercode)
   return (
     <div className={classes.flexContainer}>
       <div className={classes.flexChild}>
         <i
-          className={`${classes.icon} wi wi-wmo4680-${currentWeather.weathercode}`}
+          className={`${classes.icon} wi wi-wmo4680-${current_weather.weathercode}`}
         ></i>
         <div className={classes.alignTop}>
           <span className={classes.temperature}>
-            {currentWeather.temperature}
+            {current_weather.temperature}
           </span>
           <TemperatureUnitSelect />
         </div>
@@ -43,21 +43,21 @@ const CurrentWeather = ({
         <div>
           <span className="heading">Precipitation (24 hour): </span>
           <span>{Math.trunc(daily.precipitation_sum[0])}</span>
-          <span className="small">{dailyUnits.precipitation_sum}</span>
+          <span className="small">{daily_units.precipitation_sum}</span>
         </div>
         <div>
           <span className="heading">Humidity: </span>
           <span>{hourly.relativehumidity_2m[0]}</span>
-          <span>{hourlyUnits.relativehumidity_2m}</span>
+          <span>{hourly_units.relativehumidity_2m}</span>
         </div>
         <div>
           <span className="heading">Wind Speed: </span>
-          <span>{currentWeather.windspeed}</span>
+          <span>{current_weather.windspeed}</span>
           <span>km per hour</span>
         </div>
         <div>
           <span className="heading">Wind Direction: </span>
-          <span>{degToCompass(currentWeather.winddirection)}</span>
+          <span>{degToCompass(current_weather.winddirection)}</span>
         </div>
       </div>
 

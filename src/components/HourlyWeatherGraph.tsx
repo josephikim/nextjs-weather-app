@@ -1,5 +1,4 @@
 import { ForecastHourlyDataViewModel } from 'viewModels/forecastHourlyDataViewModel'
-import { ForecastHourlyUnitsViewModel } from 'viewModels/forecastHourlyUnitsViewModel'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -25,10 +24,9 @@ ChartJS.register(
 
 interface HourlyWeatherProps {
   hourly: ForecastHourlyDataViewModel
-  hourlyUnits: ForecastHourlyUnitsViewModel
 }
 
-const HourlyWeatherGraph = ({ hourly, hourlyUnits }: HourlyWeatherProps) => {
+const HourlyWeatherGraph = ({ hourly }: HourlyWeatherProps) => {
   const chartLabels = hourly.time.map((timestamp) =>
     dayjs(timestamp).format('h:mm a')
   )

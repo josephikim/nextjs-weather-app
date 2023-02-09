@@ -1,4 +1,3 @@
-import type { ForecastViewModel } from 'viewModels/forecastViewModel'
 import * as React from 'react'
 import { c2fInt } from 'utils/weather'
 

@@ -2,7 +2,7 @@ import React from 'react'
 import { Navbar, Nav, Container } from 'react-bootstrap'
 import Link from 'next/link'
 import { useSession, signOut } from 'next-auth/react'
-import SearchBox from 'components/SearchBox'
+import Search from 'components/Search'
 
 const Header: React.FC = () => {
   const { data: session } = useSession()
@@ -15,7 +15,7 @@ const Header: React.FC = () => {
               <Nav.Link href="/">Next.js Weather App</Nav.Link>
             </Link>
           </Navbar.Brand>
-          <SearchBox />
+          <Search />
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse
             id="responsive-navbar-nav"

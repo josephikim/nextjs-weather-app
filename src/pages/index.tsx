@@ -1,9 +1,11 @@
 import type { NextPage } from 'next'
 import Link from 'next/link'
 import Forecast from 'components/Forecast'
-import styles from 'styles/css/Home.module.css'
+import styles from 'styles/css/HomePage.module.css'
 
-const Home: NextPage = () => {
+const HomePage: NextPage = () => {
+  const latitude = '48.8567'
+  const longitude = '2.351'
   return (
     <div className={styles.container}>
       <main className={styles.main}>
@@ -15,10 +17,10 @@ const Home: NextPage = () => {
           To create a dashboard of your favorite locations, please{' '}
           <Link href="/auth">create an account.</Link>
         </p>
-        <Forecast location="default" />
+        <Forecast latitude={latitude} longitude={longitude} />
       </main>
     </div>
   )
 }
 
-export default Home
+export default HomePage

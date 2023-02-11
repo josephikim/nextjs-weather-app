@@ -6,11 +6,12 @@ export const appRouter = router({
   getForecast: publicProcedure
     .input(
       z.object({
-        coordinates: z.string(),
+        latitude: z.string(),
+        longitude: z.string(),
       })
     )
     .query(async ({ input }) => {
-      const forecast = await getForecast('test')
+      const forecast = await getForecast(input.latitude, input.longitude)
       return forecast
     }),
 })

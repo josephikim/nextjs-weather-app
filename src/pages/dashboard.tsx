@@ -5,8 +5,8 @@ export const getServerSideProps = requireAuth(async (ctx) => {
   return { props: {} }
 })
 
-const Dashboard: NextPage = () => {
-  return <div>Dashboard page hit!</div>
+const DashboardPage: NextPage = () => {
+  return <div>Dashboard Page page hit!</div>
 }
 
-export default Dashboard
+export default DashboardPage

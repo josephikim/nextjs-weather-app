@@ -1,6 +1,7 @@
 import opencage from 'opencage-api-client'
 
 export const forwardGeocode = async (query: string) => {
+  console.log({ query })
   return opencage
     .geocode({ q: query })
     .then((data) => {

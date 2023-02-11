@@ -1,23 +1,25 @@
 import { trpc } from 'utils/trpc'
+import { useLocalData } from 'hooks/useLocalData'
 import CurrentWeather from './CurrentWeather'
 import HourlyWeatherGraph from './HourlyWeatherGraph'
 import DailyForecastSummary from './DailyForecastSummary'
 import classes from 'styles/sass/Forecast.module.scss'
 
 interface ForecastProps {
-  location: string
+  latitude: string
+  longitude: string
 }
 
-const Forecast = ({ location }: ForecastProps) => {
+const Forecast = ({ latitude, longitude }: ForecastProps) => {
   const { data: forecast } = trpc.getForecast.useQuery({
-    coordinates: location ?? 'default',
+    latitude,
+    longitude,
   })
 
   if (!forecast) return <div>Loading forecast...</div>
 
   return (
     <div className={classes.flexContainer}>
-      forecast
       <div className={classes.flexChild}>
         <CurrentWeather
           current_weather={forecast.current_weather}

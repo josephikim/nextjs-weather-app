@@ -1,20 +1,33 @@
+import { ApiResponseModel } from 'models/meteo'
 import * as React from 'react'
 import { c2fInt } from 'utils/weather'
 
 type TemperatureUnit = 'f' | 'c'
 type Theme = 'light' | 'dark'
-type Action = { type: 'SWITCH_TEMPERATURE_UNIT' } | { type: 'SWITCH_THEME' }
+type SearchData = {
+  label: string
+  value: string
+}
+type Action =
+  | { type: 'SWITCH_TEMPERATURE_UNIT' }
+  | { type: 'SWITCH_THEME' }
+  | { type: 'UPDATE_SEARCH_RESULT'; payload: SearchData }
 type Dispatch = (action: Action) => void
 type LocalDataProviderProps = { children: React.ReactNode }
 
 type UserState = {
   temperatureUnit: TemperatureUnit
   theme: Theme
+  searchData: SearchData
 }
 
 const INITIAL_STATE = {
   temperatureUnit: 'f',
   theme: 'dark',
+  searchData: {
+    label: '',
+    value: '',
+  },
 } as UserState
 
 const LocalData = React.createContext<
@@ -37,6 +50,12 @@ const userReducer = (state: UserState, action: Action): UserState => {
       return {
         ...state,
         theme: state.theme === 'dark' ? 'light' : 'dark',
+      }
+    }
+    case 'UPDATE_SEARCH_RESULT': {
+      return {
+        ...state,
+        searchData: action.payload,
       }
     }
     default: {

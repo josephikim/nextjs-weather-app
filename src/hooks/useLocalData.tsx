@@ -1,30 +1,28 @@
-import { ApiResponseModel } from 'models/meteo'
 import * as React from 'react'
-import { c2fInt } from 'utils/weather'
 
-type TemperatureUnit = 'f' | 'c'
+export type TemperatureUnit = 'f' | 'c'
 type Theme = 'light' | 'dark'
-type SearchData = {
+type SearchResult = {
   label: string
   value: string
 }
 type Action =
-  | { type: 'SWITCH_TEMPERATURE_UNIT' }
-  | { type: 'SWITCH_THEME' }
-  | { type: 'UPDATE_SEARCH_RESULT'; payload: SearchData }
+  | { type: 'UPDATE_TEMPERATURE_UNIT'; payload: TemperatureUnit }
+  | { type: 'SWITCH_THEME'; payload: Theme }
+  | { type: 'UPDATE_SEARCH_RESULT'; payload: SearchResult }
 type Dispatch = (action: Action) => void
 type LocalDataProviderProps = { children: React.ReactNode }
 
 type UserState = {
   temperatureUnit: TemperatureUnit
   theme: Theme
-  searchData: SearchData
+  searchResult: SearchResult
 }
 
 const INITIAL_STATE = {
   temperatureUnit: 'f',
   theme: 'dark',
-  searchData: {
+  searchResult: {
     label: '',
     value: '',
   },
@@ -40,22 +38,22 @@ const LocalData = React.createContext<
 
 const userReducer = (state: UserState, action: Action): UserState => {
   switch (action.type) {
-    case 'SWITCH_TEMPERATURE_UNIT': {
+    case 'UPDATE_TEMPERATURE_UNIT': {
       return {
         ...state,
-        temperatureUnit: state.temperatureUnit === 'f' ? 'c' : 'f',
+        temperatureUnit: action.payload,
       }
     }
     case 'SWITCH_THEME': {
       return {
         ...state,
-        theme: state.theme === 'dark' ? 'light' : 'dark',
+        theme: action.payload,
       }
     }
     case 'UPDATE_SEARCH_RESULT': {
       return {
         ...state,
-        searchData: action.payload,
+        searchResult: action.payload,
       }
     }
     default: {

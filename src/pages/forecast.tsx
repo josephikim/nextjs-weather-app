@@ -5,10 +5,10 @@ import classes from 'styles/sass/ForecastPage.module.scss'
 
 const ForecastPage: NextPage = () => {
   const {
-    state: { searchData },
+    state: { searchResult },
   } = useLocalData()
 
-  const [searchLatitude, searchLongitude] = searchData.value.split(' ')
+  const [searchLatitude, searchLongitude] = searchResult.value.split(' ')
 
   const latitude = searchLatitude ?? '48.8567'
   const longitude = searchLongitude ?? '2.351'
@@ -16,7 +16,7 @@ const ForecastPage: NextPage = () => {
   return (
     <div className={classes.container}>
       <main className={classes.main}>
-        <div className={classes.title}>Forecast for {searchData.label}</div>
+        <div className={classes.title}>Forecast for {searchResult.label}</div>
         <Forecast latitude={latitude} longitude={longitude} />
       </main>
     </div>

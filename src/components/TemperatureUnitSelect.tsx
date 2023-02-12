@@ -1,3 +1,4 @@
+import { TemperatureUnit } from 'hooks/useLocalData'
 import { useLocalData } from 'hooks/useLocalData'
 import classes from 'styles/sass/TemperatureUnitSelect.module.scss'
 
@@ -11,12 +12,17 @@ export const TemperatureUnitSelect = () => {
     case 'f':
       return (
         <div className={classes.wrapper}>
-          <span className="small">°F</span>
-          <span className="small"> / </span>
+          <span>°F</span>
+          <span> / </span>
           <a
-            id="celsius"
-            onClick={() => dispatch({ type: 'SWITCH_TEMPERATURE_UNIT' })}
-            className="small"
+            id="c"
+            href="#"
+            onClick={(e) =>
+              dispatch({
+                type: 'UPDATE_TEMPERATURE_UNIT',
+                payload: e.currentTarget.id as TemperatureUnit,
+              })
+            }
           >
             °C
           </a>
@@ -26,14 +32,19 @@ export const TemperatureUnitSelect = () => {
       return (
         <div className={classes.wrapper}>
           <a
-            id="fahrenheit"
-            onClick={() => dispatch({ type: 'SWITCH_TEMPERATURE_UNIT' })}
-            className="small"
+            id="f"
+            href="#"
+            onClick={(e) =>
+              dispatch({
+                type: 'UPDATE_TEMPERATURE_UNIT',
+                payload: e.currentTarget.id as TemperatureUnit,
+              })
+            }
           >
             °F
           </a>
-          <span className="small"> / </span>
-          <span className="small">°C</span>
+          <span> / </span>
+          <span>°C</span>
         </div>
       )
   }

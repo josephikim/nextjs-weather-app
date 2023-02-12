@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { useLocalData } from 'hooks/useLocalData'
 import { useRouter } from 'next/router'
-import { getForecast } from 'utils/meteo'
 import { GEO_API_URL, geoApiOptions } from 'utils/cities'
 import { AsyncPaginate } from 'react-select-async-paginate'
 import classes from 'styles/sass/Search.module.scss'
@@ -14,7 +13,7 @@ const Search: React.FC = () => {
   const handleOnChange = async (searchData: any) => {
     dispatch({ type: 'UPDATE_SEARCH_RESULT', payload: searchData })
     // reroute to forecast page
-    const [latitude, longitude] = searchData.value
+    const [latitude, longitude] = searchData.value.split(' ')
     const route = `forecast?latitude=${latitude}&longitude=${longitude}`
     router.push(route)
   }

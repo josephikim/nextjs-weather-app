@@ -4,8 +4,8 @@ import Forecast from 'components/Forecast'
 import styles from 'styles/css/HomePage.module.css'
 
 const HomePage: NextPage = () => {
-  const latitude = '48.8567'
-  const longitude = '2.351'
+  const latitude = '37.77'
+  const longitude = '-122.42'
   return (
     <div className={styles.container}>
       <main className={styles.main}>

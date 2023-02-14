@@ -11,9 +11,14 @@ interface ForecastProps {
 }
 
 const Forecast = ({ latitude, longitude }: ForecastProps) => {
+  const {
+    state: { temperatureUnit },
+  } = useLocalData()
+
   const { data: forecast } = trpc.getForecast.useQuery({
     latitude,
     longitude,
+    temperatureUnit,
   })
 
   if (!forecast) return <div>Loading forecast...</div>

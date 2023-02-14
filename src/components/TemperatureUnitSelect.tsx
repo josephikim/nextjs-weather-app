@@ -16,7 +16,7 @@ export const TemperatureUnitSelect = () => {
           <span> / </span>
           <a
             id="c"
-            href="#"
+            className="anchor"
             onClick={(e) =>
               dispatch({
                 type: 'UPDATE_TEMPERATURE_UNIT',
@@ -33,7 +33,7 @@ export const TemperatureUnitSelect = () => {
         <div className={classes.wrapper}>
           <a
             id="f"
-            href="#"
+            className="anchor"
             onClick={(e) =>
               dispatch({
                 type: 'UPDATE_TEMPERATURE_UNIT',

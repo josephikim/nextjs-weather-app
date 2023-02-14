@@ -41,9 +41,9 @@ const CurrentWeather = ({
       </div>
       <div className={classes.flexChild}>
         <div>
-          <span className="heading">Precipitation (24 hour): </span>
-          <span>{Math.trunc(daily.precipitation_sum[0])}</span>
-          <span>{daily_units.precipitation_sum}</span>
+          <span className="heading">24-Hour Precipitation: </span>
+          <span>{Math.trunc(daily.precipitation_sum[0])} </span>
+          <span>{daily_units.precipitation_sum + 'es'}</span>
         </div>
         <div>
           <span className="heading">Humidity: </span>
@@ -52,8 +52,8 @@ const CurrentWeather = ({
         </div>
         <div>
           <span className="heading">Wind Speed: </span>
-          <span>{current_weather.windspeed}</span>
-          <span>km per hour</span>
+          <span>{current_weather.windspeed} </span>
+          <span>mph</span>
         </div>
         <div>
           <span className="heading">Wind Direction: </span>

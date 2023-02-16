@@ -3,10 +3,10 @@ import { hashPassword } from 'utils/auth'
 import prisma from 'utils/prisma'
 
 export class PostgresService {
-  async createUser(newUser: IUserCredentials) {
+  async createUser(user: IUserCredentials) {
     const data = {
-      email: newUser.email,
-      password: await hashPassword(newUser.password),
+      email: user.email,
+      password: await hashPassword(user.password),
     }
 
     try {

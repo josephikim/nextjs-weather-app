@@ -4,11 +4,11 @@ import postgresService from 'db/postgres'
 
 export default async function handler(req: Request, res: Response) {
   const data = req.body
-  const newUser = await postgresService.createUser(data)
+  const user = await postgresService.createUser(data)
 
   const result = {
-    id: newUser.id,
-    email: newUser.email,
+    id: user.id,
+    email: user.email,
   }
 
   res.json(result)

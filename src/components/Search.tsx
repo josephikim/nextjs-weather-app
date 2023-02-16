@@ -20,7 +20,7 @@ const Search: React.FC = () => {
 
   const loadOptions = (inputValue: string) => {
     return fetch(
-      `${GEO_API_URL}/cities?minPopulation=1000000&namePrefix=${inputValue}`,
+      `${GEO_API_URL}/cities?minPopulation=500000&namePrefix=${inputValue}`,
       geoApiOptions
     )
       .then((res) => {
@@ -43,7 +43,7 @@ const Search: React.FC = () => {
       id="long-value-select"
       instanceId="long-value-select"
       className={classes.select}
-      placeholder="Search for city (min population 1,000,000)"
+      placeholder="Search for city (min population 500,000)"
       debounceTimeout={1000}
       value={search}
       onChange={handleOnChange}

@@ -13,10 +13,10 @@ export default function AuthForm() {
     setIsLogin((prevState) => !prevState)
   }
 
-  async function createUser(newUser: IUserCredentials) {
+  async function createUser(user: IUserCredentials) {
     const response = await fetch('/api/auth/signup', {
       method: 'POST',
-      body: JSON.stringify(newUser),
+      body: JSON.stringify(user),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -65,16 +65,16 @@ export default function AuthForm() {
     } else {
       // register first time user
       try {
-        const newUser = {
+        const user = {
           email: enteredEmail,
           password: enteredPassword,
         }
 
-        const result = await createUser(newUser)
+        const result = await createUser(user)
 
         // On successful registration, login user
-        if (result.id && result.email === newUser.email) {
-          await loginUser(newUser)
+        if (result.id && result.email === user.email) {
+          await loginUser(user)
         }
       } catch (e) {
         const message = getErrorMessage(e)

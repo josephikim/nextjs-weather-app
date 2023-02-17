@@ -19,7 +19,7 @@ model User {
   createdAt       DateTime        @default(now()) @map(name: "created_at")
   updatedAt       DateTime        @updatedAt @map(name: "updated_at")
   locations       LocationsOnUser[]
-  @@map(name: "users")
+  @@map("users")
 }
 
 model Location {
@@ -28,6 +28,7 @@ model Location {
   latitude        Decimal       @db.Decimal(5, 2)
   longitude       Decimal       @db.Decimal(5, 2)
   users           LocationsOnUser[]
+  @@map("locations")
 }
 
 model LocationsOnUser {
@@ -37,7 +38,7 @@ model LocationsOnUser {
   locationId      String
   displayOrder    Int      @default(autoincrement())
   assignedAt      DateTime @default(now())
-
+  @@map("locations_on_user")
   @@id([userId, locationId])
 }
 

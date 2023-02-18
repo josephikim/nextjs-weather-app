@@ -12,9 +12,13 @@ const Search: React.FC = () => {
 
   const handleOnChange = async (searchData: any) => {
     dispatch({ type: 'UPDATE_SEARCH_RESULT', payload: searchData })
-    // reroute to forecast page
+
     const [latitude, longitude] = searchData.value.split(' ')
-    const route = `forecast?latitude=${latitude}&longitude=${longitude}`
+    const route = `forecast?label=${encodeURIComponent(
+      searchData.label
+    )}&latitude=${latitude}&longitude=${longitude}`
+
+    // reroute to forecast page
     router.push(route)
   }
 

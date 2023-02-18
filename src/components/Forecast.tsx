@@ -26,12 +26,6 @@ const Forecast = ({ label, latitude, longitude }: ForecastProps) => {
     return <div>Loading forecast...</div>
   }
 
-  const forecastPropsMissing = !label || !latitude || !longitude
-
-  if (forecastPropsMissing) {
-    return <div>Error loading forecast</div>
-  }
-
   return (
     <div className={classes.flexContainer}>
       <div className={classes.flexChild}>

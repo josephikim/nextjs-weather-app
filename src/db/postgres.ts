@@ -30,6 +30,48 @@ export class PostgresService {
       throw new Error(message)
     }
   }
+
+  async getDefaultLocation(email: string) {
+    try {
+      let location
+
+      if (email === 'guest') {
+        // for non-authed user
+        location = await prisma.location.findUnique({
+          where: { label: 'San Francisco, US' },
+        })
+      } else {
+        // for authed user
+        const user = await prisma.user.findUnique({
+          where: {
+            email: email,
+          },
+          include: {
+            locations: {
+              orderBy: [
+                {
+                  displayOrder: 'asc',
+                },
+              ],
+              take: 1,
+            },
+          },
+        })
+
+        if (!user) throw new Error('No user found')
+
+        const locationId = user.locations[0].locationId
+
+        location = await prisma.location.findUnique({
+          where: { id: locationId },
+        })
+      }
+      return location
+    } catch (e) {
+      const message = getErrorMessage(e)
+      throw new Error(message)
+    }
+  }
 }
 
 const postgresService = new PostgresService()

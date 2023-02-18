@@ -10,14 +10,17 @@ const ForecastPage: NextPage = () => {
 
   const [searchLatitude, searchLongitude] = searchResult.value.split(' ')
 
-  const latitude = searchLatitude ?? '37.77'
-  const longitude = searchLongitude ?? '-122.42'
+  const latitude = searchLatitude
+  const longitude = searchLongitude
 
   return (
     <div className={classes.container}>
       <main className={classes.main}>
-        <div className={classes.title}>Forecast for {searchResult.label}</div>
-        <Forecast latitude={latitude} longitude={longitude} />
+        <Forecast
+          label={searchResult.label}
+          latitude={latitude}
+          longitude={longitude}
+        />
       </main>
     </div>
   )

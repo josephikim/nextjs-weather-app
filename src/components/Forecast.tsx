@@ -6,11 +6,12 @@ import DailyForecastSummary from './DailyForecastSummary'
 import classes from 'styles/sass/Forecast.module.scss'
 
 interface ForecastProps {
+  label: string
   latitude: string
   longitude: string
 }
 
-const Forecast = ({ latitude, longitude }: ForecastProps) => {
+const Forecast = ({ label, latitude, longitude }: ForecastProps) => {
   const {
     state: { temperatureUnit },
   } = useLocalData()
@@ -21,10 +22,21 @@ const Forecast = ({ latitude, longitude }: ForecastProps) => {
     temperatureUnit,
   })
 
-  if (!forecast) return <div>Loading forecast...</div>
+  if (!forecast) {
+    return <div>Loading forecast...</div>
+  }
+
+  const forecastPropsMissing = !label || !latitude || !longitude
+
+  if (forecastPropsMissing) {
+    return <div>Error loading forecast</div>
+  }
 
   return (
     <div className={classes.flexContainer}>
+      <div className={classes.flexChild}>
+        <div className={classes.title}>Current forecast for {label}</div>
+      </div>
       <div className={classes.flexChild}>
         <CurrentWeather
           current_weather={forecast.current_weather}

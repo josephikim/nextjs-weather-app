@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const ApiResponseModelSchema = z.object({
+export const ApiResponseViewModelSchema = z.object({
   latitude: z.number(),
   longitude: z.number(),
   generationtime_ms: z.number(),
@@ -45,4 +45,4 @@ export const ApiResponseModelSchema = z.object({
   }),
 })
 
-export type ApiResponseModel = z.infer<typeof ApiResponseModelSchema>
+export type ApiResponseViewModel = z.infer<typeof ApiResponseViewModelSchema>

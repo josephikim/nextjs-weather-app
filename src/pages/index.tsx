@@ -5,7 +5,7 @@ import Forecast from 'components/Forecast'
 import styles from 'styles/css/HomePage.module.css'
 
 const HomePage: NextPage = () => {
-  const { data: location } = trpc.getDefaultLocation.useQuery()
+  const { data: location } = trpc.getUserDefaultLocation.useQuery()
   const fallbackLocation = {
     label: 'San Francisco, US',
     latitude: '37.78',

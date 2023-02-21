@@ -1,8 +1,9 @@
-import { ApiResponseModelSchema } from 'models/meteo'
+import { ApiResponseViewModelSchema } from 'viewModels/meteo'
 import { z } from 'zod'
-import { publicProcedure, router } from 'backend/trpc'
+import { publicProcedure, protectedProcedure, router } from 'backend/trpc'
 import { getForecast } from 'utils/meteo'
 import postgresService from 'db/postgres'
+import { CreateLocationModelSchema } from 'models/location'
 
 export const appRouter = router({
   getForecast: publicProcedure
@@ -19,13 +20,18 @@ export const appRouter = router({
         input.longitude,
         input.temperatureUnit
       )
-      return ApiResponseModelSchema.parse(forecast)
+      return ApiResponseViewModelSchema.parse(forecast)
     }),
-  getDefaultLocation: publicProcedure.query(async ({ ctx }) => {
+  getUserDefaultLocation: publicProcedure.query(async ({ ctx }) => {
     const email = ctx.session?.user?.email ?? 'guest'
-    const location = await postgresService.getDefaultLocation(email)
+    const location = await postgresService.getUserDefaultLocation(email)
     return location
   }),
+  addUserLocation: protectedProcedure
+    .input(CreateLocationModelSchema)
+    .mutation(({ input, ctx }) => {
+      return postgresService.addUserLocation({ input, ctx })
+    }),
 })
 
 // export type definition of API

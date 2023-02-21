@@ -1,3 +1,6 @@
+import { TRPCError } from '@trpc/server'
+import { CreateLocationModel } from 'models/location'
+import { Context } from 'backend/context'
 import { Prisma } from '@prisma/client'
 import { getErrorMessage } from 'utils/error'
 import { hashPassword } from 'utils/auth'
@@ -31,7 +34,7 @@ export class PostgresService {
     }
   }
 
-  async getDefaultLocation(email: string) {
+  async getUserDefaultLocation(email: string) {
     try {
       let location
 
@@ -70,6 +73,51 @@ export class PostgresService {
     } catch (e) {
       const message = getErrorMessage(e)
       throw new Error(message)
+    }
+  }
+
+  async addUserLocation({
+    input,
+    ctx,
+  }: {
+    input: CreateLocationModel
+    ctx: Context
+  }) {
+    try {
+      const email = ctx.session?.user?.email as string
+
+      // create location and connect to user
+      const userLocation = await prisma.location.create({
+        data: {
+          ...input,
+          users: {
+            create: {
+              user: {
+                connect: {
+                  email: email,
+                },
+              },
+            },
+          },
+        },
+      })
+
+      return {
+        status: 'success',
+        data: {
+          userLocation,
+        },
+      }
+    } catch (e: any) {
+      if (e.code === 'P2002') {
+        throw new TRPCError({
+          code: 'CONFLICT',
+          message: 'A location with that label already exists',
+        })
+      } else {
+        const message = getErrorMessage(e)
+        throw new Error(message)
+      }
     }
   }
 }

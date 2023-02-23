@@ -91,26 +91,47 @@ export class PostgresService {
     try {
       const email = ctx.session?.user?.email as string
 
-      // create location and connect to user
-      const userLocation = await prisma.location.create({
+      // lookup user locations
+      const relations = await prisma.locationsOnUser.findMany({
+        where: {
+          userEmail: email,
+        },
+        orderBy: [
+          {
+            displayOrder: 'asc',
+          },
+        ],
+      })
+
+      // update relation table and create location if needed
+      const newRelation = await prisma.locationsOnUser.create({
         data: {
-          ...input,
-          users: {
-            create: {
-              user: {
-                connect: {
-                  email: email,
-                },
+          user: {
+            connect: {
+              email: email,
+            },
+          },
+          location: {
+            connectOrCreate: {
+              where: {
+                label: input.label,
+              },
+              create: {
+                ...input,
               },
             },
           },
+          displayOrder:
+            relations.length > 0
+              ? relations[relations.length - 1].displayOrder + 1
+              : 0,
         },
       })
 
       return {
         status: 'success',
         data: {
-          userLocation,
+          newRelation,
         },
       }
     } catch (e: any) {

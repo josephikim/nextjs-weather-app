@@ -32,12 +32,13 @@ model Location {
 model LocationsOnUser {
   userEmail     String
   locationLabel String
-  displayOrder  Int      @default(autoincrement())
+  displayOrder  Int     
   assignedAt    DateTime @default(now())
   location      Location @relation(fields: [locationLabel], references: [label])
   user          User     @relation(fields: [userEmail], references: [email])
 
   @@id([userEmail, locationLabel])
+  @@unique([userEmail, displayOrder])
   @@map("locations_on_user")
 }
 

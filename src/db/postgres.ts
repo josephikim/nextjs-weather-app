@@ -1,5 +1,5 @@
 import { TRPCError } from '@trpc/server'
-import { CreateLocationModel } from 'models/location'
+import { CreateLocationModel, DeleteLocationModel } from 'models/location'
 import { Context } from 'backend/context'
 import { Prisma } from '@prisma/client'
 import { getErrorMessage } from 'utils/error'
@@ -35,16 +35,15 @@ export class PostgresService {
   }
 
   async getUserDefaultLocation(email: string) {
-    try {
-      let location
+    let location
 
-      if (email === 'guest') {
-        // for non-authed user
-        location = await prisma.location.findUnique({
-          where: { label: 'San Francisco, US' },
-        })
-      } else {
-        // for authed user
+    if (email === 'guest') {
+      location = await prisma.location.findUnique({
+        where: { label: 'San Francisco, US' },
+      })
+    } else {
+      try {
+        // lookup user with default location
         const user = await prisma.user.findUnique({
           where: {
             email: email,
@@ -61,22 +60,28 @@ export class PostgresService {
           },
         })
 
-        if (!user) throw new Error('No user found')
+        if (!user || user.locations.length === 0) {
+          // for non-authed user
+          location = await prisma.location.findUnique({
+            where: { label: 'San Francisco, US' },
+          })
+        } else {
+          // for authed user
+          const locationLabel = user.locations[0].locationLabel
 
-        const locationId = user.locations[0].locationId
-
-        location = await prisma.location.findUnique({
-          where: { id: locationId },
-        })
+          location = await prisma.location.findUnique({
+            where: { label: locationLabel },
+          })
+        }
+        return location
+      } catch (e) {
+        const message = getErrorMessage(e)
+        throw new Error(message)
       }
-      return location
-    } catch (e) {
-      const message = getErrorMessage(e)
-      throw new Error(message)
     }
   }
 
-  async addUserLocation({
+  async createUserLocation({
     input,
     ctx,
   }: {
@@ -106,6 +111,45 @@ export class PostgresService {
         status: 'success',
         data: {
           userLocation,
+        },
+      }
+    } catch (e: any) {
+      if (e.code === 'P2002') {
+        throw new TRPCError({
+          code: 'CONFLICT',
+          message: 'A location with that label already exists',
+        })
+      } else {
+        const message = getErrorMessage(e)
+        throw new Error(message)
+      }
+    }
+  }
+
+  async deleteUserLocation({
+    input,
+    ctx,
+  }: {
+    input: DeleteLocationModel
+    ctx: Context
+  }) {
+    try {
+      const email = ctx.session?.user?.email as string
+
+      // delete user location from relation table
+      const deleted = await prisma.locationsOnUser.delete({
+        where: {
+          userEmail_locationLabel: {
+            userEmail: email,
+            locationLabel: input.label,
+          },
+        },
+      })
+
+      return {
+        status: 'success',
+        data: {
+          deleted,
         },
       }
     } catch (e: any) {

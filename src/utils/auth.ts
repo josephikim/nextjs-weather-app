@@ -60,7 +60,6 @@ export const nextAuthOptions: NextAuthOptions = {
     // @ts-ignore
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id
         token.email = user.email
       }
       return token

@@ -3,31 +3,23 @@ import { trpc } from 'utils/trpc'
 import { useEffect, useState } from 'react'
 import Button from 'react-bootstrap/Button'
 
-const createLocationSchema = z.object({
+const deleteLocationSchema = z.object({
   label: z.string().min(1, 'Label is required'),
-  latitude: z.string().min(1, 'Latitude is required'),
-  longitude: z.string().min(1, 'Longitude is required'),
 })
 
-type CreateLocationInput = z.infer<typeof createLocationSchema>
+type DeleteLocationInput = z.infer<typeof deleteLocationSchema>
 
-interface AddUserLocationButtonProps {
+interface DeleteUserLocationButtonProps {
   label: string
-  latitude: string
-  longitude: string
 }
 
-const AddUserLocationButton = ({
-  label,
-  latitude,
-  longitude,
-}: AddUserLocationButtonProps) => {
+const DeleteUserLocationButton = ({ label }: DeleteUserLocationButtonProps) => {
   const [isLoading, setLoading] = useState(false)
 
-  const { mutate: addUserLocation } = trpc.addUserLocation.useMutation({
+  const { mutate: deleteUserLocation } = trpc.deleteUserLocation.useMutation({
     onSuccess(data) {
       setLoading(false)
-      console.log('Location added successfully')
+      console.log('Location deleted successfully')
     },
     onError(error) {
       setLoading(false)
@@ -37,12 +29,10 @@ const AddUserLocationButton = ({
 
   useEffect(() => {
     if (isLoading) {
-      const data: CreateLocationInput = {
+      const data: DeleteLocationInput = {
         label,
-        latitude,
-        longitude,
       }
-      addUserLocation(data)
+      deleteUserLocation(data)
     }
   }, [isLoading])
 
@@ -57,10 +47,10 @@ const AddUserLocationButton = ({
         disabled={isLoading}
         onClick={!isLoading ? handleClick : () => null}
       >
-        {isLoading ? 'Updating...' : 'Add to Dashboard'}
+        {isLoading ? 'Updating...' : 'Remove from Dashboard'}
       </Button>
     </>
   )
 }
 
-export default AddUserLocationButton
+export default DeleteUserLocationButton

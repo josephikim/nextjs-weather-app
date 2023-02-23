@@ -1,7 +1,16 @@
+import { z } from 'zod'
 import { useState, useRef } from 'react'
 import { signIn, SignInResponse } from 'next-auth/react'
 import { getErrorMessage } from 'utils/error'
 import classes from 'styles/sass/AuthForm.module.scss'
+
+const userCredentialsSchema = z.object({
+  email: z.string().email('Email is required'),
+  password: z.string().min(4, 'Password must contain 4 or more characters'),
+})
+
+type CreateUserInput = z.infer<typeof userCredentialsSchema>
+type LoginUserInput = z.infer<typeof userCredentialsSchema>
 
 export default function AuthForm() {
   const emailInputRef = useRef<HTMLInputElement | null>(null)
@@ -13,7 +22,7 @@ export default function AuthForm() {
     setIsLogin((prevState) => !prevState)
   }
 
-  async function createUser(user: IUserCredentials) {
+  async function createUser(user: CreateUserInput) {
     const response = await fetch('/api/auth/signup', {
       method: 'POST',
       body: JSON.stringify(user),
@@ -31,7 +40,7 @@ export default function AuthForm() {
     return result
   }
 
-  async function loginUser(user: IUserCredentials) {
+  async function loginUser(user: LoginUserInput) {
     const result = (await signIn('credentials', {
       redirect: false,
       email: user.email,
@@ -47,14 +56,8 @@ export default function AuthForm() {
   async function submitHandler(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
-    const enteredEmail = emailInputRef.current?.value
-    const enteredPassword = passwordInputRef.current?.value
-
-    // validation
-    if (!enteredEmail || !enteredEmail.includes('@') || !enteredPassword) {
-      alert('Invalid details')
-      return
-    }
+    const enteredEmail = emailInputRef.current?.value as string
+    const enteredPassword = passwordInputRef.current?.value as string
 
     if (isLogin) {
       // login returning user
@@ -65,7 +68,7 @@ export default function AuthForm() {
     } else {
       // register first time user
       try {
-        const user = {
+        const user: CreateUserInput = {
           email: enteredEmail,
           password: enteredPassword,
         }
@@ -73,7 +76,7 @@ export default function AuthForm() {
         const result = await createUser(user)
 
         // On successful registration, login user
-        if (result.id && result.email === user.email) {
+        if (result.email === user.email) {
           await loginUser(user)
         }
       } catch (e) {
@@ -97,7 +100,7 @@ export default function AuthForm() {
             type="password"
             id="password"
             pattern="^.{4,}$"
-            title="Must contain at least 4 or more characters"
+            title="Password must contain 4 or more characters"
             required
             ref={passwordInputRef}
           />

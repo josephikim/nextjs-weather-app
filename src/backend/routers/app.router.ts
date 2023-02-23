@@ -3,7 +3,10 @@ import { z } from 'zod'
 import { publicProcedure, protectedProcedure, router } from 'backend/trpc'
 import { getForecast } from 'utils/meteo'
 import postgresService from 'db/postgres'
-import { CreateLocationModelSchema } from 'models/location'
+import {
+  CreateLocationModelSchema,
+  DeleteLocationModelSchema,
+} from 'models/location'
 
 export const appRouter = router({
   getForecast: publicProcedure
@@ -27,10 +30,15 @@ export const appRouter = router({
     const location = await postgresService.getUserDefaultLocation(email)
     return location
   }),
-  addUserLocation: protectedProcedure
+  createUserLocation: protectedProcedure
     .input(CreateLocationModelSchema)
     .mutation(({ input, ctx }) => {
-      return postgresService.addUserLocation({ input, ctx })
+      return postgresService.createUserLocation({ input, ctx })
+    }),
+  deleteUserLocation: protectedProcedure
+    .input(DeleteLocationModelSchema)
+    .mutation(({ input, ctx }) => {
+      return postgresService.deleteUserLocation({ input, ctx })
     }),
 })
 

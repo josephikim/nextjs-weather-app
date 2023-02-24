@@ -26,4 +26,8 @@ nav {
     color: white;
     background: black;
   }
+  .modal {
+    color-scheme: normal;
+    color: initial;
+  }
 }

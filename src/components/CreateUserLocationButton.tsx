@@ -1,6 +1,9 @@
+import { useSession } from 'next-auth/react'
 import { z } from 'zod'
 import { trpc } from 'utils/trpc'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import { Modal } from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 
 const createLocationSchema = z.object({
@@ -22,7 +25,12 @@ const CreateUserLocationButton = ({
   latitude,
   longitude,
 }: CreateUserLocationButtonProps) => {
+  const { data: session } = useSession()
   const [isLoading, setLoading] = useState(false)
+  const [showModal, setShowModal] = useState(false)
+
+  const handleCloseModal = () => setShowModal(false)
+  const handleShowModal = () => setShowModal(true)
 
   const { mutate: createUserLocation } = trpc.createUserLocation.useMutation({
     onSuccess(data) {
@@ -47,7 +55,11 @@ const CreateUserLocationButton = ({
   }, [isLoading])
 
   const handleClick = () => {
-    setLoading(true)
+    if (session) {
+      setLoading(true)
+    } else {
+      handleShowModal()
+    }
   }
 
   return (
@@ -59,6 +71,17 @@ const CreateUserLocationButton = ({
       >
         {isLoading ? 'Updating...' : 'Add to Dashboard'}
       </Button>
+
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Body>
+          To manage your dashboard, please <Link href="/auth">login.</Link>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   )
 }

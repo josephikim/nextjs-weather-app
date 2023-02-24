@@ -1,12 +1,12 @@
+import dayjs from 'dayjs'
 import { ForecastCurrentWeatherViewModel } from 'viewModels/forecastCurrentWeatherViewModel'
 import { ForecastDailyDataViewModel } from 'viewModels/forecastDailyDataViewModel'
 import { ForecastDailyUnitsViewModel } from 'viewModels/forecastDailyUnitsViewModel'
 import { ForecastHourlyDataViewModel } from 'viewModels/forecastHourlyDataViewModel'
 import { ForecastHourlyUnitsViewModel } from 'viewModels/forecastHourlyUnitsViewModel'
-import { TemperatureUnitSelect } from 'components/TemperatureUnitSelect'
+import TemperatureUnitSelect from './TemperatureUnitSelect'
 import { degToCompass } from 'utils/weather'
 import { getWmoDescription } from 'utils/meteo'
-import dayjs from 'dayjs'
 import classes from 'styles/sass/CurrentWeather.module.scss'
 
 interface CurrentWeatherProps {

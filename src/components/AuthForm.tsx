@@ -12,7 +12,7 @@ const userCredentialsSchema = z.object({
 type CreateUserInput = z.infer<typeof userCredentialsSchema>
 type LoginUserInput = z.infer<typeof userCredentialsSchema>
 
-export default function AuthForm() {
+const AuthForm = () => {
   const emailInputRef = useRef<HTMLInputElement | null>(null)
   const passwordInputRef = useRef<HTMLInputElement | null>(null)
 
@@ -119,3 +119,5 @@ export default function AuthForm() {
     </section>
   )
 }
+
+export default AuthForm

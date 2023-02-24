@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import { useLocalData } from 'hooks/useLocalData'
 import { useRouter } from 'next/router'
-import { GEO_API_URL, geoApiOptions } from 'utils/cities'
 import { AsyncPaginate } from 'react-select-async-paginate'
+import { useLocalData } from 'hooks/useLocalData'
+import { GEO_API_URL, geoApiOptions } from 'utils/cities'
 import classes from 'styles/sass/Search.module.scss'
 
-const Search: React.FC = () => {
+const Search = () => {
   const [search, setSearch] = useState(null)
   const { dispatch } = useLocalData()
   const router = useRouter()

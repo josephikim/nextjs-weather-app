@@ -1,4 +1,3 @@
-import { ForecastHourlyDataViewModel } from 'viewModels/forecastHourlyDataViewModel'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,7 +9,7 @@ import {
 } from 'chart.js'
 import { Line } from 'react-chartjs-2'
 import dayjs from 'dayjs'
-
+import { ForecastHourlyDataViewModel } from 'viewModels/forecastHourlyDataViewModel'
 import classes from 'styles/sass/HourlyWeatherGraph.module.scss'
 
 ChartJS.register(

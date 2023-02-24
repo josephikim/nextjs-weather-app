@@ -17,7 +17,7 @@ const DeleteUserLocationButton = ({ label }: DeleteUserLocationButtonProps) => {
   const [isLoading, setLoading] = useState(false)
 
   const { mutate: deleteUserLocation } = trpc.deleteUserLocation.useMutation({
-    onSuccess(data) {
+    onSuccess() {
       setLoading(false)
       console.log('Location deleted successfully')
     },

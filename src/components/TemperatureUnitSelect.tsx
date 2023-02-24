@@ -2,7 +2,7 @@ import { TemperatureUnit } from 'hooks/useLocalData'
 import { useLocalData } from 'hooks/useLocalData'
 import classes from 'styles/sass/TemperatureUnitSelect.module.scss'
 
-export const TemperatureUnitSelect = () => {
+const TemperatureUnitSelect = () => {
   const {
     state: { temperatureUnit },
     dispatch,
@@ -49,3 +49,5 @@ export const TemperatureUnitSelect = () => {
       )
   }
 }
+
+export default TemperatureUnitSelect

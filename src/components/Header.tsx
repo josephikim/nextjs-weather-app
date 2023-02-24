@@ -1,10 +1,10 @@
 import React from 'react'
-import { Navbar, Nav, Container } from 'react-bootstrap'
 import Link from 'next/link'
 import { useSession, signOut } from 'next-auth/react'
-import Search from 'components/Search'
+import { Navbar, Nav, Container } from 'react-bootstrap'
+import Search from './Search'
 
-const Header: React.FC = () => {
+const Header = () => {
   const { data: session } = useSession()
   return (
     <div className="Header fixed-header">

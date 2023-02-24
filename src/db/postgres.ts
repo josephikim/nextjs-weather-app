@@ -41,6 +41,7 @@ export class PostgresService {
       location = await prisma.location.findUnique({
         where: { label: 'San Francisco, US' },
       })
+      return location
     } else {
       try {
         // lookup user with default location

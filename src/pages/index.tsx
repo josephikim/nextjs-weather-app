@@ -6,11 +6,7 @@ import styles from 'styles/css/HomePage.module.css'
 
 const HomePage: NextPage = () => {
   const { data: location } = trpc.getUserDefaultLocation.useQuery()
-  const fallbackLocation = {
-    label: 'San Francisco, US',
-    latitude: '37.78',
-    longitude: '-122.42',
-  }
+
   return (
     <div className={styles.container}>
       <main className={styles.main}>
@@ -29,11 +25,7 @@ const HomePage: NextPage = () => {
             longitude={location.longitude.toString()}
           />
         ) : (
-          <Forecast
-            label={fallbackLocation.label}
-            latitude={fallbackLocation.latitude}
-            longitude={fallbackLocation.longitude}
-          />
+          <span>Loading forecast...</span>
         )}
       </main>
     </div>

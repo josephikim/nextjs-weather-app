@@ -4,7 +4,7 @@ import { ForecastDailyDataViewModel } from 'viewModels/forecastDailyDataViewMode
 import { ForecastDailyUnitsViewModel } from 'viewModels/forecastDailyUnitsViewModel'
 import { ForecastHourlyDataViewModel } from 'viewModels/forecastHourlyDataViewModel'
 import { ForecastHourlyUnitsViewModel } from 'viewModels/forecastHourlyUnitsViewModel'
-import TemperatureUnitSelect from './TemperatureUnitSelect'
+import TemperatureUnitSelect from 'components/TemperatureUnitSelect'
 import { degToCompass } from 'utils/weather'
 import { getWmoDescription } from 'utils/meteo'
 import classes from 'styles/sass/CurrentWeather.module.scss'

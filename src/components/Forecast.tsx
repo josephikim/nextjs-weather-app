@@ -1,10 +1,10 @@
 import { trpc } from 'utils/trpc'
 import { useLocalData } from 'hooks/useLocalData'
-import CreateUserLocationButton from './CreateUserLocationButton'
-import DeleteUserLocationButton from './DeleteUserLocationButton'
-import CurrentWeather from './CurrentWeather'
-import HourlyWeatherGraph from './HourlyWeatherGraph'
-import DailyForecastSummary from './DailyForecastSummary'
+import CreateUserLocationButton from 'components/CreateUserLocationButton'
+import DeleteUserLocationButton from 'components/DeleteUserLocationButton'
+import CurrentWeather from 'components/CurrentWeather'
+import HourlyWeatherGraph from 'components/HourlyWeatherGraph'
+import DailyForecastSummary from 'components/DailyForecastSummary'
 import classes from 'styles/sass/Forecast.module.scss'
 
 interface ForecastProps {

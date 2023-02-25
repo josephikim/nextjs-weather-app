@@ -2,7 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import { useSession, signOut } from 'next-auth/react'
 import { Navbar, Nav, Container } from 'react-bootstrap'
-import Search from './Search'
+import Search from 'components/Search'
 
 const Header = () => {
   const { data: session } = useSession()

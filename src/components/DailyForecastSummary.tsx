@@ -1,5 +1,5 @@
 import { ForecastDailyDataViewModel } from 'viewModels/forecastDailyDataViewModel'
-import DailyForecastSummaryItem from './DailyForecastSummaryItem'
+import DailyForecastSummaryItem from 'components/DailyForecastSummaryItem'
 import classes from 'styles/sass/DailyForecastSummary.module.scss'
 
 interface DailyForecastSummaryProps {

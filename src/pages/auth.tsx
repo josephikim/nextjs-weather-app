@@ -2,7 +2,6 @@ import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
-
 import AuthForm from 'components/AuthForm'
 
 const AuthPage: NextPage = () => {

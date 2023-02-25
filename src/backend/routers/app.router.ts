@@ -30,6 +30,10 @@ export const appRouter = router({
     const location = await postgresService.getUserDefaultLocation(email)
     return location
   }),
+  getUserLocations: protectedProcedure.query(async ({ ctx }) => {
+    const locations = await postgresService.getUserLocations({ ctx })
+    return locations
+  }),
   createUserLocation: protectedProcedure
     .input(CreateLocationModelSchema)
     .mutation(({ input, ctx }) => {

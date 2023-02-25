@@ -82,6 +82,39 @@ export class PostgresService {
     }
   }
 
+  async getUserLocations({ ctx }: { ctx: Context }) {
+    try {
+      const email = ctx.session?.user?.email as string
+
+      // lookup user locations
+      const user = await prisma.user.findUnique({
+        where: {
+          email: email,
+        },
+        include: {
+          locations: {
+            include: { location: true },
+            orderBy: [
+              {
+                displayOrder: 'asc',
+              },
+            ],
+          },
+        },
+      })
+
+      return {
+        status: 'success',
+        data: {
+          locations: user?.locations,
+        },
+      }
+    } catch (e: any) {
+      const message = getErrorMessage(e)
+      throw new Error(message)
+    }
+  }
+
   async createUserLocation({
     input,
     ctx,

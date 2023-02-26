@@ -1,4 +1,5 @@
 import json from 'assets/worldCities.json'
+import dayjs from 'dayjs'
 
 const pickRandom = (array: string[]): string => {
   return array[Math.floor(Math.random() * array.length)]
@@ -37,4 +38,9 @@ export const degToCompass = (num: number): string => {
     'NNW',
   ]
   return arr[val % 16]
+}
+
+export const getDisplayDay = (dateStr: string): string => {
+  const d = dayjs(dateStr)
+  return d.format('ddd')
 }

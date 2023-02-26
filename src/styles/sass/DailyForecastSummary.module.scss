@@ -1,7 +1,9 @@
 .flexContainer {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   .flexChild {
-    width: 14.2%;
+    width: 100%;
+    margin: 0 4px;
+    height: 100%;
   }
 }

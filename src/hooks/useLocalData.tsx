@@ -6,22 +6,29 @@ type SearchResult = {
   label: string
   value: string
 }
+export type DaySelectionRange = 1 | 2 | 3 | 4 | 5 | 6 | 7
 type Action =
   | { type: 'UPDATE_TEMPERATURE_UNIT'; payload: TemperatureUnit }
   | { type: 'SWITCH_THEME'; payload: Theme }
   | { type: 'UPDATE_SEARCH_RESULT'; payload: SearchResult }
+  | {
+      type: 'UPDATE_DAY_SELECTION'
+      payload: DaySelectionRange
+    }
 type Dispatch = (action: Action) => void
 type LocalDataProviderProps = { children: React.ReactNode }
 
 type UserState = {
   temperatureUnit: TemperatureUnit
   theme: Theme
+  daySelection: DaySelectionRange
   searchResult: SearchResult
 }
 
 const INITIAL_STATE = {
   temperatureUnit: 'f',
   theme: 'dark',
+  daySelection: 1,
   searchResult: {
     label: '',
     value: '',
@@ -54,6 +61,12 @@ const userReducer = (state: UserState, action: Action): UserState => {
       return {
         ...state,
         searchResult: action.payload,
+      }
+    }
+    case 'UPDATE_DAY_SELECTION': {
+      return {
+        ...state,
+        daySelection: action.payload,
       }
     }
     default: {

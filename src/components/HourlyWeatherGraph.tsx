@@ -8,7 +8,8 @@ import {
   Colors,
 } from 'chart.js'
 import { Line } from 'react-chartjs-2'
-import dayjs from 'dayjs'
+import { useLocalData } from 'hooks/useLocalData'
+import { getDailyChartData } from 'utils/weather'
 import { ForecastHourlyDataViewModel } from 'viewModels/forecastHourlyDataViewModel'
 import classes from 'styles/sass/HourlyWeatherGraph.module.scss'
 
@@ -26,36 +27,10 @@ interface HourlyWeatherProps {
 }
 
 const HourlyWeatherGraph = ({ hourly }: HourlyWeatherProps) => {
-  const chartLabels = hourly.time.map((timestamp) =>
-    dayjs(timestamp).format('h:mm a')
-  )
-
-  const chartData = {
-    labels: chartLabels,
-    datasets: [
-      {
-        label: 'Temperature',
-        data: hourly.temperature_2m,
-        tension: 0.3,
-      },
-      {
-        label: 'Precipitation',
-        data: hourly.precipitation,
-        tension: 0.3,
-      },
-      {
-        label: 'Humidity',
-        data: hourly.relativehumidity_2m,
-        tension: 0.3,
-      },
-      {
-        label: 'Wind Speed',
-        data: hourly.windspeed_10m,
-        tension: 0.3,
-      },
-    ],
-  }
-
+  const {
+    state: { daySelection },
+  } = useLocalData()
+  const chartData = getDailyChartData(hourly, daySelection)
   return (
     <div className={classes.chartContainer}>
       <Line

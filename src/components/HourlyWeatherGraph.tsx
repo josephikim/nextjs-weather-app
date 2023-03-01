@@ -60,6 +60,9 @@ const HourlyWeatherGraph = ({ hourly }: HourlyWeatherProps) => {
                   weight: 'bold',
                 },
                 padding: 6,
+                display: function (context) {
+                  return context.dataIndex % 3 === 0 // display every third label
+                },
               },
             },
             layout: {

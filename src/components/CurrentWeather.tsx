@@ -43,7 +43,7 @@ const CurrentWeather = ({
         <div>
           <span className="heading">24-Hour Precipitation: </span>
           <span>{Math.trunc(daily.precipitation_sum[0])} </span>
-          <span>{daily_units.precipitation_sum + 'es'}</span>
+          <span>{daily_units.precipitation_sum}</span>
         </div>
         <div>
           <span className="heading">Humidity: </span>

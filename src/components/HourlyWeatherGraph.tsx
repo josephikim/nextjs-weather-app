@@ -7,6 +7,7 @@ import {
   Legend,
   Colors,
   Filler,
+  Tooltip,
 } from 'chart.js'
 import { Line } from 'react-chartjs-2'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
@@ -23,7 +24,8 @@ ChartJS.register(
   Legend,
   Colors,
   Filler,
-  ChartDataLabels
+  ChartDataLabels,
+  Tooltip
 )
 
 interface HourlyWeatherProps {
@@ -61,8 +63,14 @@ const HourlyWeatherGraph = ({ hourly }: HourlyWeatherProps) => {
                 },
                 padding: 6,
                 display: function (context) {
-                  return context.dataIndex % 3 === 0 // display every third label
+                  return context.dataIndex % 3 === 0 // display every third data label
                 },
+              },
+              tooltip: {
+                displayColors: false,
+                intersect: false,
+                mode: 'nearest',
+                padding: 6,
               },
             },
             layout: {
@@ -85,7 +93,7 @@ const HourlyWeatherGraph = ({ hourly }: HourlyWeatherProps) => {
                 ticks: {
                   // For a category axis, the val is the index so the lookup via getLabelForValue is needed
                   callback: function (val, index) {
-                    // Hide every 2nd and 3rd tick label
+                    // display every third tick label
                     return index % 3 === 0
                       ? this.getLabelForValue(val as number)
                       : ''

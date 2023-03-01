@@ -40,7 +40,7 @@ export const getDailyChartData = (
       fill: true,
       datalabels: {
         formatter: function (value: any, context: Context) {
-          return Math.round(value) + ' mm'
+          return Math.round(value * 10) / 10 + ' mm'
         },
       },
     },

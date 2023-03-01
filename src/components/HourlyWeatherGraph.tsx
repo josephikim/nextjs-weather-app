@@ -6,6 +6,7 @@ import {
   LineElement,
   Legend,
   Colors,
+  Filler,
 } from 'chart.js'
 import { Line } from 'react-chartjs-2'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
@@ -13,7 +14,6 @@ import { useLocalData } from 'hooks/useLocalData'
 import { getDailyChartData, htmlLegendPlugin } from 'utils/chartjs'
 import { ForecastHourlyDataViewModel } from 'viewModels/forecastHourlyDataViewModel'
 import classes from 'styles/sass/HourlyWeatherGraph.module.scss'
-import { Color } from 'react-bootstrap/esm/types'
 
 ChartJS.register(
   CategoryScale,
@@ -22,6 +22,7 @@ ChartJS.register(
   LineElement,
   Legend,
   Colors,
+  Filler,
   ChartDataLabels
 )
 
@@ -59,7 +60,13 @@ const HourlyWeatherGraph = ({ hourly }: HourlyWeatherProps) => {
                   weight: 'bold',
                 },
                 padding: 6,
-                formatter: Math.round,
+              },
+            },
+            layout: {
+              padding: {
+                top: 32,
+                left: 32,
+                right: 32,
               },
             },
             elements: {
@@ -69,6 +76,9 @@ const HourlyWeatherGraph = ({ hourly }: HourlyWeatherProps) => {
             },
             scales: {
               x: {
+                grid: {
+                  display: false,
+                },
                 ticks: {
                   // For a category axis, the val is the index so the lookup via getLabelForValue is needed
                   callback: function (val, index) {
@@ -77,6 +87,12 @@ const HourlyWeatherGraph = ({ hourly }: HourlyWeatherProps) => {
                       ? this.getLabelForValue(val as number)
                       : ''
                   },
+                },
+              },
+              y: {
+                display: false,
+                grid: {
+                  display: false,
                 },
               },
             },

@@ -33,16 +33,19 @@ export const getDailyChartData = (
       label: 'Precipitation',
       data: data.precipitation.slice(startIndex, endIndex),
       tension: 0.3,
+      hidden: true,
     },
     {
       label: 'Humidity',
       data: data.relativehumidity_2m.slice(startIndex, endIndex),
       tension: 0.3,
+      hidden: true,
     },
     {
       label: 'Wind Speed',
       data: data.windspeed_10m.slice(startIndex, endIndex),
       tension: 0.3,
+      hidden: true,
     },
   ]
 

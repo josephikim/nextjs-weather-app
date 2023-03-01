@@ -77,7 +77,6 @@ export const htmlLegendPlugin: Plugin = {
       li.style.cursor = 'pointer'
       li.style.display = 'flex'
       li.style.flexDirection = 'row'
-      li.style.marginLeft = '10px'
       li.style.height = '1rem'
 
       li.onclick = () => {
@@ -98,27 +97,18 @@ export const htmlLegendPlugin: Plugin = {
         chart.update()
       }
 
-      // Color box
-      const boxSpan = document.createElement('span')
-      boxSpan.style.background = item.fillStyle
-      boxSpan.style.borderColor = item.strokeStyle
-      boxSpan.style.borderWidth = item.lineWidth + 'px'
-      boxSpan.style.display = 'inline-block'
-      boxSpan.style.height = '20px'
-      boxSpan.style.marginRight = '10px'
-      boxSpan.style.width = '20px'
-
       // Text
       const textContainer = document.createElement('p')
       textContainer.style.color = item.fontColor
       textContainer.style.margin = '0'
-      textContainer.style.padding = '0'
-      textContainer.style.textDecoration = item.hidden ? 'line-through' : ''
+      textContainer.style.textDecoration = item.hidden
+        ? ''
+        : 'solid underline orange 4px'
+      textContainer.style.textUnderlineOffset = '10px'
 
       const text = document.createTextNode(item.text)
       textContainer.appendChild(text)
 
-      li.appendChild(boxSpan)
       li.appendChild(textContainer)
       ul.appendChild(li)
     })

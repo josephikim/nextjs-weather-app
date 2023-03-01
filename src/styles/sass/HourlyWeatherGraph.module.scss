@@ -1,5 +1,17 @@
 .legendContainer {
   margin: 2rem auto;
+  li {
+    p {
+      border-left: 2px solid #ccc;
+      padding: 0 16px;
+    }
+  }
+  li:first-child {
+    p {
+      border-left: none;
+      padding-left: 16px;
+    }
+  }
 }
 .chartContainer {
   width: 100%;

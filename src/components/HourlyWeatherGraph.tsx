@@ -8,10 +8,12 @@ import {
   Colors,
 } from 'chart.js'
 import { Line } from 'react-chartjs-2'
+import ChartDataLabels from 'chartjs-plugin-datalabels'
 import { useLocalData } from 'hooks/useLocalData'
 import { getDailyChartData, htmlLegendPlugin } from 'utils/chartjs'
 import { ForecastHourlyDataViewModel } from 'viewModels/forecastHourlyDataViewModel'
 import classes from 'styles/sass/HourlyWeatherGraph.module.scss'
+import { Color } from 'react-bootstrap/esm/types'
 
 ChartJS.register(
   CategoryScale,
@@ -19,7 +21,8 @@ ChartJS.register(
   PointElement,
   LineElement,
   Legend,
-  Colors
+  Colors,
+  ChartDataLabels
 )
 
 interface HourlyWeatherProps {
@@ -47,6 +50,21 @@ const HourlyWeatherGraph = ({ hourly }: HourlyWeatherProps) => {
               },
               legend: {
                 display: false,
+              },
+              datalabels: {
+                align: 'top',
+                color: '#808080',
+                font: {
+                  size: 12,
+                  weight: 'bold',
+                },
+                padding: 6,
+                formatter: Math.round,
+              },
+            },
+            elements: {
+              line: {
+                tension: 0.3,
               },
             },
             scales: {

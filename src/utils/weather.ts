@@ -1,6 +1,4 @@
 import dayjs from 'dayjs'
-import { ForecastHourlyDataViewModel } from 'viewModels/forecastHourlyDataViewModel'
-import { DaySelectionRange } from 'hooks/useLocalData'
 import json from 'assets/worldCities.json'
 
 const pickRandom = (array: string[]): string => {

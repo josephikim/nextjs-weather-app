@@ -35,17 +35,16 @@ export class PostgresService {
   }
 
   async getUserDefaultLocation(email: string) {
-    let location
-
-    if (email === 'guest') {
-      location = await prisma.location.findUnique({
-        where: { label: 'San Francisco, US' },
-      })
-      return location
-    } else {
-      try {
-        // lookup user with default location
-        const user = await prisma.user.findUnique({
+    try {
+      // guest user
+      if (email === 'guest') {
+        const location = await prisma.location.findUnique({
+          where: { label: 'San Francisco, US' },
+        })
+        return location
+      } else {
+        // authed user
+        const user = await prisma.user.findUniqueOrThrow({
           where: {
             email: email,
           },
@@ -61,24 +60,16 @@ export class PostgresService {
           },
         })
 
-        if (!user || user.locations.length === 0) {
-          // for non-authed user
-          location = await prisma.location.findUnique({
-            where: { label: 'San Francisco, US' },
-          })
-        } else {
-          // for authed user
-          const locationLabel = user.locations[0].locationLabel
+        const defaultLocationRelation = user.locations[0]
 
-          location = await prisma.location.findUnique({
-            where: { label: locationLabel },
-          })
-        }
+        const location = await prisma.location.findUnique({
+          where: { label: defaultLocationRelation.locationLabel },
+        })
         return location
-      } catch (e) {
-        const message = getErrorMessage(e)
-        throw new Error(message)
       }
+    } catch (e) {
+      const message = getErrorMessage(e)
+      throw new Error(message)
     }
   }
 
@@ -87,7 +78,7 @@ export class PostgresService {
       const email = ctx.session?.user?.email as string
 
       // lookup user locations
-      const user = await prisma.user.findUnique({
+      const user = await prisma.user.findUniqueOrThrow({
         where: {
           email: email,
         },
@@ -106,7 +97,7 @@ export class PostgresService {
       return {
         status: 'success',
         data: {
-          locations: user?.locations,
+          locations: user.locations,
         },
       }
     } catch (e: any) {

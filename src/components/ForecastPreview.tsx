@@ -39,15 +39,13 @@ const ForecastPreview = ({
         <Card key={label}>
           <Card.Body>
             <Card.Title>{label}</Card.Title>
-            <Card.Text>
-              <CurrentWeather
-                current_weather={forecast.current_weather}
-                daily={forecast.daily}
-                daily_units={forecast.daily_units}
-                hourly={forecast.hourly}
-                hourly_units={forecast.hourly_units}
-              />
-            </Card.Text>
+            <CurrentWeather
+              current_weather={forecast.current_weather}
+              daily={forecast.daily}
+              daily_units={forecast.daily_units}
+              hourly={forecast.hourly}
+              hourly_units={forecast.hourly_units}
+            />
             <Button variant="primary" href={forecastRoute}>
               View Details
             </Button>

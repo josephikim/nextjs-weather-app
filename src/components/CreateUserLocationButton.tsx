@@ -28,6 +28,7 @@ const CreateUserLocationButton = ({
   const { data: session } = useSession()
   const [isLoading, setLoading] = useState(false)
   const [showModal, setShowModal] = useState(false)
+  const utils = trpc.useContext()
 
   const handleCloseModal = () => setShowModal(false)
   const handleShowModal = () => setShowModal(true)
@@ -36,6 +37,7 @@ const CreateUserLocationButton = ({
     onSuccess(data) {
       setLoading(false)
       console.log('Location added successfully')
+      utils.user.getLocations.invalidate()
     },
     onError(error) {
       setLoading(false)

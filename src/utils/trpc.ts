@@ -45,7 +45,7 @@ export const trpc = createTRPCNext<AppRouter>({
           queries: {
             staleTime: 60 * (60 * 1000),
             cacheTime: 65 * (60 * 1000),
-            refetchOnMount: false,
+            // refetchOnMount: false,
           },
         },
       },

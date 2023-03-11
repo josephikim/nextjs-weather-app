@@ -1,6 +1,6 @@
 import json from 'assets/wmoWeatherCodes.json'
 
-export const getForecast = async (
+export const getForecastData = async (
   latitude: string,
   longitude: string,
   temperatureUnit: string

@@ -1,4 +1,4 @@
-import type { AppRouter } from 'backend/routers/app.router'
+import type { AppRouter } from 'backend/routers/_app.router'
 import { httpBatchLink, loggerLink } from '@trpc/client'
 import { createTRPCNext } from '@trpc/next'
 

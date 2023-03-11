@@ -21,6 +21,7 @@ model User {
 }
 
 model Location {
+  id        String            @id @default(cuid())
   label     String            @unique
   latitude  Decimal           @db.Decimal(5, 2)
   longitude Decimal           @db.Decimal(5, 2)
@@ -30,15 +31,16 @@ model Location {
 }
 
 model LocationsOnUser {
-  userEmail     String
-  locationLabel String
-  displayOrder  Int     
-  assignedAt    DateTime @default(now())
-  location      Location @relation(fields: [locationLabel], references: [label])
-  user          User     @relation(fields: [userEmail], references: [email])
+  userId          String
+  locationId      String
+  isUserDefault   Boolean   @default(false)
+  displayOrder    Int     
+  assignedAt      DateTime  @default(now())
+  location        Location  @relation(fields: [locationId], references: [id])
+  user            User      @relation(fields: [userId], references: [id])
 
-  @@id([userEmail, locationLabel])
-  @@unique([userEmail, displayOrder])
+  @@id([userId, locationId])
+  @@unique([userId, displayOrder])
   @@map("locations_on_user")
 }
 

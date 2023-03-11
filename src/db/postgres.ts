@@ -8,6 +8,17 @@ import prisma from 'utils/prisma'
 
 export class PostgresService {
   async createUser(user: Prisma.UserCreateInput) {
+    const exists = await prisma.user.findFirst({
+      where: { email: user.email },
+    })
+
+    if (exists) {
+      throw new TRPCError({
+        code: 'CONFLICT',
+        message: 'User already exists.',
+      })
+    }
+
     const data = {
       email: user.email,
       password: await hashPassword(user.password),
@@ -20,6 +31,7 @@ export class PostgresService {
               },
             },
             displayOrder: 0,
+            isUserDefault: true,
           },
         ],
       },
@@ -34,53 +46,14 @@ export class PostgresService {
     }
   }
 
-  async getUserDefaultLocation(email: string) {
+  async getLocations({ ctx }: { ctx: Context }) {
     try {
-      // guest user
-      if (email === 'guest') {
-        const location = await prisma.location.findUnique({
-          where: { label: 'San Francisco, US' },
-        })
-        return location
-      } else {
-        // authed user
-        const user = await prisma.user.findUniqueOrThrow({
-          where: {
-            email: email,
-          },
-          include: {
-            locations: {
-              orderBy: [
-                {
-                  displayOrder: 'asc',
-                },
-              ],
-              take: 1,
-            },
-          },
-        })
-
-        const defaultLocationRelation = user.locations[0]
-
-        const location = await prisma.location.findUnique({
-          where: { label: defaultLocationRelation.locationLabel },
-        })
-        return location
-      }
-    } catch (e) {
-      const message = getErrorMessage(e)
-      throw new Error(message)
-    }
-  }
-
-  async getUserLocations({ ctx }: { ctx: Context }) {
-    try {
-      const email = ctx.session?.user?.email as string
+      const userId = ctx.session?.user?.id as string
 
       // lookup user locations
       const user = await prisma.user.findUniqueOrThrow({
         where: {
-          email: email,
+          id: userId,
         },
         include: {
           locations: {
@@ -94,12 +67,7 @@ export class PostgresService {
         },
       })
 
-      return {
-        status: 'success',
-        data: {
-          locations: user.locations,
-        },
-      }
+      return user.locations
     } catch (e: any) {
       const message = getErrorMessage(e)
       throw new Error(message)
@@ -114,12 +82,15 @@ export class PostgresService {
     ctx: Context
   }) {
     try {
-      const email = ctx.session?.user?.email as string
+      const userId = ctx.session?.user?.id as string
 
-      // lookup user locations
+      // lookup relations
       const relations = await prisma.locationsOnUser.findMany({
         where: {
-          userEmail: email,
+          userId: userId,
+        },
+        include: {
+          location: true,
         },
         orderBy: [
           {
@@ -128,36 +99,43 @@ export class PostgresService {
         ],
       })
 
-      // update relation table and create location if needed
-      const newRelation = await prisma.locationsOnUser.create({
-        data: {
-          user: {
-            connect: {
-              email: email,
-            },
-          },
-          location: {
-            connectOrCreate: {
-              where: {
-                label: input.label,
-              },
-              create: {
-                ...input,
-              },
-            },
-          },
-          displayOrder:
-            relations.length > 0
-              ? relations[relations.length - 1].displayOrder + 1
-              : 0,
-        },
+      // check for matching location
+      const matchingLocation = relations.some((relation) => {
+        relation.location.label === input.label
       })
 
-      return {
-        status: 'success',
-        data: {
-          newRelation,
-        },
+      if (matchingLocation) {
+        throw new TRPCError({
+          code: 'CONFLICT',
+          message: 'A location with that label already exists',
+        })
+      } else {
+        // create new relation and connect or create location
+        const result = await prisma.locationsOnUser.create({
+          data: {
+            user: {
+              connect: {
+                id: userId,
+              },
+            },
+            location: {
+              connectOrCreate: {
+                where: {
+                  label: input.label,
+                },
+                create: {
+                  ...input,
+                },
+              },
+            },
+            displayOrder:
+              relations.length > 0
+                ? relations[relations.length - 1].displayOrder + 1
+                : 0,
+          },
+        })
+
+        return result
       }
     } catch (e: any) {
       if (e.code === 'P2002') {
@@ -180,24 +158,24 @@ export class PostgresService {
     ctx: Context
   }) {
     try {
-      const email = ctx.session?.user?.email as string
+      const userId = ctx.session?.user?.id as string
+
+      // lookup location
+      const location = await prisma.location.findUniqueOrThrow({
+        where: { label: input.label },
+      })
 
       // delete user location from relation table
       const deleted = await prisma.locationsOnUser.delete({
         where: {
-          userEmail_locationLabel: {
-            userEmail: email,
-            locationLabel: input.label,
+          userId_locationId: {
+            userId: userId,
+            locationId: location.id,
           },
         },
       })
 
-      return {
-        status: 'success',
-        data: {
-          deleted,
-        },
-      }
+      return deleted
     } catch (e: any) {
       if (e.code === 'P2002') {
         throw new TRPCError({

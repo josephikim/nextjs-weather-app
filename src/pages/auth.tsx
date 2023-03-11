@@ -13,7 +13,7 @@ const AuthPage: NextPage = () => {
     if (status === 'unauthenticated') {
       setIsLoading(false)
     } else if (status === 'authenticated') {
-      void router.push('/dashboard')
+      void router.push('/')
     }
   }, [status, router])
 

@@ -1,10 +1,10 @@
-import { useSession } from 'next-auth/react'
 import { z } from 'zod'
-import { trpc } from 'utils/trpc'
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { Modal } from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
+import { trpc } from 'utils/trpc'
 
 const createLocationSchema = z.object({
   label: z.string().min(1, 'Label is required'),
@@ -32,7 +32,7 @@ const CreateUserLocationButton = ({
   const handleCloseModal = () => setShowModal(false)
   const handleShowModal = () => setShowModal(true)
 
-  const { mutate: createUserLocation } = trpc.createUserLocation.useMutation({
+  const { mutate: createUserLocation } = trpc.user.createLocation.useMutation({
     onSuccess(data) {
       setLoading(false)
       console.log('Location added successfully')

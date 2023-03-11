@@ -1,7 +1,7 @@
 import { z } from 'zod'
-import { trpc } from 'utils/trpc'
 import { useEffect, useState } from 'react'
 import Button from 'react-bootstrap/Button'
+import { trpc } from 'utils/trpc'
 
 const deleteLocationSchema = z.object({
   label: z.string().min(1, 'Label is required'),
@@ -16,7 +16,7 @@ interface DeleteUserLocationButtonProps {
 const DeleteUserLocationButton = ({ label }: DeleteUserLocationButtonProps) => {
   const [isLoading, setLoading] = useState(false)
 
-  const { mutate: deleteUserLocation } = trpc.deleteUserLocation.useMutation({
+  const { mutate: deleteUserLocation } = trpc.user.deleteLocation.useMutation({
     onSuccess() {
       setLoading(false)
       console.log('Location deleted successfully')

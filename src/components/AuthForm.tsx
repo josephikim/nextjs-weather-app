@@ -1,16 +1,12 @@
+import { trpc } from 'utils/trpc'
 import { z } from 'zod'
 import { useState, useRef } from 'react'
 import { signIn, SignInResponse } from 'next-auth/react'
 import { getErrorMessage } from 'utils/error'
+import { UserCredentialsInputSchema } from 'models/user'
 import classes from 'styles/sass/AuthForm.module.scss'
 
-const userCredentialsSchema = z.object({
-  email: z.string().email('Email is required'),
-  password: z.string().min(4, 'Password must contain 4 or more characters'),
-})
-
-type CreateUserInput = z.infer<typeof userCredentialsSchema>
-type LoginUserInput = z.infer<typeof userCredentialsSchema>
+type UserCredentialsInput = z.infer<typeof UserCredentialsInputSchema>
 
 const AuthForm = () => {
   const emailInputRef = useRef<HTMLInputElement | null>(null)
@@ -18,33 +14,24 @@ const AuthForm = () => {
 
   const [isLogin, setIsLogin] = useState(true)
 
+  const { mutate: signup } = trpc.auth.signup.useMutation({
+    onSuccess(data: any) {
+      console.log('User created successfully')
+    },
+    onError(error) {
+      console.log('Error:', error.message)
+    },
+  })
+
   function switchAuthModeHandler() {
     setIsLogin((prevState) => !prevState)
   }
 
-  async function createUser(user: CreateUserInput) {
-    const response = await fetch('/api/auth/signup', {
-      method: 'POST',
-      body: JSON.stringify(user),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-
-    const result = await response.json()
-
-    if (!response.ok) {
-      throw new Error(result.message || 'Something went wrong!')
-    }
-
-    return result
-  }
-
-  async function loginUser(user: LoginUserInput) {
+  async function loginUser(input: UserCredentialsInput) {
     const result = (await signIn('credentials', {
       redirect: false,
-      email: user.email,
-      password: user.password,
+      email: input.email,
+      password: input.password,
     })) as SignInResponse
 
     if (result.ok === false) {
@@ -60,25 +47,28 @@ const AuthForm = () => {
     const enteredPassword = passwordInputRef.current?.value as string
 
     if (isLogin) {
-      // login returning user
+      // login user
       await loginUser({
         email: enteredEmail,
         password: enteredPassword,
       })
     } else {
-      // register first time user
+      // register user
       try {
-        const user: CreateUserInput = {
+        const input: UserCredentialsInput = {
           email: enteredEmail,
           password: enteredPassword,
         }
 
-        const result = await createUser(user)
-
-        // On successful registration, login user
-        if (result.email === user.email) {
-          await loginUser(user)
-        }
+        // const result = await signup(input)
+        const result = signup(input, {
+          onSuccess: (data) => {
+            // On successful registration, login user
+            if (data.data.email === input.email) {
+              loginUser(input)
+            }
+          },
+        })
       } catch (e) {
         const message = getErrorMessage(e)
         console.log({ message })

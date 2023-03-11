@@ -1,6 +1,6 @@
-import { trpc } from 'utils/trpc'
 import { Card, Button } from 'react-bootstrap'
 import { useLocalData } from 'hooks/useLocalData'
+import { trpc } from 'utils/trpc'
 import CurrentWeather from 'components/CurrentWeather'
 import classes from 'styles/sass/Forecast.module.scss'
 
@@ -19,7 +19,7 @@ const ForecastPreview = ({
     state: { temperatureUnit },
   } = useLocalData()
 
-  const { data: forecast } = trpc.getForecast.useQuery({
+  const { data: { data: forecast } = {} } = trpc.user.getForecast.useQuery({
     latitude,
     longitude,
     temperatureUnit,

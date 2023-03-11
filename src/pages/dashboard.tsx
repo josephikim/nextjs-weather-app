@@ -7,8 +7,9 @@ export const getServerSideProps = requireAuth(async (ctx) => {
 })
 
 const DashboardPage = () => {
-  const { data } = trpc.getUserLocations.useQuery()
-  const locations = data?.data.locations
+  const { data } = trpc.user.getLocations.useQuery()
+  const locations = data?.data
+
   let jsx: React.ReactElement | React.ReactElement[] = (
     <div>Loading dashboard...</div>
   )

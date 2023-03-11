@@ -59,16 +59,12 @@ export const nextAuthOptions: NextAuthOptions = {
   callbacks: {
     // @ts-ignore
     async jwt({ token, user }) {
-      if (user) {
-        token.email = user.email
-      }
+      user && (token.user = { id: user.id, email: user.email })
       return token
     },
     // @ts-ignore
     async session({ session, token }) {
-      if (token) {
-        session.id = token.id
-      }
+      session.user = token.user as any
       return session
     },
   },

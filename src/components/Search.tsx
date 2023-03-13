@@ -14,7 +14,7 @@ const Search = () => {
     dispatch({ type: 'UPDATE_SEARCH_RESULT', payload: searchData })
 
     const [latitude, longitude] = searchData.value.split(' ')
-    const route = `forecast?label=${encodeURIComponent(
+    const route = `/forecast?label=${encodeURIComponent(
       searchData.label
     )}&latitude=${latitude}&longitude=${longitude}`
 

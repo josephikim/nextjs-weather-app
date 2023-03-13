@@ -1,11 +1,14 @@
 import React from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useSession, signOut } from 'next-auth/react'
 import { Navbar, Nav, Container } from 'react-bootstrap'
 import Search from 'components/Search'
 
 const Header = () => {
   const { data: session } = useSession()
+  const router = useRouter()
+
   return (
     <div className="Header fixed-header">
       <Navbar collapseOnSelect bg="dark" variant="dark">
@@ -23,10 +26,17 @@ const Header = () => {
           >
             <Nav>
               <Link href="/">
-                <Nav.Link href="/">Home</Nav.Link>
+                <Nav.Link href="/" active={router.pathname === '/'}>
+                  Home
+                </Nav.Link>
               </Link>
               <Link href="/dashboard">
-                <Nav.Link href="/dashboard">Dashboard</Nav.Link>
+                <Nav.Link
+                  href="/dashboard"
+                  active={router.pathname === '/dashboard'}
+                >
+                  Dashboard
+                </Nav.Link>
               </Link>
               {session ? (
                 <Link href="#">

@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import { trpc } from 'utils/trpc'
 import Forecast from 'components/Forecast'
+import AlertDismissible from 'components/AlertDismissible'
 import styles from 'styles/css/HomePage.module.css'
 
 const HomePage: NextPage = () => {
@@ -45,14 +46,13 @@ const HomePage: NextPage = () => {
   return (
     <div className={styles.container}>
       <main className={styles.main}>
-        <p className={styles.title}>
-          View current weather conditions and forecasts for any location in the
-          world.
-        </p>
-        <p className={styles.description}>
-          To create a dashboard of your favorite locations, please{' '}
-          <Link href="/auth">create an account.</Link>
-        </p>
+        <AlertDismissible variant="info">
+          <span>
+            View live weather conditions for any city in the world. To create a
+            dashboard of your favorite locations, please{' '}
+            <Link href="/auth">create an account.</Link>
+          </span>
+        </AlertDismissible>
         {jsx}
       </main>
     </div>

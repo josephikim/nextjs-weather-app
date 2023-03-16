@@ -1,17 +1,29 @@
 .flexContainer {
   display: flex;
   flex-direction: column;
-  width: 960px;
+  max-width: 960px;
+  margin: 0 auto;
   justify-content: center;
-}
-
-.flexChild {
-  padding: 2rem;
-}
-
-.title {
-  margin: 0;
-  text-align: center;
-  line-height: 1;
-  font-size: 1.5rem;
+  .flexChild {
+    padding: 1.5rem;
+    align-items: center;
+    .titleContainer {
+      display: flex;
+      flex-direction: row;
+      > * {
+        text-align: center;
+        flex: 1 0 150px;
+        justify-content: center;
+      }
+      .title {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: bold;
+        white-space: nowrap;
+      }
+      button {
+        float: right;
+      }
+    }
+  }
 }

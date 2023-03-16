@@ -2,7 +2,6 @@ import { Card, Button } from 'react-bootstrap'
 import { useLocalData } from 'hooks/useLocalData'
 import { trpc } from 'utils/trpc'
 import CurrentWeather from 'components/CurrentWeather'
-import classes from 'styles/sass/Forecast.module.scss'
 
 interface ForecastPreviewProps {
   label: string
@@ -34,25 +33,21 @@ const ForecastPreview = ({
   }
 
   return (
-    <div className={classes.flexContainer}>
-      <div className={classes.flexChild}>
-        <Card key={label}>
-          <Card.Body>
-            <Card.Title>{label}</Card.Title>
-            <CurrentWeather
-              current_weather={forecast.current_weather}
-              daily={forecast.daily}
-              daily_units={forecast.daily_units}
-              hourly={forecast.hourly}
-              hourly_units={forecast.hourly_units}
-            />
-            <Button variant="primary" href={forecastRoute}>
-              View Details
-            </Button>
-          </Card.Body>
-        </Card>
-      </div>
-    </div>
+    <Card key={label}>
+      <Card.Body>
+        <Card.Title>{label}</Card.Title>
+        <CurrentWeather
+          current_weather={forecast.current_weather}
+          daily={forecast.daily}
+          daily_units={forecast.daily_units}
+          hourly={forecast.hourly}
+          hourly_units={forecast.hourly_units}
+        />
+        <Button variant="primary" href={forecastRoute}>
+          View Details
+        </Button>
+      </Card.Body>
+    </Card>
   )
 }
 

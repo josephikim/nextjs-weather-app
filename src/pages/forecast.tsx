@@ -10,17 +10,19 @@ const ForecastPage: NextPage = () => {
   const latitude = router.query.latitude as string
   const longitude = router.query.longitude as string
 
-  const isParamMissing = !label || !latitude || !longitude
+  const isQueryParamMissing = !label || !latitude || !longitude
 
   return (
     <div className={classes.container}>
-      {isParamMissing ? (
-        <div>Error loading page</div>
-      ) : (
-        <main className={classes.main}>
-          <Forecast label={label} latitude={latitude} longitude={longitude} />
-        </main>
-      )}
+      <main className={classes.main}>
+        {isQueryParamMissing ? (
+          <div>Error loading page</div>
+        ) : (
+          <>
+            <Forecast label={label} latitude={latitude} longitude={longitude} />
+          </>
+        )}
+      </main>
     </div>
   )
 }

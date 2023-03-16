@@ -10,3 +10,13 @@
   flex-direction: column;
   align-items: center;
 }
+
+.flexContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  .flexChild {
+    max-width: 800px;
+    padding: 1rem;
+  }
+}

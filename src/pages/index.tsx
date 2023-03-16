@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react'
 import { trpc } from 'utils/trpc'
 import Forecast from 'components/Forecast'
 import AlertDismissible from 'components/AlertDismissible'
-import styles from 'styles/css/HomePage.module.css'
+import classes from 'styles/css/HomePage.module.css'
 
 const HomePage: NextPage = () => {
   const { data: session } = useSession()
@@ -44,15 +44,17 @@ const HomePage: NextPage = () => {
   }
 
   return (
-    <div className={styles.container}>
-      <main className={styles.main}>
-        <AlertDismissible variant="info">
-          <span>
-            View live weather conditions for any city in the world. To create a
-            dashboard of your favorite locations, please{' '}
-            <Link href="/auth">create an account.</Link>
-          </span>
-        </AlertDismissible>
+    <div className={classes.container}>
+      <main className={classes.main}>
+        {!isAuthed && (
+          <AlertDismissible variant="info">
+            <span>
+              Search live weather conditions for any city in the world. To
+              create a dashboard of your favorite locations, please{' '}
+              <Link href="/auth">create an account.</Link>
+            </span>
+          </AlertDismissible>
+        )}
         {jsx}
       </main>
     </div>

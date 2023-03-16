@@ -1,10 +1,9 @@
 import { trpc } from 'utils/trpc'
 import { useLocalData } from 'hooks/useLocalData'
-import CreateUserLocationButton from 'components/CreateUserLocationButton'
-import DeleteUserLocationButton from 'components/DeleteUserLocationButton'
 import CurrentWeather from 'components/CurrentWeather'
 import HourlyWeatherGraph from 'components/HourlyWeatherGraph'
 import DailyForecastSummary from 'components/DailyForecastSummary'
+import CreateUserLocationButton from 'components/CreateUserLocationButton'
 import classes from 'styles/sass/Forecast.module.scss'
 
 interface ForecastProps {
@@ -31,13 +30,17 @@ const Forecast = ({ label, latitude, longitude }: ForecastProps) => {
   return (
     <div className={classes.flexContainer}>
       <div className={classes.flexChild}>
-        <div className={classes.title}>Current forecast for {label}</div>
-        <CreateUserLocationButton
-          label={label}
-          latitude={latitude}
-          longitude={longitude}
-        />
-        <DeleteUserLocationButton label={label} />
+        <div className={classes.titleContainer}>
+          <span className={classes.title}>Current forecast for {label}</span>
+          <span></span>
+          <span>
+            <CreateUserLocationButton
+              label={label}
+              latitude={latitude}
+              longitude={longitude}
+            />
+          </span>
+        </div>
       </div>
       <div className={classes.flexChild}>
         <CurrentWeather

@@ -33,6 +33,12 @@ const AddDashboardItemButton = ({
   const handleCloseModal = () => setShowModal(false)
   const handleShowModal = () => setShowModal(true)
 
+  const { data } = trpc.user.getLocations.useQuery()
+  const locations = data?.data
+  const isDashboardItemAdded = locations?.some(
+    (location) => location.location.label === label
+  )
+
   const { mutate: createUserLocation } = trpc.user.createLocation.useMutation({
     onSuccess(data) {
       setLoading(false)
@@ -58,6 +64,7 @@ const AddDashboardItemButton = ({
 
   const handleClick = () => {
     if (session) {
+      if (isDashboardItemAdded) return
       setLoading(true)
     } else {
       handleShowModal()
@@ -67,11 +74,15 @@ const AddDashboardItemButton = ({
   return (
     <>
       <Button
-        variant="primary"
+        variant={isDashboardItemAdded ? 'success' : 'primary'}
         disabled={isLoading}
         onClick={!isLoading ? handleClick : () => null}
       >
-        {isLoading ? 'Updating...' : 'Add to Dashboard'}
+        {isLoading
+          ? 'Updating...'
+          : isDashboardItemAdded
+          ? 'Saved in Dashboard'
+          : 'Add to Dashboard'}
       </Button>
 
       <Modal show={showModal} onHide={handleCloseModal}>

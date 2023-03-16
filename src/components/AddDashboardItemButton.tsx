@@ -14,17 +14,17 @@ const createLocationSchema = z.object({
 
 type CreateLocationInput = z.infer<typeof createLocationSchema>
 
-interface CreateUserLocationButtonProps {
+interface AddDashboardItemButtonProps {
   label: string
   latitude: string
   longitude: string
 }
 
-const CreateUserLocationButton = ({
+const AddDashboardItemButton = ({
   label,
   latitude,
   longitude,
-}: CreateUserLocationButtonProps) => {
+}: AddDashboardItemButtonProps) => {
   const { data: session } = useSession()
   const [isLoading, setLoading] = useState(false)
   const [showModal, setShowModal] = useState(false)
@@ -88,4 +88,4 @@ const CreateUserLocationButton = ({
   )
 }
 
-export default CreateUserLocationButton
+export default AddDashboardItemButton

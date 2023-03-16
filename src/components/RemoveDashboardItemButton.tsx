@@ -9,11 +9,13 @@ const deleteLocationSchema = z.object({
 
 type DeleteLocationInput = z.infer<typeof deleteLocationSchema>
 
-interface DeleteUserLocationButtonProps {
+interface RemoveDashboardItemButtonProps {
   label: string
 }
 
-const DeleteUserLocationButton = ({ label }: DeleteUserLocationButtonProps) => {
+const RemoveDashboardItemButton = ({
+  label,
+}: RemoveDashboardItemButtonProps) => {
   const [isLoading, setLoading] = useState(false)
 
   const { mutate: deleteUserLocation } = trpc.user.deleteLocation.useMutation({
@@ -53,4 +55,4 @@ const DeleteUserLocationButton = ({ label }: DeleteUserLocationButtonProps) => {
   )
 }
 
-export default DeleteUserLocationButton
+export default RemoveDashboardItemButton

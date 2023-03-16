@@ -3,7 +3,7 @@ import { useLocalData } from 'hooks/useLocalData'
 import CurrentWeather from 'components/CurrentWeather'
 import HourlyWeatherGraph from 'components/HourlyWeatherGraph'
 import DailyForecastSummary from 'components/DailyForecastSummary'
-import CreateUserLocationButton from 'components/CreateUserLocationButton'
+import AddDashboardItemButton from 'components/AddDashboardItemButton'
 import classes from 'styles/sass/Forecast.module.scss'
 
 interface ForecastProps {
@@ -34,7 +34,7 @@ const Forecast = ({ label, latitude, longitude }: ForecastProps) => {
           <span className={classes.title}>Current forecast for {label}</span>
           <span></span>
           <span>
-            <CreateUserLocationButton
+            <AddDashboardItemButton
               label={label}
               latitude={latitude}
               longitude={longitude}

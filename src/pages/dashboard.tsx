@@ -8,14 +8,15 @@ export const getServerSideProps = requireAuth(async (ctx) => {
 })
 
 const DashboardPage = () => {
-  const { data } = trpc.user.getLocations.useQuery()
-  const locations = data?.data
+  const { data: { data: locations } = {} } = trpc.user.getLocations.useQuery()
 
   let jsx: React.ReactElement | React.ReactElement[] = (
     <div>Loading dashboard...</div>
   )
 
-  if (locations) {
+  if (locations && locations.length < 1) {
+    jsx = <span>No items found</span>
+  } else if (locations) {
     jsx = locations.map((item) => {
       return (
         <div className={classes.flexChild} key={item.location.label}>

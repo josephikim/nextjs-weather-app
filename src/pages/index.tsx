@@ -8,13 +8,19 @@ import classes from 'styles/css/HomePage.module.css'
 
 const HomePage: NextPage = () => {
   const { data: session } = useSession()
+  const utils = trpc.useContext()
   const isAuthed = !!session?.user.id
 
   const { data: { data: defaultLocation } = {} } =
     trpc.getDefaultLocation.useQuery()
-  // Enable this query only when user is authed
+
   const { data: { data: userLocations } = {} } =
-    trpc.user.getLocations.useQuery(undefined, { enabled: isAuthed })
+    trpc.user.getLocations.useQuery()
+
+  // check for updated locations or refetch from trpc
+  if (isAuthed && userLocations && userLocations.length < 1) {
+    utils.user.getLocations.invalidate()
+  }
 
   let jsx: JSX.Element = <span>Loading forecast...</span>
 

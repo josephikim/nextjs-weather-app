@@ -18,12 +18,14 @@ interface AddDashboardItemButtonProps {
   label: string
   latitude: string
   longitude: string
+  isAdded: boolean
 }
 
 const AddDashboardItemButton = ({
   label,
   latitude,
   longitude,
+  isAdded,
 }: AddDashboardItemButtonProps) => {
   const { data: session } = useSession()
   const [isLoading, setLoading] = useState(false)
@@ -32,12 +34,6 @@ const AddDashboardItemButton = ({
 
   const handleCloseModal = () => setShowModal(false)
   const handleShowModal = () => setShowModal(true)
-
-  const { data } = trpc.user.getLocations.useQuery()
-  const locations = data?.data
-  const isDashboardItemAdded = locations?.some(
-    (location) => location.location.label === label
-  )
 
   const { mutate: createUserLocation } = trpc.user.createLocation.useMutation({
     onSuccess(data) {
@@ -64,7 +60,7 @@ const AddDashboardItemButton = ({
 
   const handleClick = () => {
     if (session) {
-      if (isDashboardItemAdded) return
+      if (isAdded) return
       setLoading(true)
     } else {
       handleShowModal()
@@ -74,13 +70,13 @@ const AddDashboardItemButton = ({
   return (
     <>
       <Button
-        variant={isDashboardItemAdded ? 'success' : 'primary'}
+        variant={isAdded ? 'success' : 'primary'}
         disabled={isLoading}
         onClick={!isLoading ? handleClick : () => null}
       >
         {isLoading
           ? 'Updating...'
-          : isDashboardItemAdded
+          : isAdded
           ? 'Saved in Dashboard'
           : 'Add to Dashboard'}
       </Button>

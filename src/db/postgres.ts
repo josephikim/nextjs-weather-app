@@ -46,7 +46,7 @@ export class PostgresService {
     }
   }
 
-  async getLocations({ ctx }: { ctx: Context }) {
+  async getUserLocations({ ctx }: { ctx: Context }) {
     try {
       const userId = ctx.session?.user?.id as string
 
@@ -78,7 +78,7 @@ export class PostgresService {
     input,
     ctx,
   }: {
-    input: CreateLocationModel
+    input: Prisma.LocationCreateInput
     ctx: Context
   }) {
     try {

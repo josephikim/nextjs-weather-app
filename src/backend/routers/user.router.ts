@@ -30,8 +30,17 @@ export const userRouter = router({
         data: parsed,
       }
     }),
-  getLocations: protectedProcedure.query(async ({ ctx }) => {
-    const locations = await postgresService.getLocations({ ctx })
+  getLocations: publicProcedure.query(async ({ ctx }) => {
+    const userId = ctx.session?.user?.id as string
+
+    if (!userId) {
+      return {
+        status: 'failed',
+        message: 'user not authorized',
+        data: [],
+      }
+    }
+    const locations = await postgresService.getUserLocations({ ctx })
     return {
       status: 'success',
       data: locations,

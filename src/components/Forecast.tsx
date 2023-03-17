@@ -23,6 +23,11 @@ const Forecast = ({ label, latitude, longitude }: ForecastProps) => {
     temperatureUnit,
   })
 
+  const { data: { data: locations } = {} } = trpc.user.getLocations.useQuery()
+  const isUserLocation = locations?.some(
+    (location) => location.location.label === label
+  )
+
   if (!forecast) {
     return <div>Loading forecast...</div>
   }
@@ -32,12 +37,12 @@ const Forecast = ({ label, latitude, longitude }: ForecastProps) => {
       <div className={classes.flexChild}>
         <div className={classes.titleContainer}>
           <span className={classes.title}>Current forecast for {label}</span>
-          <span></span>
           <span>
             <AddDashboardItemButton
               label={label}
               latitude={latitude}
               longitude={longitude}
+              isAdded={!!isUserLocation}
             />
           </span>
         </div>

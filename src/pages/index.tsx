@@ -14,11 +14,10 @@ const HomePage: NextPage = () => {
   const { data: { data: defaultLocation } = {} } =
     trpc.getDefaultLocation.useQuery()
 
-  const { data: { data: userLocations } = {} } =
-    trpc.user.getLocations.useQuery()
+  const { data: { data: locations } = {} } = trpc.user.getLocations.useQuery()
 
   // check for updated locations or refetch from trpc
-  if (isAuthed && userLocations && userLocations.length < 1) {
+  if (isAuthed && locations && locations.length < 1) {
     utils.user.getLocations.invalidate()
   }
 
@@ -35,8 +34,8 @@ const HomePage: NextPage = () => {
     )
 
   // Forecast with user location (authed)
-  if (userLocations && userLocations.length > 0) {
-    const location = userLocations.filter(
+  if (locations && locations.length > 0) {
+    const location = locations.filter(
       (object) => object.isUserDefault === true
     )[0].location
 

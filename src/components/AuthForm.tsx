@@ -60,7 +60,6 @@ const AuthForm = () => {
           password: enteredPassword,
         }
 
-        // const result = await signup(input)
         const result = signup(input, {
           onSuccess: (data) => {
             // On successful registration, login user

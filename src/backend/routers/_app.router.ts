@@ -1,21 +1,16 @@
-import prisma from 'utils/prisma'
 import { router, publicProcedure } from 'backend/trpc'
 import { authRouter } from './auth.router'
 import { userRouter } from './user.router'
+import postgresService from 'db/postgres'
 
 export const appRouter = router({
   auth: authRouter,
   user: userRouter,
   getDefaultLocation: publicProcedure.query(async () => {
-    const label = process.env.NEXT_PUBLIC_APP_DEFAULT_LOCATION
-
-    const location = await prisma.location.findFirst({
-      where: { label: label },
-    })
-
+    const result = await postgresService.getDefaultLocation()
     return {
       status: 'success',
-      data: location,
+      data: result,
     }
   }),
 })

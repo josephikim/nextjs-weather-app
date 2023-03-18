@@ -1,12 +1,12 @@
-import { ApiResponseViewModelSchema } from 'viewModels/meteo'
 import { z } from 'zod'
 import { publicProcedure, protectedProcedure, router } from 'backend/trpc'
 import postgresService from 'db/postgres'
+import { getForecastData } from 'utils/meteo'
 import {
   CreateLocationModelSchema,
   DeleteLocationModelSchema,
 } from 'models/location'
-import { getForecastData } from 'utils/meteo'
+import { ApiResponseViewModelSchema } from 'viewModels/meteo'
 
 export const userRouter = router({
   getForecast: publicProcedure
@@ -35,15 +35,15 @@ export const userRouter = router({
 
     if (!userId) {
       return {
-        status: 'failed',
-        message: 'user not authorized',
+        status: 'success',
         data: [],
       }
-    }
-    const locations = await postgresService.getUserLocations({ ctx })
-    return {
-      status: 'success',
-      data: locations,
+    } else {
+      const locations = await postgresService.getUserLocations({ ctx })
+      return {
+        status: 'success',
+        data: locations,
+      }
     }
   }),
   createLocation: protectedProcedure

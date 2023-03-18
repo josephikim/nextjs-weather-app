@@ -1,5 +1,5 @@
 import { TRPCError } from '@trpc/server'
-import { CreateLocationModel, DeleteLocationModel } from 'models/location'
+import { DeleteLocationModel } from 'models/location'
 import { Context } from 'backend/context'
 import { Prisma } from '@prisma/client'
 import { getErrorMessage } from 'utils/error'
@@ -41,6 +41,21 @@ export class PostgresService {
       const result = await prisma.user.create({ data })
       return result
     } catch (e) {
+      const message = getErrorMessage(e)
+      throw new Error(message)
+    }
+  }
+
+  async getDefaultLocation() {
+    try {
+      const label = process.env.NEXT_PUBLIC_APP_DEFAULT_LOCATION
+
+      const location = await prisma.location.findFirst({
+        where: { label: label },
+      })
+
+      return location
+    } catch (e: any) {
       const message = getErrorMessage(e)
       throw new Error(message)
     }

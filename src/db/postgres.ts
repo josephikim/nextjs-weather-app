@@ -180,7 +180,23 @@ export class PostgresService {
         where: { label: input.label },
       })
 
-      // delete user location from relation table
+      const relation = await prisma.locationsOnUser.findUniqueOrThrow({
+        where: {
+          userId_locationId: {
+            userId: userId,
+            locationId: location.id,
+          },
+        },
+      })
+
+      if (relation?.isUserDefault) {
+        throw new TRPCError({
+          code: 'CONFLICT',
+          message: 'That data cannot be deleted',
+        })
+      }
+
+      // delete user location
       const deleted = await prisma.locationsOnUser.delete({
         where: {
           userId_locationId: {
@@ -192,15 +208,8 @@ export class PostgresService {
 
       return deleted
     } catch (e: any) {
-      if (e.code === 'P2002') {
-        throw new TRPCError({
-          code: 'CONFLICT',
-          message: 'A location with that label already exists',
-        })
-      } else {
-        const message = getErrorMessage(e)
-        throw new Error(message)
-      }
+      const message = getErrorMessage(e)
+      throw new Error(message)
     }
   }
 }

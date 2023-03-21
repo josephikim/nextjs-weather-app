@@ -1,3 +1,4 @@
+import React from 'react'
 import { Card, Button } from 'react-bootstrap'
 import { useLocalData } from 'hooks/useLocalData'
 import { trpc } from 'utils/trpc'
@@ -33,7 +34,7 @@ const ForecastPreview = ({
   }
 
   return (
-    <Card key={label}>
+    <Card>
       <Card.Body>
         <Card.Title>{label}</Card.Title>
         <CurrentWeather

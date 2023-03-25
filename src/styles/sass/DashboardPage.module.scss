@@ -13,10 +13,12 @@
 
 .flexContainer {
   display: flex;
-  flex-direction: column;
+  width: 800px;
+  flex-direction: row;
   justify-content: center;
-  .flexChild {
-    max-width: 800px;
-    padding: 1rem;
+  div[class^='col'] {
+    margin: 1rem auto;
+    flex-direction: column;
+    justify-content: space-between;
   }
 }

@@ -53,14 +53,6 @@ const DashboardPage = () => {
     <div>Loading dashboard...</div>
   )
 
-  const gridTemplate: JSX.Element = (
-    <div className="row" id="container">
-      <div className="col-4"></div>
-      <div className="col-4"></div>
-      <div className="col-4"></div>
-    </div>
-  )
-
   if (movableItems && movableItems.length < 1) {
     jsx = <span>No items found</span>
   } else if (movableItems) {

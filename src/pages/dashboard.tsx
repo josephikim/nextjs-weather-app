@@ -15,21 +15,49 @@ import classes from 'styles/sass/DashboardPage.module.scss'
 const DashboardPage = () => {
   const [movableItems, setMovableItems] = useState<Location[]>([])
   const [isMobile, setIsMobile] = useState(false)
+  const [isLoading, setLoading] = useState(false)
+  const utils = trpc.useContext()
 
   const { data: { data: userLocations } = {} } =
     trpc.user.getLocations.useQuery()
+
+  const { mutate: updateDisplayOrder } =
+    trpc.user.updateLocationDisplayOrder.useMutation({
+      onSuccess(data) {
+        setLoading(false)
+        console.log('Display order updated successfully:')
+        utils.user.getLocations.invalidate()
+      },
+      onError(error) {
+        setLoading(false)
+        console.log('Error:', error.message)
+      },
+    })
 
   const locations = userLocations?.map((userLocation) => {
     return userLocation.location
   })
 
-  if (locations && movableItems && movableItems.length < 1) {
+  if (locations && movableItems.length < 1) {
     setMovableItems(locations)
   }
 
   useEffect(() => {
     setIsMobile(window.innerWidth < 600)
   }, [])
+
+  useEffect(() => {
+    if (isLoading) {
+      const newOrder = movableItems.map((item, index) => {
+        return {
+          locationId: item.id,
+          displayOrder: index,
+        }
+      })
+
+      updateDisplayOrder(newOrder)
+    }
+  }, [isLoading])
 
   const moveItem = (dragIndex: number, hoverIndex: number) => {
     // Get the dragged element
@@ -49,6 +77,10 @@ const DashboardPage = () => {
     )
   }
 
+  const dropItem = () => {
+    setLoading(true)
+  }
+
   let jsx: React.ReactElement | React.ReactElement[] = (
     <div>Loading dashboard...</div>
   )
@@ -64,6 +96,7 @@ const DashboardPage = () => {
             index={index}
             key={location.label}
             moveItem={moveItem}
+            dropItem={dropItem}
           >
             <ForecastPreview
               label={location.label}

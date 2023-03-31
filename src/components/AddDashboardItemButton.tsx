@@ -1,18 +1,10 @@
-import { z } from 'zod'
+import { CreateLocationModel } from 'models/location'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { Modal } from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import { trpc } from 'utils/trpc'
-
-const createLocationSchema = z.object({
-  label: z.string().min(1, 'Label is required'),
-  latitude: z.string().min(1, 'Latitude is required'),
-  longitude: z.string().min(1, 'Longitude is required'),
-})
-
-type CreateLocationInput = z.infer<typeof createLocationSchema>
 
 interface AddDashboardItemButtonProps {
   label: string
@@ -49,7 +41,7 @@ const AddDashboardItemButton = ({
 
   useEffect(() => {
     if (isLoading) {
-      const data: CreateLocationInput = {
+      const data: CreateLocationModel = {
         label,
         latitude,
         longitude,

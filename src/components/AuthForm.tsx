@@ -1,12 +1,9 @@
 import { trpc } from 'utils/trpc'
-import { z } from 'zod'
 import { useState, useRef } from 'react'
 import { signIn, SignInResponse } from 'next-auth/react'
 import { getErrorMessage } from 'utils/error'
-import { UserCredentialsInputSchema } from 'models/user'
+import { CreateUserModel, LoginUserModel } from 'models/user'
 import classes from 'styles/sass/AuthForm.module.scss'
-
-type UserCredentialsInput = z.infer<typeof UserCredentialsInputSchema>
 
 const AuthForm = () => {
   const emailInputRef = useRef<HTMLInputElement | null>(null)
@@ -27,7 +24,7 @@ const AuthForm = () => {
     setIsLogin((prevState) => !prevState)
   }
 
-  async function loginUser(input: UserCredentialsInput) {
+  async function loginUser(input: LoginUserModel) {
     const result = (await signIn('credentials', {
       redirect: false,
       email: input.email,
@@ -55,7 +52,7 @@ const AuthForm = () => {
     } else {
       // register user
       try {
-        const input: UserCredentialsInput = {
+        const input: CreateUserModel = {
           email: enteredEmail,
           password: enteredPassword,
         }

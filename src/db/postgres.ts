@@ -66,23 +66,21 @@ export class PostgresService {
       const userId = ctx.session?.user?.id as string
 
       // lookup user locations
-      const user = await prisma.user.findUniqueOrThrow({
+      const userLocations = await prisma.locationsOnUser.findMany({
         where: {
-          id: userId,
+          userId: userId,
         },
         include: {
-          locations: {
-            include: { location: true },
-            orderBy: [
-              {
-                displayOrder: 'asc',
-              },
-            ],
-          },
+          location: true,
         },
+        orderBy: [
+          {
+            displayOrder: 'asc',
+          },
+        ],
       })
 
-      return user.locations
+      return userLocations
     } catch (e: any) {
       const message = getErrorMessage(e)
       throw new Error(message)
@@ -99,8 +97,8 @@ export class PostgresService {
     try {
       const userId = ctx.session?.user?.id as string
 
-      // lookup relations
-      const relations = await prisma.locationsOnUser.findMany({
+      // lookup user locations
+      const userLocations = await prisma.locationsOnUser.findMany({
         where: {
           userId: userId,
         },
@@ -115,8 +113,8 @@ export class PostgresService {
       })
 
       // check for matching location
-      const matchingLocation = relations.some((relation) => {
-        relation.location.label === input.label
+      const matchingLocation = userLocations.some((userLocation) => {
+        userLocation.location.label === input.label
       })
 
       if (matchingLocation) {
@@ -144,8 +142,8 @@ export class PostgresService {
               },
             },
             displayOrder:
-              relations.length > 0
-                ? relations[relations.length - 1].displayOrder + 1
+              userLocations.length > 0
+                ? userLocations[userLocations.length - 1].displayOrder + 1
                 : 0,
           },
         })
@@ -180,7 +178,7 @@ export class PostgresService {
         where: { label: input.label },
       })
 
-      const relation = await prisma.locationsOnUser.findUniqueOrThrow({
+      const userLocation = await prisma.locationsOnUser.findUniqueOrThrow({
         where: {
           userId_locationId: {
             userId: userId,
@@ -189,7 +187,7 @@ export class PostgresService {
         },
       })
 
-      if (relation?.isUserDefault) {
+      if (userLocation?.isUserDefault) {
         throw new TRPCError({
           code: 'CONFLICT',
           message: 'That data cannot be deleted',

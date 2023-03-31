@@ -1,8 +1,9 @@
 import { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import prisma from 'utils/prisma'
 import { hash, compare } from 'bcryptjs'
-import { getErrorMessage } from './error'
+import { LoginUserModel } from 'models/user'
+import prisma from 'utils/prisma'
+import { getErrorMessage } from 'utils/error'
 
 export const nextAuthOptions: NextAuthOptions = {
   providers: [
@@ -19,7 +20,7 @@ export const nextAuthOptions: NextAuthOptions = {
         password: { label: 'Password', type: 'password' },
       },
       // @ts-ignore
-      async authorize(credentials) {
+      async authorize(credentials: LoginUserModel) {
         try {
           if (!credentials) {
             throw new Error('Invalid credentials')

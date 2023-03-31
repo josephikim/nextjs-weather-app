@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
 import { ItemTypes } from 'utils/reactdnd'
 
-const DndMovableItem = ({ item, index, moveItem, children }: any) => {
+const DndMovableItem = ({ item, index, moveItem, dropItem, children }: any) => {
   const ref = useRef(null)
 
   const [, drop] = useDrop({
@@ -24,6 +24,13 @@ const DndMovableItem = ({ item, index, moveItem, children }: any) => {
       // but it's good here for the sake of performance
       // to avoid expensive index searches.
       item.index = hoverIndex
+    },
+    drop(item: any, monitor) {
+      if (!ref.current) {
+        return
+      }
+
+      dropItem()
     },
   })
 

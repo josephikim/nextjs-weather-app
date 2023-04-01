@@ -1,6 +1,8 @@
 import React, { useRef } from 'react'
+import { Card } from 'react-bootstrap'
 import { useDrag, useDrop } from 'react-dnd'
 import { ItemTypes } from 'utils/reactdnd'
+import classes from 'styles/sass/DndMovableItem.module.scss'
 
 const DndMovableItem = ({ item, index, moveItem, dropItem, children }: any) => {
   const ref = useRef(null)
@@ -50,13 +52,17 @@ const DndMovableItem = ({ item, index, moveItem, dropItem, children }: any) => {
   drag(drop(ref))
 
   return (
-    <div
+    <Card
       ref={ref}
       style={{ opacity: isDragging ? 0 : 1 }}
-      className="movable-item"
+      className={classes.movableItem}
     >
-      {children}
-    </div>
+      <Card.Title className={classes.cardTitle}>
+        <span className={classes.grabHandle}></span>
+        {item.label}
+      </Card.Title>
+      <Card.Body>{children}</Card.Body>
+    </Card>
   )
 }
 

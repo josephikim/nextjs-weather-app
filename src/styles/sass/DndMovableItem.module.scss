@@ -1,27 +1,31 @@
-.movableItem {
+.card {
   height: 320px;
-  .cardTitle {
-    background: lightgray;
-  }
-  .grabHandle {
-    content: '....';
-    width: 10px;
-    height: 20px;
-    display: inline-block;
-    overflow: hidden;
-    line-height: 5px;
+  .header {
+    display: flex;
     padding: 3px 4px;
-    cursor: move;
-    vertical-align: middle;
-    margin-top: -0.7em;
-    margin-right: 0.3em;
-    font-size: 12px;
-    font-family: sans-serif;
-    letter-spacing: 2px;
-    color: #cccccc;
-    text-shadow: 1px 0 1px black;
-  }
-  .grabHandle::after {
-    content: '.. .. .. ..';
+    background: #e5e4e2;
+    overflow: hidden;
+    align-items: center;
+    cursor: grab;
+    .grabHandle {
+      content: '....';
+      line-height: 5px;
+      padding: 3px 4px;
+      margin-top: -0.5em;
+      font-size: 12px;
+      font-family: sans-serif;
+      letter-spacing: 2px;
+      color: #cccccc;
+      text-shadow: 1px 0 1px black;
+    }
+    .grabHandle::after {
+      display: inline-block;
+      width: 16px;
+      content: '.. .. ..';
+    }
+    .titleText {
+      font-size: 16px;
+      white-space: nowrap;
+    }
   }
 }

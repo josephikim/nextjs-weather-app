@@ -55,12 +55,12 @@ const DndMovableItem = ({ item, index, moveItem, dropItem, children }: any) => {
     <Card
       ref={ref}
       style={{ opacity: isDragging ? 0 : 1 }}
-      className={classes.movableItem}
+      className={classes.card}
     >
-      <Card.Title className={classes.cardTitle}>
-        <span className={classes.grabHandle}></span>
-        {item.label}
-      </Card.Title>
+      <Card.Header className={classes.header}>
+        <div className={classes.grabHandle}></div>
+        <div className={classes.titleText}>{item.label}</div>
+      </Card.Header>
       <Card.Body>{children}</Card.Body>
     </Card>
   )

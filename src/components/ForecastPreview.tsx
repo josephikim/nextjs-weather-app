@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from 'react-bootstrap'
+import Link from 'next/link'
 import { useLocalData } from 'hooks/useLocalData'
 import { trpc } from 'utils/trpc'
 import { degToCompass } from 'utils/weather'
@@ -27,58 +27,74 @@ const ForecastPreview = ({
     temperatureUnit,
   })
 
+  if (!forecast) {
+    return null
+  }
+
   const forecastRoute = `forecast?label=${encodeURIComponent(
     label
   )}&latitude=${latitude}&longitude=${longitude}`
 
-  if (!forecast) {
-    return <></>
-  }
-
-  const displayCondition = getWmoDescription(
-    forecast.current_weather.weathercode
-  )
+  const wmoDescription = getWmoDescription(forecast.current_weather.weathercode)
 
   return (
     <>
-      <div className={classes.flexContainer}>
-        <div className={classes.flexChild}>
-          <i
-            className={`${classes.icon} wi wi-wmo4680-${forecast.current_weather.weathercode}`}
-          ></i>
-        </div>
-        <div className={classes.flexChild}>
-          <div className={classes.alignTop}>
+      <div className={classes.contentBlock}>
+        <div className={classes.flexContainer}>
+          <div className={classes.flexChild}>
+            <i
+              className={`${classes.icon} wi wi-wmo4680-${forecast.current_weather.weathercode}`}
+            ></i>
+          </div>
+          <div className={classes.flexChild}>
             <h3 className={classes.temperature}>
-              {forecast.current_weather.temperature}
+              {Math.trunc(forecast.current_weather.temperature)}
             </h3>
             <TemperatureUnitSelect />
-            <div>{displayCondition}</div>
+            <div>{wmoDescription}</div>
           </div>
         </div>
       </div>
-      <div>
-        <span className="heading">24-Hour Precipitation: </span>
-        <span>{Math.trunc(forecast.daily.precipitation_sum[0])} </span>
-        <span>{forecast.daily_units.precipitation_sum}</span>
+      <div className={classes.contentBlock}>
+        <div className={classes.flexContainer}>
+          <div className={classes.flexChild}>
+            <span className="heading">Precipitation: </span>
+          </div>
+          <div className={classes.flexChild}>
+            <span>{Math.trunc(forecast.daily.precipitation_sum[0])} </span>
+            <span>{forecast.daily_units.precipitation_sum}</span>
+          </div>
+        </div>
+        <div className={classes.flexContainer}>
+          <div className={classes.flexChild}>
+            <span className="heading">Humidity: </span>
+          </div>
+          <div className={classes.flexChild}>
+            <span>{forecast.hourly.relativehumidity_2m[0]}</span>
+            <span>{forecast.hourly_units.relativehumidity_2m}</span>
+          </div>
+        </div>
+        <div className={classes.flexContainer}>
+          <div className={classes.flexChild}>
+            <span className="heading">Wind Speed: </span>
+          </div>
+          <div className={classes.flexChild}>
+            <span>{forecast.current_weather.windspeed} </span>
+            <span>mph</span>
+          </div>
+        </div>
+        <div className={classes.flexContainer}>
+          <div className={classes.flexChild}>
+            <span className="heading">Wind Direction: </span>
+          </div>
+          <div className={classes.flexChild}>
+            <span>{degToCompass(forecast.current_weather.winddirection)}</span>
+          </div>
+        </div>
       </div>
-      <div>
-        <span className="heading">Humidity: </span>
-        <span>{forecast.hourly.relativehumidity_2m[0]}</span>
-        <span>{forecast.hourly_units.relativehumidity_2m}</span>
+      <div className={classes.forecastLink}>
+        <Link href={forecastRoute}>{'forecast details \u2192'}</Link>
       </div>
-      <div>
-        <span className="heading">Wind Speed: </span>
-        <span>{forecast.current_weather.windspeed} </span>
-        <span>mph</span>
-      </div>
-      <div>
-        <span className="heading">Wind Direction: </span>
-        <span>{degToCompass(forecast.current_weather.winddirection)}</span>
-      </div>
-      <Button variant="primary" href={forecastRoute}>
-        View Details
-      </Button>
     </>
   )
 }

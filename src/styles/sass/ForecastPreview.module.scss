@@ -1,23 +1,24 @@
+.contentBlock {
+  margin-bottom: 1rem;
+}
 .flexContainer {
   display: flex;
   .flexChild {
     white-space: nowrap;
     &:first-of-type {
-      width: 30%;
+      width: 50%;
       text-align: left;
     }
     &:last-of-type {
-      width: 70%;
+      width: 50%;
       text-align: right;
     }
     .icon {
-      margin-bottom: 1rem;
       font-size: 3rem;
-      padding-right: 18px;
-    }
-    .alignTop {
-      display: inline-block;
-      vertical-align: top;
     }
   }
+}
+.forecastLink {
+  font-size: 14px;
+  text-align: right;
 }

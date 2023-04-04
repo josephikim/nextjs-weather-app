@@ -192,19 +192,19 @@ export class PostgresService {
           code: 'CONFLICT',
           message: 'That data cannot be deleted',
         })
-      }
-
-      // delete user location
-      const deleted = await prisma.locationsOnUser.delete({
-        where: {
-          userId_locationId: {
-            userId: userId,
-            locationId: location.id,
+      } else {
+        // delete user location
+        const deleted = await prisma.locationsOnUser.delete({
+          where: {
+            userId_locationId: {
+              userId: userId,
+              locationId: location.id,
+            },
           },
-        },
-      })
+        })
 
-      return deleted
+        return deleted
+      }
     } catch (e: any) {
       const message = getErrorMessage(e)
       throw new Error(message)

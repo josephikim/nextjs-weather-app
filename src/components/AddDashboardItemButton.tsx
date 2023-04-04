@@ -35,7 +35,7 @@ const AddDashboardItemButton = ({
     },
     onError(error) {
       setLoading(false)
-      console.log('Error:', error.message)
+      alert(error.message)
     },
   })
 

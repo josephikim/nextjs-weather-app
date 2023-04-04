@@ -27,7 +27,7 @@ const DashboardPage = () => {
       utils.user.getLocations.invalidate()
     },
     onError(error) {
-      console.log('Error deleting item:', error.message)
+      alert(error.message)
     },
   })
 
@@ -40,21 +40,23 @@ const DashboardPage = () => {
       },
       onError(error) {
         setLoading(false)
-        console.log('Error:', error.message)
+        alert(error.message)
       },
     })
-
-  const locations = userLocations?.map((userLocation) => {
-    return userLocation.location
-  })
-
-  if (locations && movableItems.length < 1) {
-    setMovableItems(locations)
-  }
 
   useEffect(() => {
     setIsMobile(window.innerWidth < 600)
   }, [])
+
+  useEffect(() => {
+    const locations = userLocations?.map((userLocation) => {
+      return userLocation.location
+    })
+
+    if (locations) {
+      setMovableItems(locations)
+    }
+  }, [userLocations])
 
   useEffect(() => {
     if (isLoading) {

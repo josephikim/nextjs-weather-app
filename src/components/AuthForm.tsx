@@ -16,7 +16,7 @@ const AuthForm = () => {
       console.log('User created successfully')
     },
     onError(error) {
-      console.log('Error:', error.message)
+      alert(error.message)
     },
   })
 

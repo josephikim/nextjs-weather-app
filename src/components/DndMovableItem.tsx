@@ -4,12 +4,19 @@ import { useDrag, useDrop } from 'react-dnd'
 import { ItemTypes } from 'utils/reactdnd'
 import classes from 'styles/sass/DndMovableItem.module.scss'
 
-const DndMovableItem = ({ item, index, moveItem, dropItem, children }: any) => {
+const DndMovableItem = ({
+  item,
+  index,
+  moveItem,
+  dropItem,
+  closeItem,
+  children,
+}: any) => {
   const ref = useRef(null)
 
   const [, drop] = useDrop({
     accept: ItemTypes.MOVABLE,
-    hover(item: any, monitor) {
+    hover(item: any) {
       if (!ref.current) {
         return
       }
@@ -27,7 +34,7 @@ const DndMovableItem = ({ item, index, moveItem, dropItem, children }: any) => {
       // to avoid expensive index searches.
       item.index = hoverIndex
     },
-    drop(item: any, monitor) {
+    drop() {
       if (!ref.current) {
         return
       }
@@ -53,6 +60,7 @@ const DndMovableItem = ({ item, index, moveItem, dropItem, children }: any) => {
 
   return (
     <Card
+      id="closeablecard"
       ref={ref}
       style={{ opacity: isDragging ? 0 : 1 }}
       className={classes.card}
@@ -60,6 +68,13 @@ const DndMovableItem = ({ item, index, moveItem, dropItem, children }: any) => {
       <Card.Header className={classes.header}>
         <div className={classes.grabHandle}></div>
         <div className={classes.titleText}>{item.label}</div>
+        <span
+          className={classes.close}
+          aria-label="Close"
+          onClick={(e) => closeItem(e, item.label)}
+        >
+          <span aria-hidden="true">&times;</span>
+        </span>
       </Card.Header>
       <Card.Body>{children}</Card.Body>
     </Card>

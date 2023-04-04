@@ -6,6 +6,7 @@
     background: #e5e4e2;
     overflow: hidden;
     align-items: center;
+    justify-content: space-between;
     cursor: grab;
     .grabHandle {
       content: '....';
@@ -24,8 +25,14 @@
       content: '.. .. ..';
     }
     .titleText {
+      max-width: 80%;
       font-size: 16px;
       white-space: nowrap;
+      overflow: hidden;
+    }
+    .close {
+      padding: 0 6px;
+      cursor: pointer;
     }
   }
 }

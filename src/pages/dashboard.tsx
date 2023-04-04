@@ -21,11 +21,21 @@ const DashboardPage = () => {
   const { data: { data: userLocations } = {} } =
     trpc.user.getLocations.useQuery()
 
+  const { mutate: deleteUserLocation } = trpc.user.deleteLocation.useMutation({
+    onSuccess() {
+      console.log('Item deleted successfully')
+      utils.user.getLocations.invalidate()
+    },
+    onError(error) {
+      console.log('Error deleting item:', error.message)
+    },
+  })
+
   const { mutate: updateDisplayOrder } =
     trpc.user.updateLocationDisplayOrder.useMutation({
       onSuccess(data) {
         setLoading(false)
-        console.log('Display order updated successfully:')
+        console.log('Order updated successfully:')
         utils.user.getLocations.invalidate()
       },
       onError(error) {
@@ -81,6 +91,16 @@ const DashboardPage = () => {
     setLoading(true)
   }
 
+  const closeItem = (e: React.MouseEvent<HTMLElement>, label: string) => {
+    e.preventDefault()
+    if (window.confirm('Remove item from your dashboard?')) {
+      const data = {
+        label,
+      }
+      deleteUserLocation(data)
+    }
+  }
+
   let jsx: React.ReactElement | React.ReactElement[] = (
     <div>Loading dashboard...</div>
   )
@@ -97,6 +117,7 @@ const DashboardPage = () => {
             key={location.label}
             moveItem={moveItem}
             dropItem={dropItem}
+            closeItem={closeItem}
           >
             <ForecastPreview
               label={location.label}

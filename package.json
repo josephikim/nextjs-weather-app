@@ -11,7 +11,7 @@
     "format": "prettier --write .",
     "prepare": "husky install",
     "seed-db": "npx prisma db seed",
-    "vercel-build": "prisma generate && prisma db push --force-reset && prisma db seed && next build",
+    "vercel-build": "prisma generate && prisma db push --accept-data-loss && prisma db seed && next build",
     "prisma:generate": "prisma generate"
   },
   "dependencies": {

@@ -1,24 +1,25 @@
 import type { AppProps } from 'next/app'
-import type { Session } from 'next-auth'
 import { trpc } from 'utils/trpc'
 import { SessionProvider } from 'next-auth/react'
 import { LocalDataProvider } from 'hooks/useLocalData'
 import Layout from 'components/Layout'
+import { ProtectedLayout } from 'components/ProtectedLayout'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'styles/css/globals.css'
 import 'styles/sass/weather-icons.min.scss'
 
-function App({
-  Component,
-  pageProps: { session, ...pageProps },
-}: AppProps<{
-  session: Session
-}>) {
+function App({ Component, pageProps }: AppProps) {
   return (
-    <SessionProvider session={session}>
+    <SessionProvider session={pageProps.session}>
       <LocalDataProvider>
         <Layout>
-          <Component {...pageProps} />
+          {Component.requireAuth ? (
+            <ProtectedLayout>
+              <Component {...pageProps} />
+            </ProtectedLayout>
+          ) : (
+            <Component {...pageProps} />
+          )}
         </Layout>
       </LocalDataProvider>
     </SessionProvider>

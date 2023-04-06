@@ -9,11 +9,12 @@ const AuthPage: NextPage = () => {
   const router = useRouter()
   const { status } = useSession()
 
+  // Redirect authenticated users to return url (or Home page)
   useEffect(() => {
     if (status === 'unauthenticated') {
       setIsLoading(false)
     } else if (status === 'authenticated') {
-      void router.push('/')
+      void router.push(`${router.query.returnUrl ?? '/'}`)
     }
   }, [status, router])
 

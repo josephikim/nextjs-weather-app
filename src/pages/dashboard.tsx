@@ -1,5 +1,6 @@
 import type { Location } from '@prisma/client'
 import React, { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { TouchBackend } from 'react-dnd-touch-backend'
@@ -15,7 +16,7 @@ import classes from 'styles/sass/DashboardPage.module.scss'
 const DashboardPage = () => {
   const [movableItems, setMovableItems] = useState<Location[]>([])
   const [isMobile, setIsMobile] = useState(false)
-  const [isLoading, setLoading] = useState(false)
+  const router = useRouter()
   const utils = trpc.useContext()
 
   const { data: { data: userLocations } = {} } =
@@ -34,12 +35,10 @@ const DashboardPage = () => {
   const { mutate: updateDisplayOrder } =
     trpc.user.updateLocationDisplayOrder.useMutation({
       onSuccess(data) {
-        setLoading(false)
         console.log('Order updated successfully:')
         utils.user.getLocations.invalidate()
       },
       onError(error) {
-        setLoading(false)
         alert(error.message)
       },
     })
@@ -56,20 +55,7 @@ const DashboardPage = () => {
     if (locations) {
       setMovableItems(locations)
     }
-  }, [userLocations])
-
-  useEffect(() => {
-    if (isLoading) {
-      const newOrder = movableItems.map((item, index) => {
-        return {
-          locationId: item.id,
-          displayOrder: index,
-        }
-      })
-
-      updateDisplayOrder(newOrder)
-    }
-  }, [isLoading])
+  }, [userLocations, router])
 
   const moveItem = (dragIndex: number, hoverIndex: number) => {
     // Get the dragged element
@@ -90,7 +76,14 @@ const DashboardPage = () => {
   }
 
   const dropItem = () => {
-    setLoading(true)
+    const newOrder = movableItems.map((item, index) => {
+      return {
+        locationId: item.id,
+        displayOrder: index,
+      }
+    })
+
+    updateDisplayOrder(newOrder)
   }
 
   const closeItem = (e: React.MouseEvent<HTMLElement>, label: string) => {
@@ -103,13 +96,11 @@ const DashboardPage = () => {
     }
   }
 
-  let jsx: React.ReactElement | React.ReactElement[] = (
-    <div>Loading dashboard...</div>
-  )
+  let jsx: React.ReactElement | React.ReactElement[]
 
-  if (movableItems && movableItems.length < 1) {
-    jsx = <span>No items found</span>
-  } else if (movableItems) {
+  if (movableItems.length < 1) {
+    jsx = <div>Loading dashboard...</div>
+  } else {
     const items = movableItems.map((location, index) => {
       return (
         <Col md={4} key={index}>
@@ -145,5 +136,7 @@ const DashboardPage = () => {
     </div>
   )
 }
+
+DashboardPage.requireAuth = true
 
 export default DashboardPage

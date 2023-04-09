@@ -34,7 +34,7 @@ const DashboardPage = () => {
 
   const { mutate: updateDisplayOrder } =
     trpc.user.updateLocationDisplayOrder.useMutation({
-      onSuccess(data) {
+      onSuccess() {
         console.log('Order updated successfully:')
         utils.user.getLocations.invalidate()
       },
@@ -88,6 +88,10 @@ const DashboardPage = () => {
 
   const closeItem = (e: React.MouseEvent<HTMLElement>, label: string) => {
     e.preventDefault()
+    if (movableItems.length === 1) {
+      alert('Item cannot be deleted')
+      return
+    }
     if (window.confirm('Remove item from your dashboard?')) {
       const data = {
         label,

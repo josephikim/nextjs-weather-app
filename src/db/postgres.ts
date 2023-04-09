@@ -1,7 +1,7 @@
 import { TRPCError } from '@trpc/server'
 import { DeleteLocationModel } from 'models/location'
 import { Context } from 'backend/context'
-import { Prisma } from '@prisma/client'
+import { LocationsOnUser, Prisma } from '@prisma/client'
 import { getErrorMessage } from 'utils/error'
 import { hashPassword } from 'utils/auth'
 import prisma from 'utils/prisma'
@@ -173,37 +173,67 @@ export class PostgresService {
     try {
       const userId = ctx.session?.user?.id as string
 
-      // lookup location
-      const location = await prisma.location.findUniqueOrThrow({
-        where: { label: input.label },
-      })
-
-      const userLocation = await prisma.locationsOnUser.findUniqueOrThrow({
+      // lookup user locations sorted by display order
+      const userLocations = await prisma.locationsOnUser.findMany({
         where: {
-          userId_locationId: {
-            userId: userId,
-            locationId: location.id,
-          },
+          userId: userId,
         },
+        include: {
+          location: true,
+        },
+        orderBy: [
+          {
+            displayOrder: 'asc',
+          },
+        ],
       })
 
-      if (userLocation?.isUserDefault) {
+      // Must keep one user location
+      if (userLocations.length === 1) {
         throw new TRPCError({
           code: 'CONFLICT',
           message: 'That data cannot be deleted',
         })
       } else {
-        // delete user location
-        const deleted = await prisma.locationsOnUser.delete({
+        const relation = userLocations.find(
+          (relation) => relation.location.label === input.label
+        )
+
+        if (!relation) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Requested data not found',
+          })
+        }
+
+        if (relation.isUserDefault === true) {
+          // set new default location
+          const defaultLocationIndex = userLocations.findIndex(
+            (element) => element.locationId === relation.locationId
+          )
+
+          const updated = await prisma.locationsOnUser.update({
+            where: {
+              userId_locationId: {
+                userId: userId,
+                locationId: userLocations[defaultLocationIndex + 1].location.id,
+              },
+            },
+            data: {
+              isUserDefault: true,
+            },
+          })
+        }
+
+        // delete relation
+        const result = await prisma.locationsOnUser.delete({
           where: {
             userId_locationId: {
               userId: userId,
-              locationId: location.id,
+              locationId: relation.location.id,
             },
           },
         })
-
-        return deleted
       }
     } catch (e: any) {
       const message = getErrorMessage(e)

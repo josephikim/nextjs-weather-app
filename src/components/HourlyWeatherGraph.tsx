@@ -82,7 +82,7 @@ const HourlyWeatherGraph = ({ hourly }: HourlyWeatherProps) => {
             },
             elements: {
               line: {
-                tension: 0.3,
+                cubicInterpolationMode: 'monotone',
               },
             },
             scales: {

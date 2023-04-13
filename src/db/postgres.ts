@@ -141,10 +141,7 @@ export class PostgresService {
                 },
               },
             },
-            displayOrder:
-              userLocations.length > 0
-                ? userLocations[userLocations.length - 1].displayOrder + 1
-                : 0,
+            displayOrder: userLocations.length,
           },
         })
 
@@ -206,34 +203,62 @@ export class PostgresService {
           })
         }
 
-        if (relation.isUserDefault === true) {
-          // set new default location
-          const defaultLocationIndex = userLocations.findIndex(
-            (element) => element.locationId === relation.locationId
-          )
+        // build transaction
+        const ops = []
 
-          const updated = await prisma.locationsOnUser.update({
+        // deletion op
+        ops.push(
+          prisma.locationsOnUser.delete({
             where: {
               userId_locationId: {
                 userId: userId,
-                locationId: userLocations[defaultLocationIndex + 1].location.id,
+                locationId: relation.location.id,
               },
             },
-            data: {
-              isUserDefault: true,
-            },
           })
+        )
+
+        // update default location
+        if (relation.isUserDefault === true) {
+          ops.push(
+            prisma.locationsOnUser.update({
+              where: {
+                userId_locationId: {
+                  userId: userId,
+                  locationId: userLocations[1].locationId,
+                },
+              },
+              data: {
+                isUserDefault: true,
+              },
+            })
+          )
         }
 
-        // delete relation
-        const result = await prisma.locationsOnUser.delete({
-          where: {
-            userId_locationId: {
-              userId: userId,
-              locationId: relation.location.id,
-            },
-          },
-        })
+        // update display order
+        const deletionIndex = userLocations.findIndex(
+          (element) => (element.locationId = relation.locationId)
+        )
+
+        for (let i = deletionIndex; i < userLocations.length; i++) {
+          ops.push(
+            prisma.locationsOnUser.update({
+              where: {
+                userId_locationId: {
+                  userId: userId,
+                  locationId: userLocations[i].locationId,
+                },
+              },
+              data: {
+                displayOrder: i,
+              },
+            })
+          )
+        }
+
+        // run transaction
+        const [result] = await prisma.$transaction(ops)
+        return result
       }
     } catch (e: any) {
       const message = getErrorMessage(e)

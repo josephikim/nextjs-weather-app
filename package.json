@@ -15,7 +15,7 @@
     "prisma:generate": "prisma generate"
   },
   "dependencies": {
-    "@prisma/client": "^4.5.0",
+    "@prisma/client": "^4.12.0",
     "@tanstack/react-query": "^4.14.3",
     "@trpc/client": "^10.0.0-proxy-beta.26",
     "@trpc/next": "^10.0.0-proxy-beta.26",
@@ -55,7 +55,7 @@
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
     "prettier": "^2.7.1",
-    "prisma": "^4.5.0",
+    "prisma": "^4.12.0",
     "typescript": "4.8.4"
   },
   "prisma": {

@@ -6,7 +6,7 @@ import {
   CreateLocationModelSchema,
   DeleteLocationModelSchema,
 } from 'models/location'
-import { UpdateUserLocationModelSchema } from 'models/user'
+import { UpdateUserLocationsDisplayOrderModelSchema } from 'models/user'
 import { ApiResponseViewModelSchema } from 'viewModels/meteo'
 
 export const userRouter = router({
@@ -65,8 +65,8 @@ export const userRouter = router({
         data: deleted,
       }
     }),
-  updateLocationDisplayOrder: protectedProcedure
-    .input(z.array(UpdateUserLocationModelSchema))
+  updateLocationsDisplayOrder: protectedProcedure
+    .input(UpdateUserLocationsDisplayOrderModelSchema)
     .mutation(async ({ input, ctx }) => {
       const userLocations = await postgresService.getUserLocations({ ctx })
       return {

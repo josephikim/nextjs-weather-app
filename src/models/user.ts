@@ -16,13 +16,15 @@ export const LoginUserModelSchema = z.object({
   ),
 })
 
-export const UpdateUserLocationModelSchema = z.object({
-  locationId: string(),
-  displayOrder: number(),
-})
+export const UpdateUserLocationsDisplayOrderModelSchema = z.array(
+  z.object({
+    locationId: string(),
+    displayOrder: number(),
+  })
+)
 
 export type CreateUserModel = z.infer<typeof CreateUserModelSchema>
 export type LoginUserModel = z.infer<typeof LoginUserModelSchema>
-export type UpdateUserLocationModel = z.infer<
-  typeof UpdateUserLocationModelSchema
+export type UpdateUserLocationsDisplayOrderModel = z.infer<
+  typeof UpdateUserLocationsDisplayOrderModelSchema
 >

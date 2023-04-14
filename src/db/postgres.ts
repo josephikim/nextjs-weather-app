@@ -27,7 +27,7 @@ export class PostgresService {
           {
             location: {
               connect: {
-                label: 'San Francisco, US',
+                label: process.env.NEXT_PUBLIC_APP_DEFAULT_LOCATION,
               },
             },
             displayOrder: 0,
@@ -123,7 +123,6 @@ export class PostgresService {
           message: 'A location with that label already exists',
         })
       } else {
-        // create new relation and connect or create location
         const result = await prisma.locationsOnUser.create({
           data: {
             user: {
@@ -185,7 +184,14 @@ export class PostgresService {
         ],
       })
 
-      // Must keep one user location
+      if (userLocations.length == 0) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Requested data not found',
+        })
+      }
+
+      // Keep at least one user location
       if (userLocations.length === 1) {
         throw new TRPCError({
           code: 'CONFLICT',
@@ -206,7 +212,7 @@ export class PostgresService {
         // build transaction
         const ops = []
 
-        // deletion op
+        // deletion operation
         ops.push(
           prisma.locationsOnUser.delete({
             where: {
@@ -218,7 +224,7 @@ export class PostgresService {
           })
         )
 
-        // update default location
+        // update operation for default location
         if (relation.isUserDefault === true) {
           ops.push(
             prisma.locationsOnUser.update({
@@ -235,12 +241,14 @@ export class PostgresService {
           )
         }
 
-        // update display order
         const deletionIndex = userLocations.findIndex(
           (element) => (element.locationId = relation.locationId)
         )
 
-        for (let i = deletionIndex; i < userLocations.length; i++) {
+        userLocations.forEach((element, i) => {
+          if (i < deletionIndex + 1) return
+
+          // update operations for display order
           ops.push(
             prisma.locationsOnUser.update({
               where: {
@@ -250,15 +258,14 @@ export class PostgresService {
                 },
               },
               data: {
-                displayOrder: i,
+                displayOrder: i - 1,
               },
             })
           )
-        }
+        })
 
         // run transaction
-        const [result] = await prisma.$transaction(ops)
-        return result
+        await prisma.$transaction(ops)
       }
     } catch (e: any) {
       const message = getErrorMessage(e)

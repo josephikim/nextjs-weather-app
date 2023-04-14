@@ -50,10 +50,10 @@ export const userRouter = router({
   createLocation: protectedProcedure
     .input(CreateLocationModelSchema)
     .mutation(async ({ input, ctx }) => {
-      const location = await postgresService.createUserLocation({ input, ctx })
+      const result = await postgresService.createUserLocation({ input, ctx })
       return {
         status: 'success',
-        data: location,
+        data: result,
       }
     }),
   deleteLocation: protectedProcedure
@@ -62,7 +62,6 @@ export const userRouter = router({
       const deleted = await postgresService.deleteUserLocation({ input, ctx })
       return {
         status: 'success',
-        data: deleted,
       }
     }),
   updateLocationsDisplayOrder: protectedProcedure

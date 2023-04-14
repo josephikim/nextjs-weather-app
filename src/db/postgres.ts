@@ -49,7 +49,6 @@ export class PostgresService {
   async getDefaultLocation() {
     try {
       const label = process.env.NEXT_PUBLIC_APP_DEFAULT_LOCATION
-
       const location = await prisma.location.findFirst({
         where: { label: label },
       })
@@ -63,23 +62,7 @@ export class PostgresService {
 
   async getUserLocations({ ctx }: { ctx: Context }) {
     try {
-      const userId = ctx.session?.user?.id as string
-
-      // lookup user locations
-      const userLocations = await prisma.locationsOnUser.findMany({
-        where: {
-          userId: userId,
-        },
-        include: {
-          location: true,
-        },
-        orderBy: [
-          {
-            displayOrder: 'asc',
-          },
-        ],
-      })
-
+      const userLocations = await lookupUserLocations(ctx)
       return userLocations
     } catch (e: any) {
       const message = getErrorMessage(e)
@@ -95,22 +78,7 @@ export class PostgresService {
     ctx: Context
   }) {
     try {
-      const userId = ctx.session?.user?.id as string
-
-      // lookup user locations
-      const userLocations = await prisma.locationsOnUser.findMany({
-        where: {
-          userId: userId,
-        },
-        include: {
-          location: true,
-        },
-        orderBy: [
-          {
-            displayOrder: 'asc',
-          },
-        ],
-      })
+      const userLocations = await lookupUserLocations(ctx)
 
       // check for matching location
       const matchingLocation = userLocations.some((userLocation) => {
@@ -127,7 +95,7 @@ export class PostgresService {
           data: {
             user: {
               connect: {
-                id: userId,
+                id: ctx.session?.user?.id,
               },
             },
             location: {
@@ -167,22 +135,7 @@ export class PostgresService {
     ctx: Context
   }) {
     try {
-      const userId = ctx.session?.user?.id as string
-
-      // lookup user locations sorted by display order
-      const userLocations = await prisma.locationsOnUser.findMany({
-        where: {
-          userId: userId,
-        },
-        include: {
-          location: true,
-        },
-        orderBy: [
-          {
-            displayOrder: 'asc',
-          },
-        ],
-      })
+      const userLocations = await lookupUserLocations(ctx)
 
       if (userLocations.length == 0) {
         throw new TRPCError({
@@ -198,6 +151,7 @@ export class PostgresService {
           message: 'That data cannot be deleted',
         })
       } else {
+        // deletion target
         const relation = userLocations.find(
           (relation) => relation.location.label === input.label
         )
@@ -209,28 +163,28 @@ export class PostgresService {
           })
         }
 
-        // build transaction
+        // build prisma transaction
         const ops = []
 
-        // deletion operation
+        // add deletion op
         ops.push(
           prisma.locationsOnUser.delete({
             where: {
               userId_locationId: {
-                userId: userId,
+                userId: ctx.session?.user?.id as string,
                 locationId: relation.location.id,
               },
             },
           })
         )
 
-        // update operation for default location
+        // add update op for new default location
         if (relation.isUserDefault === true) {
           ops.push(
             prisma.locationsOnUser.update({
               where: {
                 userId_locationId: {
-                  userId: userId,
+                  userId: ctx.session?.user?.id as string,
                   locationId: userLocations[1].locationId,
                 },
               },
@@ -242,19 +196,19 @@ export class PostgresService {
         }
 
         const deletionIndex = userLocations.findIndex(
-          (element) => (element.locationId = relation.locationId)
+          (element) => element.locationId === relation.locationId
         )
 
         userLocations.forEach((element, i) => {
           if (i < deletionIndex + 1) return
 
-          // update operations for display order
+          // add update ops for display order
           ops.push(
             prisma.locationsOnUser.update({
               where: {
                 userId_locationId: {
-                  userId: userId,
-                  locationId: userLocations[i].locationId,
+                  userId: ctx.session?.user?.id as string,
+                  locationId: element.locationId,
                 },
               },
               data: {
@@ -272,6 +226,23 @@ export class PostgresService {
       throw new Error(message)
     }
   }
+}
+
+const lookupUserLocations = async (ctx: Context) => {
+  const result = await prisma.locationsOnUser.findMany({
+    where: {
+      userId: ctx.session?.user?.id as string,
+    },
+    include: {
+      location: true,
+    },
+    orderBy: [
+      {
+        displayOrder: 'asc',
+      },
+    ],
+  })
+  return result
 }
 
 const postgresService = new PostgresService()

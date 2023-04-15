@@ -40,10 +40,10 @@ export const userRouter = router({
         data: [],
       }
     } else {
-      const locations = await postgresService.getUserLocations({ ctx })
+      const result = await postgresService.getUserLocations({ ctx })
       return {
         status: 'success',
-        data: locations,
+        data: result,
       }
     }
   }),
@@ -59,7 +59,7 @@ export const userRouter = router({
   deleteLocation: protectedProcedure
     .input(DeleteLocationModelSchema)
     .mutation(async ({ input, ctx }) => {
-      const deleted = await postgresService.deleteUserLocation({ input, ctx })
+      await postgresService.deleteUserLocation({ input, ctx })
       return {
         status: 'success',
       }
@@ -67,14 +67,13 @@ export const userRouter = router({
   updateLocationsDisplayOrder: protectedProcedure
     .input(UpdateUserLocationsDisplayOrderModelSchema)
     .mutation(async ({ input, ctx }) => {
-      const userLocations =
-        await postgresService.updateUserLocationsDisplayOrder({
-          input,
-          ctx,
-        })
+      const result = await postgresService.updateUserLocationsDisplayOrder({
+        input,
+        ctx,
+      })
       return {
         status: 'success',
-        data: userLocations,
+        data: result,
       }
     }),
 })

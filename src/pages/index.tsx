@@ -1,6 +1,7 @@
 import type { NextPage } from 'next'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
+import { useEffect } from 'react'
 import { trpc } from 'utils/trpc'
 import Forecast from 'components/Forecast'
 import AlertDismissible from 'components/AlertDismissible'
@@ -16,36 +17,38 @@ const HomePage: NextPage = () => {
 
   const { data: { data: locations } = {} } = trpc.user.getLocations.useQuery()
 
-  // check for updated locations or refetch from trpc
-  if (isAuthed && locations && locations.length < 1) {
+  useEffect(() => {
     utils.user.getLocations.invalidate()
-  }
+  }, [])
 
-  let jsx: JSX.Element = <span>Loading forecast...</span>
+  let jsx: JSX.Element
 
-  // Forecast with default location (un-authed)
-  if (defaultLocation)
-    jsx = (
-      <Forecast
-        label={defaultLocation.label}
-        latitude={defaultLocation.latitude.toString()}
-        longitude={defaultLocation.longitude.toString()}
-      />
-    )
+  if (!defaultLocation) {
+    jsx = <span>Loading forecast...</span>
+  } else {
+    // Load user default location
+    if (locations && locations.length > 0) {
+      const userDefaultLocation = locations.filter(
+        (object) => object.isUserDefault === true
+      )[0].location
 
-  // Forecast with user location (authed)
-  if (locations && locations.length > 0) {
-    const location = locations.filter(
-      (object) => object.isUserDefault === true
-    )[0].location
-
-    jsx = (
-      <Forecast
-        label={location.label}
-        latitude={location.latitude.toString()}
-        longitude={location.longitude.toString()}
-      />
-    )
+      jsx = (
+        <Forecast
+          label={userDefaultLocation.label}
+          latitude={userDefaultLocation.latitude.toString()}
+          longitude={userDefaultLocation.longitude.toString()}
+        />
+      )
+    } else {
+      // Load fallback location
+      jsx = (
+        <Forecast
+          label={defaultLocation.label}
+          latitude={defaultLocation.latitude.toString()}
+          longitude={defaultLocation.longitude.toString()}
+        />
+      )
+    }
   }
 
   return (

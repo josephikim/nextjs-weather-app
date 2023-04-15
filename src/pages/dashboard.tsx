@@ -34,10 +34,6 @@ const DashboardPage = () => {
 
   const { mutate: updateDisplayOrder } =
     trpc.user.updateLocationsDisplayOrder.useMutation({
-      onSuccess(data) {
-        console.log('Order updated successfully:', data)
-        utils.user.getLocations.invalidate()
-      },
       onError(error) {
         alert(error.message)
       },
@@ -55,7 +51,7 @@ const DashboardPage = () => {
     if (locations) {
       setMovableItems(locations)
     }
-  }, [userLocations, router])
+  }, [userLocations])
 
   const moveItem = (dragIndex: number, hoverIndex: number) => {
     // Get the dragged element

@@ -40,7 +40,6 @@ model LocationsOnUser {
   user            User      @relation(fields: [userId], references: [id])
 
   @@id([userId, locationId])
-  @@unique([userId, displayOrder])
   @@map("locations_on_user")
 }
 

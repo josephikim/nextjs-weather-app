@@ -5,6 +5,7 @@ import { LocationsOnUser, Prisma } from '@prisma/client'
 import { getErrorMessage } from 'utils/error'
 import { hashPassword } from 'utils/auth'
 import prisma from 'utils/prisma'
+import { UpdateUserLocationsDisplayOrderModel } from 'models/user'
 
 export class PostgresService {
   async createUser(user: Prisma.UserCreateInput) {
@@ -221,6 +222,80 @@ export class PostgresService {
         // run transaction
         await prisma.$transaction(ops)
       }
+    } catch (e: any) {
+      const message = getErrorMessage(e)
+      throw new Error(message)
+    }
+  }
+
+  async updateUserLocationsDisplayOrder({
+    input,
+    ctx,
+  }: {
+    input: UpdateUserLocationsDisplayOrderModel
+    ctx: Context
+  }) {
+    try {
+      const userLocations = await lookupUserLocations(ctx)
+
+      // build transaction
+      const ops = []
+
+      input.forEach((element, i) => {
+        const isMatchingOrder =
+          element.locationId === userLocations[i].locationId
+
+        // if element's order matches display order, do nothing
+        if (isMatchingOrder) return
+
+        const matchingLocation = userLocations.find(
+          (userLocation) => userLocation.locationId === element.locationId
+        )
+
+        if (!matchingLocation) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Target data not found',
+          })
+        }
+
+        // add op for updating display order and user default
+        ops.push(
+          prisma.locationsOnUser.update({
+            where: {
+              userId_locationId: {
+                userId: ctx.session?.user?.id as string,
+                locationId: element.locationId,
+              },
+            },
+            data: {
+              displayOrder: element.displayOrder,
+              isUserDefault: element.displayOrder === 0 ? true : false,
+            },
+          })
+        )
+      })
+
+      // add op for retrieving updated user locations
+      ops.push(
+        prisma.locationsOnUser.findMany({
+          where: {
+            userId: ctx.session?.user?.id as string,
+          },
+          include: {
+            location: true,
+          },
+          orderBy: [
+            {
+              displayOrder: 'asc',
+            },
+          ],
+        })
+      )
+
+      // run transaction
+      const result = await prisma.$transaction(ops)
+      return result
     } catch (e: any) {
       const message = getErrorMessage(e)
       throw new Error(message)

@@ -67,7 +67,11 @@ export const userRouter = router({
   updateLocationsDisplayOrder: protectedProcedure
     .input(UpdateUserLocationsDisplayOrderModelSchema)
     .mutation(async ({ input, ctx }) => {
-      const userLocations = await postgresService.getUserLocations({ ctx })
+      const userLocations =
+        await postgresService.updateUserLocationsDisplayOrder({
+          input,
+          ctx,
+        })
       return {
         status: 'success',
         data: userLocations,

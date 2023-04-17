@@ -21,7 +21,6 @@ const RemoveDashboardItemButton = ({
   const { mutate: deleteUserLocation } = trpc.user.deleteLocation.useMutation({
     onSuccess() {
       setLoading(false)
-      console.log('Location deleted successfully')
     },
     onError(error) {
       setLoading(false)

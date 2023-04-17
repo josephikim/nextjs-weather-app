@@ -43,8 +43,8 @@ export const trpc = createTRPCNext<AppRouter>({
       queryClientConfig: {
         defaultOptions: {
           queries: {
-            staleTime: 60 * (60 * 1000),
-            cacheTime: 65 * (60 * 1000),
+            staleTime: 10 * (60 * 1000),
+            cacheTime: 10 * (60 * 1000),
           },
         },
       },

@@ -28,9 +28,8 @@ const AddDashboardItemButton = ({
   const handleShowModal = () => setShowModal(true)
 
   const { mutate: createUserLocation } = trpc.user.createLocation.useMutation({
-    onSuccess(data) {
+    onSuccess() {
       setLoading(false)
-      console.log('Location added successfully')
       utils.user.getLocations.invalidate()
     },
     onError(error) {

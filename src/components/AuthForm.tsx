@@ -12,9 +12,6 @@ const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true)
 
   const { mutate: signup } = trpc.auth.signup.useMutation({
-    onSuccess(data: any) {
-      console.log('User created successfully')
-    },
     onError(error) {
       alert(error.message)
     },

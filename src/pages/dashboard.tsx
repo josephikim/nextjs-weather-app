@@ -1,6 +1,5 @@
 import type { Location } from '@prisma/client'
 import React, { useState, useEffect } from 'react'
-import { useRouter } from 'next/router'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { TouchBackend } from 'react-dnd-touch-backend'
@@ -16,7 +15,6 @@ import classes from 'styles/sass/DashboardPage.module.scss'
 const DashboardPage = () => {
   const [movableItems, setMovableItems] = useState<Location[]>([])
   const [isMobile, setIsMobile] = useState(false)
-  const router = useRouter()
   const utils = trpc.useContext()
 
   const { data: { data: userLocations } = {} } =
@@ -24,7 +22,6 @@ const DashboardPage = () => {
 
   const { mutate: deleteUserLocation } = trpc.user.deleteLocation.useMutation({
     onSuccess() {
-      console.log('Item deleted successfully')
       utils.user.getLocations.invalidate()
     },
     onError(error) {
@@ -40,9 +37,16 @@ const DashboardPage = () => {
     })
 
   useEffect(() => {
+    // Set backend for React DND
     setIsMobile(window.innerWidth < 600)
+
+    // Update user locations for redirects from auth page
+    if (!userLocations || userLocations.length < 1) {
+      utils.user.getLocations.invalidate()
+    }
   }, [])
 
+  // Update React DND movable items
   useEffect(() => {
     const locations = userLocations?.map((userLocation) => {
       return userLocation.location
@@ -53,6 +57,7 @@ const DashboardPage = () => {
     }
   }, [userLocations])
 
+  // React DND move handler
   const moveItem = (dragIndex: number, hoverIndex: number) => {
     // Get the dragged element
     const draggedItem = movableItems[dragIndex]
@@ -71,6 +76,7 @@ const DashboardPage = () => {
     )
   }
 
+  // React DND drop handler
   const dropItem = () => {
     const newOrder = movableItems.map((item, index) => {
       return {
@@ -96,11 +102,9 @@ const DashboardPage = () => {
     }
   }
 
-  let jsx: React.ReactElement | React.ReactElement[]
+  let jsx: JSX.Element = <div>Loading dashboard...</div>
 
-  if (movableItems.length < 1) {
-    jsx = <div>Loading dashboard...</div>
-  } else {
+  if (userLocations) {
     const items = movableItems.map((location, index) => {
       return (
         <Col md={4} key={index}>
@@ -124,6 +128,7 @@ const DashboardPage = () => {
 
     jsx = <Row>{items}</Row>
   }
+
   return (
     <div className={classes.container}>
       <main className={classes.main}>

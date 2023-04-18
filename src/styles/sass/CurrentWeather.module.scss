@@ -5,6 +5,15 @@
     &:last-of-type {
       text-align: right;
     }
+    .fieldName {
+      float: left;
+      width: 70%;
+    }
+    .fieldValue {
+      text-align: right;
+      float: right;
+      width: 30%;
+    }
     .icon {
       font-size: 3rem;
       padding-right: 18px;

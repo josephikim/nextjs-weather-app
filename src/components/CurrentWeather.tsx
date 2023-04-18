@@ -41,23 +41,33 @@ const CurrentWeather = ({
         </div>
       </div>
       <div className={classes.flexChild}>
-        <div>
-          <span className="heading">Precipitation (24 Hr): </span>
+        <div className={classes.fieldName}>
+          <span className="heading">Precipitation (24 Hr):</span>
+        </div>
+        <div className={classes.fieldValue}>
           <span>{Math.trunc(daily.precipitation_sum[0])} </span>
           <span>{daily_units.precipitation_sum}</span>
         </div>
-        <div>
-          <span className="heading">Humidity: </span>
+        <div className={classes.fieldName}>
+          <span className="heading">Humidity:</span>
+        </div>
+        <div className={classes.fieldValue}>
           <span>{hourly.relativehumidity_2m[0]}</span>
           <span>{hourly_units.relativehumidity_2m}</span>
         </div>
-        <div>
-          <span className="heading">Wind Speed: </span>
+
+        <div className={classes.fieldName}>
+          <span className="heading">Wind Speed:</span>
+        </div>
+        <div className={classes.fieldValue}>
           <span>{current_weather.windspeed} </span>
           <span>mph</span>
         </div>
-        <div>
-          <span className="heading">Wind Direction: </span>
+
+        <div className={classes.fieldName}>
+          <span className="heading">Wind Direction:</span>
+        </div>
+        <div className={classes.fieldValue}>
           <span>{degToCompass(current_weather.winddirection)}</span>
         </div>
       </div>

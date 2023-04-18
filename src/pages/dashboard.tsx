@@ -105,21 +105,21 @@ const DashboardPage = () => {
   let jsx: JSX.Element = <div>Loading dashboard...</div>
 
   if (userLocations) {
-    const items = movableItems.map((location, index) => {
+    const items = movableItems.map((item, index) => {
       return (
         <Col md={4} key={index}>
           <DndMovableItem
-            item={location}
+            item={item}
             index={index}
-            key={location.label}
+            key={item.label}
             moveItem={moveItem}
             dropItem={dropItem}
             closeItem={closeItem}
           >
             <ForecastPreview
-              label={location.label}
-              latitude={location.latitude.toString()}
-              longitude={location.longitude.toString()}
+              label={item.label}
+              latitude={item.latitude.toString()}
+              longitude={item.longitude.toString()}
             />
           </DndMovableItem>
         </Col>

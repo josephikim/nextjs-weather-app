@@ -5,7 +5,7 @@ export const ForecastCurrentWeatherViewModelSchema = z.object({
   windspeed: z.number(),
   winddirection: z.number(),
   weathercode: z.number(),
-  time: z.date(),
+  time: z.string(),
 })
 
 export type ForecastCurrentWeatherViewModel = z.infer<

@@ -1,7 +1,7 @@
 import { ForecastDailyDataViewModel } from 'viewModels/forecastDailyDataViewModel'
 import DailyForecastSummaryItem from 'components/DailyForecastSummaryItem'
 import classes from 'styles/sass/DailyForecastSummary.module.scss'
-import { getDisplayDay } from 'utils/weather'
+import { getShortDisplayDay } from 'utils/weather'
 
 interface DailyForecastSummaryProps {
   daily: ForecastDailyDataViewModel
@@ -13,7 +13,7 @@ const DailyForecastSummary = ({ daily }: DailyForecastSummaryProps) => {
   const jsx = dateIterator.map((index) => {
     const displayMinTemp = Math.round(daily.temperature_2m_min[index])
     const displayMaxTemp = Math.round(daily.temperature_2m_max[index])
-    const displayDay = getDisplayDay(daily.time[index])
+    const displayDay = getShortDisplayDay(daily.time[index])
     return (
       <div className={classes.flexChild} key={daily.time[index]}>
         <DailyForecastSummaryItem

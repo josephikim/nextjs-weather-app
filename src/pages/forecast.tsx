@@ -16,7 +16,7 @@ const ForecastPage: NextPage = () => {
     <div className={classes.container}>
       <main className={classes.main}>
         {isQueryParamMissing ? (
-          <div>Error loading page</div>
+          <div>Error loading forecsat</div>
         ) : (
           <>
             <Forecast label={label} latitude={latitude} longitude={longitude} />

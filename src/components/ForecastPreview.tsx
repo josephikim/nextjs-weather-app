@@ -58,7 +58,7 @@ const ForecastPreview = ({
       <div className={classes.contentBlock}>
         <div className={classes.flexContainer}>
           <div className={classes.flexChild}>
-            <span className="heading">Precipitation: </span>
+            <span className="heading">Precipitation (24 Hr): </span>
           </div>
           <div className={classes.flexChild}>
             <span>{Math.trunc(forecast.daily.precipitation_sum[0])} </span>

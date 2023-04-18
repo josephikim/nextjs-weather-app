@@ -40,7 +40,7 @@ export const degToCompass = (num: number): string => {
   return arr[val % 16]
 }
 
-export const getDisplayDay = (dateStr: string): string => {
+export const getShortDisplayDay = (dateStr: string): string => {
   const d = dayjs(dateStr)
   return d.format('ddd')
 }

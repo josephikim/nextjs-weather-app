@@ -13,7 +13,7 @@ export const ApiResponseViewModelSchema = z.object({
     windspeed: z.number(),
     winddirection: z.number(),
     weathercode: z.number(),
-    time: z.coerce.date(),
+    time: z.string(),
   }),
   hourly_units: z.object({
     time: z.string(),
@@ -23,7 +23,7 @@ export const ApiResponseViewModelSchema = z.object({
     precipitation: z.string(),
   }),
   hourly: z.object({
-    time: z.coerce.date().array().length(168),
+    time: z.string().array().length(168),
     temperature_2m: z.number().array().length(168),
     relativehumidity_2m: z.number().array().length(168),
     windspeed_10m: z.number().array().length(168),

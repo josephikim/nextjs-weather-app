@@ -24,7 +24,8 @@ const CurrentWeather = ({
   hourly,
   hourly_units,
 }: CurrentWeatherProps) => {
-  const displayDate = dayjs(daily.time[0]).format('dddd MM/DD/YYYY')
+  const displayDay = dayjs(daily.time[0]).format('dddd')
+  const displayDate = dayjs(daily.time[0]).format('MM/DD/YYYY')
   const displayCondition = getWmoDescription(current_weather.weathercode)
   return (
     <div className={classes.flexContainer}>
@@ -41,7 +42,7 @@ const CurrentWeather = ({
       </div>
       <div className={classes.flexChild}>
         <div>
-          <span className="heading">24-Hour Precipitation: </span>
+          <span className="heading">Precipitation (24 Hr): </span>
           <span>{Math.trunc(daily.precipitation_sum[0])} </span>
           <span>{daily_units.precipitation_sum}</span>
         </div>
@@ -62,6 +63,7 @@ const CurrentWeather = ({
       </div>
 
       <div className={classes.flexChild}>
+        <div>{displayDay}</div>
         <div>{displayDate}</div>
         <div>{displayCondition}</div>
       </div>

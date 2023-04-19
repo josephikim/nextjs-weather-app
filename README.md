@@ -1,32 +1,44 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Next.js Weather App
 
-## Getting Started
+<img src="src/assets/homepage.png" width="500"  />
 
-First, run the development server:
+## Description
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+**Next.js Weather App** provides live weather conditions for any city in the world. It is a full-stack demo based on the TypeScript-focused [T3 web development stack](https://create.t3.gg/), which consists of the [Next.js](https://nextjs.org/) web framework and [tRPC](https://trpc.io/docs/), a typesafe alternative to traditional REST or GraphQL APIs. It has architectural elements in place (e.g. NextAuth.js, Prisma ORM, Zod schema validation) to help developers easily scale up its functionality. It provides hourly forecast data from the [Open-Meteo Free Weather API](https://open-meteo.com/en/docs) which uses weather models from multiple national weather providers and supports a wide variety of weather variables. Feel free to use or modify the codebase for your own project!
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## File structure
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- `src`
+  - `assets` - This folder holds assets such as images
+  - `backend` - This folder holds files used by the backend
+    - `routers` - This folder holds router files used by the tRPC backend
+    - `context.ts` - This file provides the tRPC context object
+    - `trpc.ts` - This file initializes the tRPC backend
+  - `components` - This folder holds different components that make up our frontend views
+  - `db` - This folder holds files used to communicate with the database
+  - `hooks` - This folder holds React hooks for use in functional components
+  - `models` - This folder holds data models used by the backend
+  - `pages` - This folder holds components organized by page level view
+    - `api` - This folder holds files used by Next.js to handle api calls
+      - `auth` - This folder holds files used to handle NextAuth api calls
+      - `trpc` - This folder holds files used to handle tRPC api calls
+    - `_app.tsx` - Entrypoint for Next.js app
+  - `styles` - This folder holds stylesheets and fonts used by the frontend
+  - `utils` - This folder holds files for utility functions
+  - `viewModels` - This folder holds view models used by the frontend
+- `public` - This folder holds static content used by the app
+- `prisma` - This folder holds files used by Prisma ORM
+- `.husky` - This folder holds files used by Husky.js
+- `.env.sample` - Sample file containing environment variables used by the app
+- `.eslintignore` - Directories to exclude from linting
+- `.eslintrc.json` - Defines linting behaviors
+- `.gitignore` - Directories to exclude from git tracking
+- `.prettierignore` - Directories to exclude from Prettier.js formatting
+- `.prettierrc.json` - Configuration file for Prettier.js
+- `.auth.d.ts` - Type definitions used by NextAuth.js
+- `.next.config.js` - Configuration file for Next.js
+- `.next.d.ts` - Type definitions used by Next.js
+- `package.json` - Defines npm behaviors and packages
+- `package-lock.json` - Tracks dependency tree
+- `.tsconfig.json` - Configuration file for TypeScript
+- `README.md` - This file!

@@ -1,7 +1,7 @@
 import { TRPCError } from '@trpc/server'
 import { DeleteLocationModel } from 'models/location'
 import { Context } from 'backend/context'
-import { LocationsOnUser, Prisma } from '@prisma/client'
+import { Prisma } from '@prisma/client'
 import { getErrorMessage } from 'utils/error'
 import { hashPassword } from 'utils/auth'
 import prisma from 'utils/prisma'

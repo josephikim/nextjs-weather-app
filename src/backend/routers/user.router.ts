@@ -7,7 +7,7 @@ import {
   DeleteLocationModelSchema,
 } from 'models/location'
 import { UpdateUserLocationsDisplayOrderModelSchema } from 'models/user'
-import { ApiResponseViewModelSchema } from 'viewModels/meteo'
+import { ForecastApiResponseViewModelSchema } from 'viewModels/forecastApiResponseViewModel'
 
 export const userRouter = router({
   getForecast: publicProcedure
@@ -24,7 +24,7 @@ export const userRouter = router({
         input.longitude,
         input.temperatureUnit
       )
-      const parsed = ApiResponseViewModelSchema.parse(forecast)
+      const parsed = ForecastApiResponseViewModelSchema.parse(forecast)
 
       return {
         status: 'success',

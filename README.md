@@ -42,3 +42,37 @@
 - `package-lock.json` - Tracks dependency tree
 - `.tsconfig.json` - Configuration file for TypeScript
 - `README.md` - This file!
+
+## Initial Setup
+
+This demo was built using Node.js version 16. Please install a long-term support (LTS) version for best compatibility with other libraries.
+
+- Node.js <https://nodejs.org/en/download/>
+
+To verify that you have Node.js installed on your system, type the following command in your command line terminal (Terminal for Mac/Linux, CMD for Windows).
+
+```console
+node -v
+```
+
+### Environment Variables
+
+Before you build or run the app, create a new files called `.env` at the project root. This file will be used by Next.js to expose environment variables to your app at runtime.
+
+You will need to enter values for the following environment variables (refer to `.env.sample` for example values):
+
+`DATABASE_URL`: URL of the database that Prisma connects to. See the [documentation](https://www.prisma.io/docs/reference/database-reference/connection-urls) for info about all database options.
+
+`PORT`: Port where the app will run
+
+`NEXTAUTH_URL`: The canonical URL of your production site. This variable does not need to be set when deploying on certain web platforms such as [Vercel](https://vercel.com/docs/concepts/projects/environment-variables#system-environment-variables).
+
+`NEXTAUTH_SECRET`: Used to encrypt the NextAuth JWT. This is the default value for the `secret` option in NextAuth and Middleware.
+
+`NEXT_PUBLIC_GEO_API_URL`: Base URL for the [GeoDB Cities API](https://rapidapi.com/wirefreethought/api/geodb-cities) host. You need to create a Rapid API key to access this API's endpoints.
+
+`NEXT_PUBLIC_RAPID_API_KEY`: API key required to access any Rapid API host
+
+`NEXT_PUBLIC_RAPID_API_HOST`: Base URL for calls to any Rapid API host
+
+`NEXT_PUBLIC_APP_DEFAULT_LOCATION`: Default location used by the app. This must be formtted as `[city.name], [city.countryCode]` based on response data of type `city` from GeoDB Cities API e.g. "San Francisco, US"

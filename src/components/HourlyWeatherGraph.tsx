@@ -11,9 +11,9 @@ import {
 } from 'chart.js'
 import { Line } from 'react-chartjs-2'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
+import { WeatherApiHourlyData } from 'schemas/weatherApiHourlyData'
 import { useLocalData } from 'hooks/useLocalData'
 import { getDailyChartData, htmlLegendPlugin } from 'utils/chartjs'
-import { ForecastHourlyDataViewModel } from 'viewModels/forecastHourlyDataViewModel'
 import classes from 'styles/sass/HourlyWeatherGraph.module.scss'
 
 ChartJS.register(
@@ -29,14 +29,14 @@ ChartJS.register(
 )
 
 interface HourlyWeatherProps {
-  hourly: ForecastHourlyDataViewModel
+  data: WeatherApiHourlyData
 }
 
-const HourlyWeatherGraph = ({ hourly }: HourlyWeatherProps) => {
+const HourlyWeatherGraph = ({ data }: HourlyWeatherProps) => {
   const {
     state: { daySelection },
   } = useLocalData()
-  const chartData = getDailyChartData(hourly, daySelection)
+  const chartData = getDailyChartData(data, daySelection)
   return (
     <>
       <div id="legend-container" className={classes.legendContainer}></div>

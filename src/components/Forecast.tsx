@@ -1,9 +1,10 @@
 import { trpc } from 'utils/trpc'
-import { useLocalData } from 'hooks/useLocalData'
-import CurrentWeather from 'components/CurrentWeather'
-import HourlyWeatherGraph from 'components/HourlyWeatherGraph'
-import DailyForecastSummary from 'components/DailyForecastSummary'
-import AddDashboardItemButton from 'components/AddDashboardItemButton'
+import { WeatherApiResponse } from 'schemas/weatherApiResponse'
+import CurrentWeather from './CurrentWeather'
+import HourlyWeatherGraph from './HourlyWeatherGraph'
+import DailyForecastSummary from './DailyForecastSummary'
+import AddDashboardItemButton from './AddDashboardItemButton'
+import DailyForecastTable from './DailyForecastTable'
 import classes from 'styles/sass/Forecast.module.scss'
 
 interface ForecastProps {
@@ -13,14 +14,9 @@ interface ForecastProps {
 }
 
 const Forecast = ({ label, latitude, longitude }: ForecastProps) => {
-  const {
-    state: { temperatureUnit },
-  } = useLocalData()
-
   const { data: { data: forecast } = {} } = trpc.user.getForecast.useQuery({
     latitude,
     longitude,
-    temperatureUnit,
   })
 
   const { data: { data: locations } = {} } = trpc.user.getLocations.useQuery()
@@ -48,19 +44,16 @@ const Forecast = ({ label, latitude, longitude }: ForecastProps) => {
         </div>
       </div>
       <div className={classes.flexChild}>
-        <CurrentWeather
-          current_weather={forecast.current_weather}
-          daily={forecast.daily}
-          daily_units={forecast.daily_units}
-          hourly={forecast.hourly}
-          hourly_units={forecast.hourly_units}
-        />
+        <CurrentWeather data={forecast} />
       </div>
       <div className={classes.flexChild}>
-        <HourlyWeatherGraph hourly={forecast.hourly} />
+        <HourlyWeatherGraph data={forecast.hourly} />
       </div>
       <div className={classes.flexChild}>
-        <DailyForecastSummary daily={forecast.daily} />
+        <DailyForecastSummary data={forecast.daily} />
+      </div>
+      <div className={classes.flexChild}>
+        <DailyForecastTable data={forecast.daily} />
       </div>
     </div>
   )

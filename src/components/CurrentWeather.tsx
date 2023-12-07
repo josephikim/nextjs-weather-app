@@ -1,41 +1,27 @@
 import dayjs from 'dayjs'
-import { ForecastCurrentWeatherViewModel } from 'viewModels/forecastCurrentWeatherViewModel'
-import { ForecastDailyDataViewModel } from 'viewModels/forecastDailyDataViewModel'
-import { ForecastDailyUnitsViewModel } from 'viewModels/forecastDailyUnitsViewModel'
-import { ForecastHourlyDataViewModel } from 'viewModels/forecastHourlyDataViewModel'
-import { ForecastHourlyUnitsViewModel } from 'viewModels/forecastHourlyUnitsViewModel'
 import TemperatureUnitSelect from 'components/TemperatureUnitSelect'
 import { degToCompass } from 'utils/weather'
 import { getWmoDescription } from 'utils/meteo'
+import { WeatherApiResponse } from 'schemas/weatherApiResponse'
 import classes from 'styles/sass/CurrentWeather.module.scss'
 
 interface CurrentWeatherProps {
-  current_weather: ForecastCurrentWeatherViewModel
-  daily: ForecastDailyDataViewModel
-  daily_units: ForecastDailyUnitsViewModel
-  hourly: ForecastHourlyDataViewModel
-  hourly_units: ForecastHourlyUnitsViewModel
+  data: WeatherApiResponse
 }
 
-const CurrentWeather = ({
-  current_weather,
-  daily,
-  daily_units,
-  hourly,
-  hourly_units,
-}: CurrentWeatherProps) => {
-  const displayDay = dayjs(daily.time[0]).format('dddd')
-  const displayDate = dayjs(daily.time[0]).format('MM/DD/YYYY')
-  const displayCondition = getWmoDescription(current_weather.weathercode)
+const CurrentWeather = ({ data }: CurrentWeatherProps) => {
+  const displayDay = dayjs(data.daily.time[0]).format('dddd')
+  const displayDate = dayjs(data.daily.time[0]).format('MM/DD/YYYY')
+  const displayCondition = getWmoDescription(data.current.weatherCode)
   return (
     <div className={classes.flexContainer}>
       <div className={classes.flexChild}>
         <i
-          className={`${classes.icon} wi wi-wmo4680-${current_weather.weathercode}`}
+          className={`${classes.icon} wi wi-wmo4680-${data.current.weatherCode}`}
         ></i>
         <div className={classes.alignTop}>
           <span className={classes.temperature}>
-            {current_weather.temperature}
+            {data.current.temperature2m}
           </span>
           <TemperatureUnitSelect />
         </div>
@@ -45,22 +31,22 @@ const CurrentWeather = ({
           <span className="heading">Precipitation (24 Hr):</span>
         </div>
         <div className={classes.fieldValue}>
-          <span>{Math.trunc(daily.precipitation_sum[0])} </span>
-          <span>{daily_units.precipitation_sum}</span>
+          <span>{Math.trunc(data.daily.precipitationSum[0])} </span>
+          <span>{data.daily.precipitationSumUnit}</span>
         </div>
         <div className={classes.fieldName}>
           <span className="heading">Humidity:</span>
         </div>
         <div className={classes.fieldValue}>
-          <span>{hourly.relativehumidity_2m[0]}</span>
-          <span>{hourly_units.relativehumidity_2m}</span>
+          <span>{data.hourly.relativeHumidity2m[0]}</span>
+          <span>{data.hourly.relativeHumidity2mUnit}</span>
         </div>
 
         <div className={classes.fieldName}>
           <span className="heading">Wind Speed:</span>
         </div>
         <div className={classes.fieldValue}>
-          <span>{current_weather.windspeed} </span>
+          <span>{data.current.windSpeed10m} </span>
           <span>mph</span>
         </div>
 
@@ -68,7 +54,7 @@ const CurrentWeather = ({
           <span className="heading">Wind Direction:</span>
         </div>
         <div className={classes.fieldValue}>
-          <span>{degToCompass(current_weather.winddirection)}</span>
+          <span>{degToCompass(data.current.windDirection10m)}</span>
         </div>
       </div>
 

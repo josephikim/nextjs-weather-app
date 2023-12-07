@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import { Plugin } from 'chart.js'
 import { Context } from 'chartjs-plugin-datalabels'
-import { ForecastHourlyDataViewModel } from 'viewModels/forecastHourlyDataViewModel'
+import { WeatherApiHourlyData } from 'schemas/weatherApiHourlyData'
 import { DaySelectionRange } from 'hooks/useLocalData'
 
 type ChartData = {
@@ -14,7 +14,7 @@ type ChartData = {
 }
 
 export const getDailyChartData = (
-  data: ForecastHourlyDataViewModel,
+  data: WeatherApiHourlyData,
   daySelection: DaySelectionRange
 ): ChartData => {
   const startIndex = 0 + 24 * (daySelection - 1)
@@ -27,7 +27,7 @@ export const getDailyChartData = (
   const chartDatasets = [
     {
       label: 'Temperature',
-      data: data.temperature_2m.slice(startIndex, endIndex),
+      data: data.temperature2m.slice(startIndex, endIndex),
       fill: true,
       datalabels: {
         formatter: Math.round,
@@ -46,7 +46,7 @@ export const getDailyChartData = (
     },
     {
       label: 'Humidity',
-      data: data.relativehumidity_2m.slice(startIndex, endIndex),
+      data: data.relativeHumidity2m.slice(startIndex, endIndex),
       hidden: true,
       fill: true,
       datalabels: {
@@ -57,7 +57,7 @@ export const getDailyChartData = (
     },
     {
       label: 'Wind Speed',
-      data: data.windspeed_10m.slice(startIndex, endIndex),
+      data: data.windSpeed10m.slice(startIndex, endIndex),
       hidden: true,
       fill: true,
       datalabels: {

@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import { useLocalData } from 'hooks/useLocalData'
+// import { useLocalData } from 'hooks/useLocalData'
 import { trpc } from 'utils/trpc'
 import { degToCompass } from 'utils/weather'
 import { getWmoDescription } from 'utils/meteo'
@@ -17,14 +17,9 @@ const ForecastPreview = ({
   latitude,
   longitude,
 }: ForecastPreviewProps) => {
-  const {
-    state: { temperatureUnit },
-  } = useLocalData()
-
   const { data: { data: forecast } = {} } = trpc.user.getForecast.useQuery({
     latitude,
     longitude,
-    temperatureUnit,
   })
 
   if (!forecast) {
@@ -35,7 +30,7 @@ const ForecastPreview = ({
     label
   )}&latitude=${latitude}&longitude=${longitude}`
 
-  const wmoDescription = getWmoDescription(forecast.current_weather.weathercode)
+  const wmoDescription = getWmoDescription(forecast.current.weatherCode)
 
   return (
     <>
@@ -43,12 +38,12 @@ const ForecastPreview = ({
         <div className={classes.flexContainer}>
           <div className={classes.flexChild}>
             <i
-              className={`${classes.icon} wi wi-wmo4680-${forecast.current_weather.weathercode}`}
+              className={`${classes.icon} wi wi-wmo4680-${forecast.current.weatherCode}`}
             ></i>
           </div>
           <div className={classes.flexChild}>
             <h3 className={classes.temperature}>
-              {Math.trunc(forecast.current_weather.temperature)}
+              {Math.trunc(forecast.current.temperature2m)}
             </h3>
             <TemperatureUnitSelect />
             <div>{wmoDescription}</div>
@@ -56,13 +51,13 @@ const ForecastPreview = ({
         </div>
       </div>
       <div className={classes.contentBlock}>
-        <div className={classes.flexContainer}>
+        {/* <div className={classes.flexContainer}>
           <div className={classes.flexChild}>
             <span className="heading">Precipitation (24 Hr): </span>
           </div>
           <div className={classes.flexChild}>
-            <span>{Math.trunc(forecast.daily.precipitation_sum[0])} </span>
-            <span>{forecast.daily_units.precipitation_sum}</span>
+            <span>{Math.trunc(forecast.daily.precipitationSum[0])} </span>
+            <span>{forecast.daily.precipitationSumUnit}</span>
           </div>
         </div>
         <div className={classes.flexContainer}>
@@ -70,16 +65,16 @@ const ForecastPreview = ({
             <span className="heading">Humidity: </span>
           </div>
           <div className={classes.flexChild}>
-            <span>{forecast.hourly.relativehumidity_2m[0]}</span>
-            <span>{forecast.hourly_units.relativehumidity_2m}</span>
+            <span>{forecast.hourly.relativeHumidity2m[0]}</span>
+            <span>{forecast.hourly.relativeHumidity2mUnit}</span>
           </div>
-        </div>
+        </div> */}
         <div className={classes.flexContainer}>
           <div className={classes.flexChild}>
             <span className="heading">Wind Speed: </span>
           </div>
           <div className={classes.flexChild}>
-            <span>{forecast.current_weather.windspeed} </span>
+            <span>{forecast.current.windSpeed10m} </span>
             <span>mph</span>
           </div>
         </div>
@@ -88,7 +83,7 @@ const ForecastPreview = ({
             <span className="heading">Wind Direction: </span>
           </div>
           <div className={classes.flexChild}>
-            <span>{degToCompass(forecast.current_weather.winddirection)}</span>
+            <span>{degToCompass(forecast.current.windDirection10m)}</span>
           </div>
         </div>
       </div>

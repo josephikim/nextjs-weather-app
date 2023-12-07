@@ -1,13 +1,13 @@
 import { z } from 'zod'
 import { publicProcedure, protectedProcedure, router } from 'backend/trpc'
 import postgresService from 'db/postgres'
-import { getForecastData } from 'utils/meteo'
+import { getWeatherData } from 'utils/meteo'
 import {
   CreateLocationModelSchema,
   DeleteLocationModelSchema,
 } from 'models/location'
 import { UpdateUserLocationsDisplayOrderModelSchema } from 'models/user'
-import { ForecastApiResponseViewModelSchema } from 'viewModels/forecastApiResponseViewModel'
+import { WeatherApiResponseSchema } from 'schemas/weatherApiResponse'
 
 export const userRouter = router({
   getForecast: publicProcedure
@@ -15,16 +15,12 @@ export const userRouter = router({
       z.object({
         latitude: z.string(),
         longitude: z.string(),
-        temperatureUnit: z.string(),
       })
     )
     .query(async ({ input }) => {
-      const forecast = await getForecastData(
-        input.latitude,
-        input.longitude,
-        input.temperatureUnit
-      )
-      const parsed = ForecastApiResponseViewModelSchema.parse(forecast)
+      const data = await getWeatherData(input.latitude, input.longitude)
+
+      const parsed = WeatherApiResponseSchema.parse(data)
 
       return {
         status: 'success',

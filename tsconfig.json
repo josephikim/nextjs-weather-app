@@ -21,6 +21,11 @@
       "module": "CommonJS"
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "src/components/DailyForecastTable.jsx"
+  ],
   "exclude": ["node_modules"]
 }

@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import { Card } from 'react-bootstrap'
 import { useDrag, useDrop } from 'react-dnd'
-import { ItemTypes } from 'utils/reactdnd'
+import { ItemTypes } from 'utils/react-dnd'
 import classes from 'styles/sass/DndMovableItem.module.scss'
 
 const DndMovableItem = ({

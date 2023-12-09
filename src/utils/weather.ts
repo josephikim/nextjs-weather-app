@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 
+// A function to convert azimuth degrees to 16-directional compass abbreviations
 export const degToCompass = (num: number): string => {
   const val = Math.floor(num / 22.5 + 0.5)
   const arr = [
@@ -23,7 +24,20 @@ export const degToCompass = (num: number): string => {
   return arr[val % 16]
 }
 
+// A function to return short-form version of day name from date string input
 export const getShortDisplayDay = (dateStr: string): string => {
   const d = dayjs(dateStr)
   return d.format('ddd')
+}
+
+// A function to convert Celsius to Fahrenheit
+export const cToF = (celsius: number): number => {
+  const cTemp = celsius
+  return (cTemp * 9) / 5 + 32
+}
+
+// A function to convert Fahrenheit to Celsius
+export const fToC = (fahrenheit: number): number => {
+  const fTemp = fahrenheit
+  return ((fTemp - 32) * 5) / 9
 }

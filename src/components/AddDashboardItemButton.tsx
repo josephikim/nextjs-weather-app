@@ -1,20 +1,20 @@
-import { CreateLocationModel } from 'models/location'
+import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
 import { Modal } from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import { trpc } from 'utils/trpc'
+import { CreateLocationModel } from 'models/location'
 
 interface AddDashboardItemButtonProps {
-  label: string
+  location: string
   latitude: string
   longitude: string
   isAdded: boolean
 }
 
 const AddDashboardItemButton = ({
-  label,
+  location,
   latitude,
   longitude,
   isAdded,
@@ -41,7 +41,7 @@ const AddDashboardItemButton = ({
   useEffect(() => {
     if (isLoading) {
       const data: CreateLocationModel = {
-        label,
+        label: location,
         latitude,
         longitude,
       }

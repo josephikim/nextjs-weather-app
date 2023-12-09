@@ -1,9 +1,9 @@
-import type { Location } from '@prisma/client'
 import React, { useState, useEffect } from 'react'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { TouchBackend } from 'react-dnd-touch-backend'
 import update from 'immutability-helper'
+import type { Location } from '@prisma/client'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -105,28 +105,28 @@ const DashboardPage = () => {
   let jsx: JSX.Element = <div>Loading dashboard...</div>
 
   if (userLocations) {
-    const items = movableItems.map((item, index) => {
+    const itemsJSX = movableItems.map((movableItem, index) => {
       return (
         <Col md={4} key={index}>
           <DndMovableItem
-            item={item}
             index={index}
-            key={item.label}
+            item={movableItem}
+            key={movableItem.label}
             moveItem={moveItem}
             dropItem={dropItem}
             closeItem={closeItem}
           >
             <ForecastPreview
-              label={item.label}
-              latitude={item.latitude.toString()}
-              longitude={item.longitude.toString()}
+              location={movableItem.label}
+              latitude={movableItem.latitude.toString()}
+              longitude={movableItem.longitude.toString()}
             />
           </DndMovableItem>
         </Col>
       )
     })
 
-    jsx = <Row>{items}</Row>
+    jsx = <Row>{itemsJSX}</Row>
   }
 
   return (

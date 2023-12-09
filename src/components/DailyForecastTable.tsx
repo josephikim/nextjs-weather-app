@@ -1,7 +1,6 @@
 import { Table } from 'react-bootstrap'
-import { WeatherApiDailyData } from 'schemas/weatherApiDailyData'
-import { useLocalData } from 'hooks/useLocalData'
 import { getShortDisplayDay } from 'utils/weather'
+import { useLocalData } from 'hooks/useLocalData'
 
 interface DailyForecastTableRow {
   dayShort: string
@@ -12,10 +11,6 @@ interface DailyForecastTableRow {
   windSpeed: number
   windDirection: number
   weatherCode: number
-}
-
-interface DailyForecastTableProps {
-  data: WeatherApiDailyData
 }
 
 const getDailyForecastTableRows = (input: any) => {
@@ -35,11 +30,24 @@ const getDailyForecastTableRows = (input: any) => {
   return result
 }
 
+interface DailyForecastTableProps {
+  data: {
+    celsius: string
+    fahrenheit: string
+  }
+}
+
 const DailyForecastTable = ({ data }: DailyForecastTableProps) => {
   const {
     state: { temperatureUnit },
   } = useLocalData()
-  const rowData = getDailyForecastTableRows(data)
+
+  const json =
+    temperatureUnit === 'c'
+      ? JSON.parse(data.celsius).daily
+      : JSON.parse(data.fahrenheit).daily
+
+  const rowData = getDailyForecastTableRows(json)
 
   return (
     <Table bordered hover>
@@ -56,9 +64,9 @@ const DailyForecastTable = ({ data }: DailyForecastTableProps) => {
             Low <span>&#176;</span>
             {`${temperatureUnit.toUpperCase()}`}
           </th>
-          <th>Precipitation ({data.precipitationSumUnit})</th>
-          <th>Wind Speed({data.windSpeed10mMaxUnit})</th>
-          <th>Direction({data.windDirection10mDominantUnit})</th>
+          <th>Precipitation ({json.precipitationSumUnit})</th>
+          <th>Wind Speed({json.windSpeed10mMaxUnit})</th>
+          <th>Direction({json.windDirection10mDominantUnit})</th>
         </tr>
       </thead>
       <tbody>

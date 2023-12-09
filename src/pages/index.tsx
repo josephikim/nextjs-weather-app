@@ -1,72 +1,55 @@
 import type { NextPage } from 'next'
-import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { useEffect } from 'react'
 import { trpc } from 'utils/trpc'
-import Forecast from 'components/Forecast'
-import AlertDismissible from 'components/AlertDismissible'
-import classes from 'styles/css/HomePage.module.css'
 
 const HomePage: NextPage = () => {
   const { data: session } = useSession()
   const utils = trpc.useContext()
+  const router = useRouter()
   const isAuthed = !!session?.user.id
 
+  // Enable query if user is guest
   const { data: { data: defaultLocation } = {} } =
-    trpc.getDefaultLocation.useQuery()
+    trpc.getDefaultLocation.useQuery(undefined, { enabled: !isAuthed })
 
-  const { data: { data: locations } = {} } = trpc.user.getLocations.useQuery()
+  // Enable query if user is authed
+  const { data: { data: userLocations } = {} } =
+    trpc.user.getLocations.useQuery(undefined, { enabled: isAuthed })
 
   useEffect(() => {
     utils.user.getLocations.invalidate()
   }, [])
 
-  let jsx: JSX.Element
+  const userDefaultLocation = userLocations?.filter(
+    (location) => location.isUserDefault === true
+  )[0].location
 
-  if (!defaultLocation) {
-    jsx = <span>Loading forecast...</span>
+  // Redirect to default forecast page
+  if (isAuthed) {
+    if (userDefaultLocation) {
+      const url = `/forecast?location=${encodeURIComponent(
+        userDefaultLocation.label
+      )}&latitude=${userDefaultLocation.latitude}&longitude=${
+        userDefaultLocation.longitude
+      }`
+
+      void router.push(url)
+    }
   } else {
-    // Load user default location
-    if (locations && locations.length > 0) {
-      const userDefaultLocation = locations.filter(
-        (object) => object.isUserDefault === true
-      )[0].location
+    if (defaultLocation) {
+      const url = `/forecast?location=${encodeURIComponent(
+        defaultLocation.label
+      )}&latitude=${defaultLocation.latitude}&longitude=${
+        defaultLocation.longitude
+      }`
 
-      jsx = (
-        <Forecast
-          label={userDefaultLocation.label}
-          latitude={userDefaultLocation.latitude.toString()}
-          longitude={userDefaultLocation.longitude.toString()}
-        />
-      )
-    } else {
-      // Load fallback location
-      jsx = (
-        <Forecast
-          label={defaultLocation.label}
-          latitude={defaultLocation.latitude.toString()}
-          longitude={defaultLocation.longitude.toString()}
-        />
-      )
+      void router.push(url)
     }
   }
 
-  return (
-    <div className={classes.container}>
-      <main className={classes.main}>
-        {!isAuthed && (
-          <AlertDismissible variant="info">
-            <span>
-              Search live weather conditions for any city in the world. To
-              create a dashboard of your favorite locations, please{' '}
-              <Link href="/auth">create an account.</Link>
-            </span>
-          </AlertDismissible>
-        )}
-        {jsx}
-      </main>
-    </div>
-  )
+  return null
 }
 
 export default HomePage

@@ -1,27 +1,40 @@
 import dayjs from 'dayjs'
-import TemperatureUnitSelect from 'components/TemperatureUnitSelect'
-import { degToCompass } from 'utils/weather'
 import { getWmoDescription } from 'utils/meteo'
-import { WeatherApiResponse } from 'schemas/weatherApiResponse'
+import { degToCompass } from 'utils/weather'
+import { useLocalData } from 'hooks/useLocalData'
+import TemperatureUnitSelect from 'components/TemperatureUnitSelect'
 import classes from 'styles/sass/CurrentWeather.module.scss'
 
 interface CurrentWeatherProps {
-  data: WeatherApiResponse
+  data: {
+    celsius: string
+    fahrenheit: string
+  }
 }
 
 const CurrentWeather = ({ data }: CurrentWeatherProps) => {
-  const displayDay = dayjs(data.daily.time[0]).format('dddd')
-  const displayDate = dayjs(data.daily.time[0]).format('MM/DD/YYYY')
-  const displayCondition = getWmoDescription(data.current.weatherCode)
+  const {
+    state: { temperatureUnit },
+  } = useLocalData()
+
+  const json =
+    temperatureUnit === 'c'
+      ? JSON.parse(data.celsius)
+      : JSON.parse(data.fahrenheit)
+
+  const displayDay = dayjs(json.daily.time[0]).format('dddd')
+  const displayDate = dayjs(json.daily.time[0]).format('MM/DD/YYYY')
+  const displayCondition = getWmoDescription(json.current.weatherCode)
+
   return (
     <div className={classes.flexContainer}>
       <div className={classes.flexChild}>
         <i
-          className={`${classes.icon} wi wi-wmo4680-${data.current.weatherCode}`}
+          className={`${classes.icon} wi wi-wmo4680-${json.current.weatherCode}`}
         ></i>
         <div className={classes.alignTop}>
           <span className={classes.temperature}>
-            {data.current.temperature2m}
+            {json.current.temperature2m}
           </span>
           <TemperatureUnitSelect />
         </div>
@@ -31,22 +44,22 @@ const CurrentWeather = ({ data }: CurrentWeatherProps) => {
           <span className="heading">Precipitation (24 Hr):</span>
         </div>
         <div className={classes.fieldValue}>
-          <span>{Math.trunc(data.daily.precipitationSum[0])} </span>
-          <span>{data.daily.precipitationSumUnit}</span>
+          <span>{Math.trunc(json.daily.precipitationSum[0])} </span>
+          <span>{json.daily.precipitationSumUnit}</span>
         </div>
         <div className={classes.fieldName}>
           <span className="heading">Humidity:</span>
         </div>
         <div className={classes.fieldValue}>
-          <span>{data.hourly.relativeHumidity2m[0]}</span>
-          <span>{data.hourly.relativeHumidity2mUnit}</span>
+          <span>{json.hourly.relativeHumidity2m[0]}</span>
+          <span>{json.hourly.relativeHumidity2mUnit}</span>
         </div>
 
         <div className={classes.fieldName}>
           <span className="heading">Wind Speed:</span>
         </div>
         <div className={classes.fieldValue}>
-          <span>{data.current.windSpeed10m} </span>
+          <span>{json.current.windSpeed10m} </span>
           <span>mph</span>
         </div>
 
@@ -54,7 +67,7 @@ const CurrentWeather = ({ data }: CurrentWeatherProps) => {
           <span className="heading">Wind Direction:</span>
         </div>
         <div className={classes.fieldValue}>
-          <span>{degToCompass(data.current.windDirection10m)}</span>
+          <span>{degToCompass(json.current.windDirection10m)}</span>
         </div>
       </div>
 

@@ -1,12 +1,12 @@
 import * as React from 'react'
 
 export type TemperatureUnit = 'f' | 'c'
+export type DaySelectionRange = 1 | 2 | 3 | 4 | 5 | 6 | 7
 type Theme = 'light' | 'dark'
 type SearchResult = {
   label: string
   value: string
 }
-export type DaySelectionRange = 1 | 2 | 3 | 4 | 5 | 6 | 7
 type Action =
   | { type: 'UPDATE_TEMPERATURE_UNIT'; payload: TemperatureUnit }
   | { type: 'SWITCH_THEME'; payload: Theme }
@@ -15,6 +15,7 @@ type Action =
       type: 'UPDATE_DAY_SELECTION'
       payload: DaySelectionRange
     }
+
 type Dispatch = (action: Action) => void
 type LocalDataProviderProps = { children: React.ReactNode }
 

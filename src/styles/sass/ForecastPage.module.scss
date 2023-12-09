@@ -1,12 +1,22 @@
-.container {
-  padding: 0 2rem;
-}
-
-.main {
-  min-height: 100vh;
-  padding: 2rem;
-  flex: 1;
+.flexContainer {
   display: flex;
   flex-direction: column;
+  max-width: 960px;
+  margin: 0 auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
   align-items: center;
+  .flexChild {
+    padding: 2rem;
+    align-self: stretch;
+    .title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+    button {
+      float: right;
+      white-space: nowrap;
+    }
+  }
 }

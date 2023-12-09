@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/router'
 import { AsyncPaginate } from 'react-select-async-paginate'
-import { useLocalData } from 'hooks/useLocalData'
 import { GEO_API_URL, geoApiOptions } from 'utils/cities'
+import { useLocalData } from 'hooks/useLocalData'
 import classes from 'styles/sass/Search.module.scss'
 
 const Search = () => {
@@ -14,7 +14,7 @@ const Search = () => {
     dispatch({ type: 'UPDATE_SEARCH_RESULT', payload: searchData })
 
     const [latitude, longitude] = searchData.value.split(' ')
-    const route = `/forecast?label=${encodeURIComponent(
+    const route = `/forecast?location=${encodeURIComponent(
       searchData.label
     )}&latitude=${latitude}&longitude=${longitude}`
 
@@ -22,7 +22,7 @@ const Search = () => {
     router.push(route)
   }
 
-  const loadOptions = (inputValue: string) => {
+  const loadOptions = async (inputValue: string) => {
     return fetch(
       `${GEO_API_URL}/cities?types=CITY&minPopulation=500000&&sort=-population&namePrefix=${inputValue}`,
       geoApiOptions

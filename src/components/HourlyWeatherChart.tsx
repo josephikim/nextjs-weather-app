@@ -11,10 +11,9 @@ import {
 } from 'chart.js'
 import { Line } from 'react-chartjs-2'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
-import { WeatherApiHourlyData } from 'schemas/weatherApiHourlyData'
+import { getHourlyWeatherChartData, htmlLegendPlugin } from 'utils/chartjs'
 import { useLocalData } from 'hooks/useLocalData'
-import { getDailyChartData, htmlLegendPlugin } from 'utils/chartjs'
-import classes from 'styles/sass/HourlyWeatherGraph.module.scss'
+import classes from 'styles/sass/HourlyWeatherChart.module.scss'
 
 ChartJS.register(
   CategoryScale,
@@ -29,14 +28,24 @@ ChartJS.register(
 )
 
 interface HourlyWeatherProps {
-  data: WeatherApiHourlyData
+  data: {
+    celsius: string
+    fahrenheit: string
+  }
 }
 
-const HourlyWeatherGraph = ({ data }: HourlyWeatherProps) => {
+const HourlyWeatherChart = ({ data }: HourlyWeatherProps) => {
   const {
-    state: { daySelection },
+    state: { daySelection, temperatureUnit },
   } = useLocalData()
-  const chartData = getDailyChartData(data, daySelection)
+
+  const json =
+    temperatureUnit === 'c'
+      ? JSON.parse(data.celsius).hourly
+      : JSON.parse(data.fahrenheit).hourly
+
+  const chartData = getHourlyWeatherChartData(json, daySelection)
+
   return (
     <>
       <div id="legend-container" className={classes.legendContainer}></div>
@@ -114,4 +123,4 @@ const HourlyWeatherGraph = ({ data }: HourlyWeatherProps) => {
   )
 }
 
-export default HourlyWeatherGraph
+export default HourlyWeatherChart

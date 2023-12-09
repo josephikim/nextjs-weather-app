@@ -1,5 +1,5 @@
-import { DaySelectionRange, useLocalData } from 'hooks/useLocalData'
 import { Card } from 'react-bootstrap'
+import { DaySelectionRange, useLocalData } from 'hooks/useLocalData'
 import classes from 'styles/sass/DailyForecastSummaryItem.module.scss'
 
 interface DailyForecastSummaryItemProps {
@@ -23,7 +23,7 @@ const DailyForecastSummaryItem = ({
   } = useLocalData()
   return (
     <Card
-      className={`text-center ${
+      className={`text-center ${classes.card} ${
         daySelection === daySelectKey && classes.selected
       }`}
       onClick={(e) =>

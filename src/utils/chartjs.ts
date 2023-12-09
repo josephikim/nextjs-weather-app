@@ -13,7 +13,7 @@ type ChartData = {
   }[]
 }
 
-export const getDailyChartData = (
+export const getHourlyWeatherChartData = (
   data: WeatherApiHourlyData,
   daySelection: DaySelectionRange
 ): ChartData => {

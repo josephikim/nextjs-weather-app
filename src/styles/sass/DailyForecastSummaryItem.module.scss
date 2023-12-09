@@ -1,23 +1,24 @@
-.selected {
-  border: 4px solid orange;
-}
-.flexContainer {
-  display: flex;
-  flex-direction: column;
-  .flexChild {
-    padding: 8px 0;
-    .icon {
-      font-size: 2.5rem;
-    }
-    .tempRange {
-      > div {
-        width: 50%;
-        display: inline;
-        padding: 0 6px;
+.card {
+  &.selected {
+    border: 4px solid orange;
+  }
+  .flexContainer {
+    display: flex;
+    flex-direction: column;
+    .flexChild {
+      padding: 8px 0;
+      .icon {
+        font-size: 2.5rem;
       }
-    }
-    .lo {
-      color: #9aa0a6;
+      .tempRange {
+        > div {
+          display: inline;
+          padding: 0 5%;
+        }
+        .lo {
+          color: #9aa0a6;
+        }
+      }
     }
   }
 }

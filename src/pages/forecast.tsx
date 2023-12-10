@@ -15,12 +15,7 @@ const ForecastPage: NextPage = () => {
   const isQueryParamMissing = !location || !latitude || !longitude
 
   // If URL query params missing, return early
-  if (isQueryParamMissing)
-    return (
-      <div className={classes.container}>
-        Error loading forecast: missing URL parameters
-      </div>
-    )
+  if (isQueryParamMissing) return null
 
   // fetch forecast data
   const { data: { data: forecastData } = {} } = trpc.user.getWeather.useQuery({
@@ -32,19 +27,18 @@ const ForecastPage: NextPage = () => {
   const { data: { data: locationsOnUser } = {} } =
     trpc.user.getLocations.useQuery()
 
+  let jsx: JSX.Element
+
   // If no forecast data, return early
   if (!forecastData) {
-    return <div>Loading forecast...</div>
-  }
-
-  // is forecast location in user locations
-  const isUserLocation = locationsOnUser?.some(
-    (locationOnUser) => locationOnUser.location.label === location
-  )
-
-  return (
-    <div className={classes.flexContainer}>
-      <div className={classes.flexChild}>
+    jsx = <div>Loading forecast...</div>
+  } else {
+    // is forecast location in user locations
+    const isUserLocation = locationsOnUser?.some(
+      (locationOnUser) => locationOnUser.location.label === location
+    )
+    jsx = (
+      <>
         <span className={classes.title}>Current forecast for {location}</span>
         <span>
           <AddDashboardItemButton
@@ -54,10 +48,14 @@ const ForecastPage: NextPage = () => {
             isAdded={!!isUserLocation}
           />
         </span>
-      </div>
-      <div className={classes.flexChild}>
         <Forecast data={forecastData} />
-      </div>
+      </>
+    )
+  }
+
+  return (
+    <div className={classes.container}>
+      <div className={classes.child}>{jsx}</div>
     </div>
   )
 }

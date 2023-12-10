@@ -13,6 +13,7 @@
       text-align: right;
       float: right;
       width: 30%;
+      white-space: nowrap;
     }
     .icon {
       font-size: 3rem;
@@ -22,7 +23,7 @@
       display: inline-block;
       vertical-align: top;
       .temperature {
-        font-size: 3rem;
+        font-size: 2.5rem;
         padding-right: 10px;
         line-height: 3rem;
       }

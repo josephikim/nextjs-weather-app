@@ -13,17 +13,17 @@ interface ForecastProps {
 
 const Forecast = ({ data }: ForecastProps) => {
   return (
-    <div className={classes.flexContainer}>
-      <div className={classes.flexChild}>
+    <div className={classes.container}>
+      <div className={classes.child}>
         <CurrentWeather data={data} />
       </div>
-      <div className={classes.flexChild}>
+      <div className={classes.child}>
         <HourlyWeatherChart data={data} />
       </div>
-      <div className={classes.flexChild}>
+      <div className={classes.child}>
         <DailyForecastSummary data={data} />
       </div>
-      <div className={classes.flexChild}>
+      <div className={classes.child}>
         <DailyForecastTable data={data} />
       </div>
     </div>

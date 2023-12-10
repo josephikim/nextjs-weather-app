@@ -1,14 +1,9 @@
-.flexContainer {
-  display: flex;
-  flex-direction: column;
+.container {
   max-width: 960px;
   margin: 0 auto;
-  padding-left: 2rem;
-  padding-right: 2rem;
-  align-items: center;
-  .flexChild {
+  padding: 0 1.5rem;
+  .child {
     padding: 2rem;
-    align-self: stretch;
     .title {
       font-size: 1.5rem;
       font-weight: bold;

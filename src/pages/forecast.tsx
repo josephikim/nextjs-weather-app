@@ -8,20 +8,20 @@ import classes from 'styles/sass/ForecastPage.module.scss'
 const ForecastPage: NextPage = () => {
   const router = useRouter()
 
-  const location = router.query.location?.toString()
-  const latitude = router.query.latitude?.toString()
-  const longitude = router.query.longitude?.toString()
+  const location = router.query.location?.toString() as string
+  const latitude = router.query.latitude?.toString() as string
+  const longitude = router.query.longitude?.toString() as string
 
   const isQueryParamMissing = !location || !latitude || !longitude
 
-  // If URL query params missing, return early
-  if (isQueryParamMissing) return null
-
   // fetch forecast data
-  const { data: { data: forecastData } = {} } = trpc.user.getWeather.useQuery({
-    latitude,
-    longitude,
-  })
+  const { data: { data: forecastData } = {} } = trpc.user.getWeather.useQuery(
+    {
+      latitude,
+      longitude,
+    },
+    { enabled: !isQueryParamMissing }
+  )
 
   // fetch user locations
   const { data: { data: locationsOnUser } = {} } =

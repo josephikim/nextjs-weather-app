@@ -1,29 +1,61 @@
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
+import { Unit } from '@openmeteo/sdk/unit'
 import { Table } from 'react-bootstrap'
-import { getShortDisplayDay } from 'utils/weather'
+import { getShortDisplayDay, degToCompass } from 'utils/weather'
 import { useLocalData } from 'hooks/useLocalData'
+import displayUnits from 'assets/displayUnits.json'
+import classes from 'styles/sass/DailyForecastTable.module.scss'
+
+// set up dayjs plugins
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 interface DailyForecastTableRow {
   dayShort: string
   date: string
-  tempHigh: number
-  tempLow: number
-  precipitation: number
-  windSpeed: number
-  windDirection: number
+  tempHigh: string
+  tempLow: string
+  precipitation: string
+  windSpeed: string
+  windDirection: string
   weatherCode: number
 }
 
-const getDailyForecastTableRows = (dailyData: any, timezone: string) => {
+// convert daily weather values to display format
+const getDailyForecastTableRows = (
+  dailyData: any,
+  timezone: string,
+  temperatureUnit: string
+) => {
+  const displayPrecipitationUnit =
+    displayUnits[
+      Unit[dailyData.precipitationSumUnit] as keyof typeof displayUnits
+    ]
+  const displayWindSpeedUnit =
+    displayUnits[
+      Unit[dailyData.windSpeed10mMaxUnit] as keyof typeof displayUnits
+    ]
   const result: DailyForecastTableRow[] = []
+
   for (let i = 0; i < dailyData.time.length; i++) {
     result.push({
       dayShort: getShortDisplayDay(dailyData.time[i], timezone),
-      date: dailyData.time[i],
-      tempHigh: dailyData.temperature2mMax[i],
-      tempLow: dailyData.temperature2mMin[i],
-      precipitation: dailyData.precipitationSum[i],
-      windSpeed: dailyData.windSpeed10mMax[i],
-      windDirection: dailyData.windDirection10mDominant[i],
+      date: dayjs.tz(dailyData.time[i], timezone).format('MM/DD/YYYY'),
+      tempHigh: `${Math.round(
+        dailyData.temperature2mMax[i]
+      )}\u00B0${temperatureUnit.toUpperCase()}`,
+      tempLow: `${Math.round(
+        dailyData.temperature2mMin[i]
+      )}\u00B0${temperatureUnit.toUpperCase()}`,
+      precipitation: `${Math.trunc(
+        dailyData.precipitationSum[i]
+      )} ${displayPrecipitationUnit}`,
+      windSpeed: `${Math.round(
+        dailyData.windSpeed10mMax[i]
+      )} ${displayWindSpeedUnit}`,
+      windDirection: degToCompass(dailyData.windDirection10mDominant[i]),
       weatherCode: dailyData.weatherCode[i],
     })
   }
@@ -47,34 +79,43 @@ const DailyForecastTable = ({ data }: DailyForecastTableProps) => {
       ? JSON.parse(data.celsius)
       : JSON.parse(data.fahrenheit)
 
-  const rowData = getDailyForecastTableRows(json.daily, json.timezone)
+  const rowData = getDailyForecastTableRows(
+    json.daily,
+    json.timezone,
+    temperatureUnit
+  )
 
   return (
-    <Table bordered hover>
+    <Table striped bordered>
       <thead>
         <tr>
           <th></th>
-          <th></th>
-          <th>Date</th>
+          <th title="Date">Date</th>
+          <th title="High Temperature">High</th>
+          <th title="Low Temperature">Low</th>
           <th>
-            High <span>&#176;</span>
-            {`${temperatureUnit.toUpperCase()}`}
+            <i
+              className={`wi wi-rain ${classes.icon}`}
+              title="Precipitation"
+            ></i>
           </th>
           <th>
-            Low <span>&#176;</span>
-            {`${temperatureUnit.toUpperCase()}`}
+            <i
+              className={`wi wi-strong-wind ${classes.icon}`}
+              title="Wind Speed"
+            ></i>
           </th>
-          <th>Precipitation ({json.daily.precipitationSumUnit})</th>
-          <th>Wind Speed({json.daily.windSpeed10mMaxUnit})</th>
-          <th>Direction({json.daily.windDirection10mDominantUnit})</th>
+          <th>
+            <i
+              className={`wi wi-wind-direction ${classes.icon}`}
+              title="Wind Direction"
+            ></i>
+          </th>
         </tr>
       </thead>
       <tbody>
         {rowData.map((row) => (
           <tr key={row.date}>
-            <td>
-              <i className={`wi wi-wmo4680-${row.weatherCode}`}></i>
-            </td>
             <td>{row.dayShort}</td>
             <td>{row.date}</td>
             <td>{row.tempHigh}</td>

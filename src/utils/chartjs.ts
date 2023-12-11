@@ -1,8 +1,14 @@
 import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
 import { Plugin } from 'chart.js'
 import { Context } from 'chartjs-plugin-datalabels'
 import { WeatherApiHourlyData } from 'schemas/weatherApiHourlyData'
 import { DaySelectionRange } from 'hooks/useLocalData'
+
+// set up dayjs plugins
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 type ChartData = {
   labels: string[]
@@ -15,6 +21,7 @@ type ChartData = {
 
 export const getHourlyWeatherChartData = (
   data: WeatherApiHourlyData,
+  timezone: string,
   daySelection: DaySelectionRange
 ): ChartData => {
   const startIndex = 0 + 24 * (daySelection - 1)
@@ -22,7 +29,7 @@ export const getHourlyWeatherChartData = (
 
   const chartLabels = data.time
     .slice(startIndex, endIndex)
-    .map((timestamp) => dayjs(timestamp).format('h:mma'))
+    .map((timestamp) => dayjs.tz(timestamp, timezone).format('h:mma'))
 
   const chartDatasets = [
     {

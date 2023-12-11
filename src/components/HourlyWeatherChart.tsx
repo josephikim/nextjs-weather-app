@@ -41,10 +41,14 @@ const HourlyWeatherChart = ({ data }: HourlyWeatherProps) => {
 
   const json =
     temperatureUnit === 'c'
-      ? JSON.parse(data.celsius).hourly
-      : JSON.parse(data.fahrenheit).hourly
+      ? JSON.parse(data.celsius)
+      : JSON.parse(data.fahrenheit)
 
-  const chartData = getHourlyWeatherChartData(json, daySelection)
+  const chartData = getHourlyWeatherChartData(
+    json.hourly,
+    json.timezone,
+    daySelection
+  )
 
   return (
     <>

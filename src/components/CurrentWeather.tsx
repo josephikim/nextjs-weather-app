@@ -1,4 +1,6 @@
 import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
 import { Unit } from '@openmeteo/sdk/unit'
 import { getWmoDescription } from 'utils/meteo'
 import { degToCompass } from 'utils/weather'
@@ -6,6 +8,10 @@ import { useLocalData } from 'hooks/useLocalData'
 import TemperatureUnitSelect from 'components/TemperatureUnitSelect'
 import displayUnits from 'assets/displayUnits.json'
 import classes from 'styles/sass/CurrentWeather.module.scss'
+
+// set up dayjs plugins
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 interface CurrentWeatherProps {
   data: {
@@ -26,8 +32,10 @@ const CurrentWeather = ({ data }: CurrentWeatherProps) => {
 
   const displayWeatherIcon = `wi-wmo4680-${json.current.weatherCode}`
   const displayTemp = Math.round(json.current.temperature2m)
-  const displayDay = dayjs(json.daily.time[0]).format('dddd')
-  const displayDate = dayjs(json.daily.time[0]).format('MM/DD/YYYY')
+  const displayDay = dayjs.tz(json.daily.time[0], json.timezone).format('dddd')
+  const displayDate = dayjs
+    .tz(json.daily.time[0], json.timezone)
+    .format('MM/DD/YYYY')
   const displayCondition = getWmoDescription(json.current.weatherCode)
   const displayPrecipitation = Math.trunc(json.daily.precipitationSum[0])
   const displayPrecipitationUnit =

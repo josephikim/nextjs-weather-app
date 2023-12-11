@@ -39,6 +39,8 @@ export const userRouter = router({
         const fahrenheitData = {
           latitude: parsed.latitude,
           longitude: parsed.longitude,
+          timezone: parsed.timezone,
+          timezoneAbbreviation: parsed.timezoneAbbreviation,
           current: {
             ...parsed.current,
             temperature2m: cToF(parsed.current.temperature2m),

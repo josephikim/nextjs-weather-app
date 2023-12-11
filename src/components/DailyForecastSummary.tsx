@@ -17,23 +17,23 @@ const DailyForecastSummary = ({ data }: DailyForecastSummaryProps) => {
 
   const json =
     temperatureUnit === 'c'
-      ? JSON.parse(data.celsius).daily
-      : JSON.parse(data.fahrenheit).daily
+      ? JSON.parse(data.celsius)
+      : JSON.parse(data.fahrenheit)
 
   const dateIterator = Array.from(Array(7).keys())
 
   const jsx = dateIterator.map((index) => {
-    const displayMinTemp = Math.round(json.temperature2mMin[index])
-    const displayMaxTemp = Math.round(json.temperature2mMax[index])
-    const dateString = json.time[index]
-    const displayDay = getShortDisplayDay(dateString)
+    const displayMinTemp = Math.round(json.daily.temperature2mMin[index])
+    const displayMaxTemp = Math.round(json.daily.temperature2mMax[index])
+    const dateString = json.daily.time[index]
+    const displayDay = getShortDisplayDay(dateString, json.timezone)
     return (
       <div className={classes.flexChild} key={dateString}>
         <DailyForecastSummaryItem
           day={displayDay}
           minTemp={displayMinTemp}
           maxTemp={displayMaxTemp}
-          weathercode={json.weatherCode[index]}
+          weathercode={json.daily.weatherCode[index]}
           daySelectKey={index + 1}
         />
       </div>

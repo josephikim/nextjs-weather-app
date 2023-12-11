@@ -13,18 +13,18 @@ interface DailyForecastTableRow {
   weatherCode: number
 }
 
-const getDailyForecastTableRows = (input: any) => {
+const getDailyForecastTableRows = (dailyData: any, timezone: string) => {
   const result: DailyForecastTableRow[] = []
-  for (let i = 0; i < input.time.length; i++) {
+  for (let i = 0; i < dailyData.time.length; i++) {
     result.push({
-      dayShort: getShortDisplayDay(input.time[i]),
-      date: input.time[i],
-      tempHigh: input.temperature2mMax[i],
-      tempLow: input.temperature2mMin[i],
-      precipitation: input.precipitationSum[i],
-      windSpeed: input.windSpeed10mMax[i],
-      windDirection: input.windDirection10mDominant[i],
-      weatherCode: input.weatherCode[i],
+      dayShort: getShortDisplayDay(dailyData.time[i], timezone),
+      date: dailyData.time[i],
+      tempHigh: dailyData.temperature2mMax[i],
+      tempLow: dailyData.temperature2mMin[i],
+      precipitation: dailyData.precipitationSum[i],
+      windSpeed: dailyData.windSpeed10mMax[i],
+      windDirection: dailyData.windDirection10mDominant[i],
+      weatherCode: dailyData.weatherCode[i],
     })
   }
   return result
@@ -44,10 +44,10 @@ const DailyForecastTable = ({ data }: DailyForecastTableProps) => {
 
   const json =
     temperatureUnit === 'c'
-      ? JSON.parse(data.celsius).daily
-      : JSON.parse(data.fahrenheit).daily
+      ? JSON.parse(data.celsius)
+      : JSON.parse(data.fahrenheit)
 
-  const rowData = getDailyForecastTableRows(json)
+  const rowData = getDailyForecastTableRows(json.daily, json.timezone)
 
   return (
     <Table bordered hover>
@@ -64,9 +64,9 @@ const DailyForecastTable = ({ data }: DailyForecastTableProps) => {
             Low <span>&#176;</span>
             {`${temperatureUnit.toUpperCase()}`}
           </th>
-          <th>Precipitation ({json.precipitationSumUnit})</th>
-          <th>Wind Speed({json.windSpeed10mMaxUnit})</th>
-          <th>Direction({json.windDirection10mDominantUnit})</th>
+          <th>Precipitation ({json.daily.precipitationSumUnit})</th>
+          <th>Wind Speed({json.daily.windSpeed10mMaxUnit})</th>
+          <th>Direction({json.daily.windDirection10mDominantUnit})</th>
         </tr>
       </thead>
       <tbody>

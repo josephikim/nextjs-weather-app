@@ -1,4 +1,10 @@
 import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
+
+// set up dayjs plugins
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 // A function to convert azimuth degrees to 16-directional compass abbreviations
 export const degToCompass = (num: number): string => {
@@ -25,8 +31,11 @@ export const degToCompass = (num: number): string => {
 }
 
 // A function to return short-form version of day name from date string input
-export const getShortDisplayDay = (dateStr: string): string => {
-  const d = dayjs(dateStr)
+export const getShortDisplayDay = (
+  dateStr: string,
+  timezone: string
+): string => {
+  const d = dayjs.tz(dateStr, timezone)
   return d.format('ddd')
 }
 

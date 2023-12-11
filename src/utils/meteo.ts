@@ -1,5 +1,6 @@
 import { fetchWeatherApi } from 'openmeteo'
 import json from 'assets/wmoWeatherCodes.json'
+import { authRouter } from 'backend/routers/auth.router'
 
 export const getWeatherData = async (
   latitudeInput: string,
@@ -9,6 +10,7 @@ export const getWeatherData = async (
   const params = {
     latitude: latitudeInput,
     longitude: longitudeInput,
+    timezone: 'auto',
     current: [
       'temperature_2m',
       'weather_code',
@@ -43,8 +45,8 @@ export const getWeatherData = async (
 
   // Attributes for timezone and location
   const utcOffsetSeconds = response.utcOffsetSeconds()
-  // const timezone = response.timezone()
-  // const timezoneAbbreviation = response.timezoneAbbreviation()
+  const timezone = response.timezone()
+  const timezoneAbbreviation = response.timezoneAbbreviation()
   const latitude = response.latitude()
   const longitude = response.longitude()
   const current = response.current()!
@@ -56,6 +58,8 @@ export const getWeatherData = async (
   const weatherData = {
     latitude: latitude,
     longitude: longitude,
+    timezone,
+    timezoneAbbreviation,
     current: {
       time: new Date(
         (Number(current.time()) + utcOffsetSeconds) * 1000

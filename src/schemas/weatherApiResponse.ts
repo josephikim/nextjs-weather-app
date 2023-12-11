@@ -6,6 +6,8 @@ import { WeatherApiDailyDataSchema } from 'schemas/weatherApiDailyData'
 export const WeatherApiResponseSchema = z.object({
   latitude: z.number(),
   longitude: z.number(),
+  timezone: z.string(),
+  timezoneAbbreviation: z.string(),
   current: WeatherApiCurrentDataSchema,
   hourly: WeatherApiHourlyDataSchema,
   daily: WeatherApiDailyDataSchema,

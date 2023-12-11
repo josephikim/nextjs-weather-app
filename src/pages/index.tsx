@@ -24,15 +24,15 @@ const HomePage: NextPage = () => {
 
   const userDefaultLocation = userLocations?.filter(
     (location) => location.isUserDefault === true
-  )[0].location
+  )[0]
 
   // Redirect to default forecast page
   if (isAuthed) {
     if (userDefaultLocation) {
       const url = `/forecast?location=${encodeURIComponent(
-        userDefaultLocation.label
-      )}&latitude=${userDefaultLocation.latitude}&longitude=${
-        userDefaultLocation.longitude
+        userDefaultLocation.location.label
+      )}&latitude=${userDefaultLocation.location.latitude}&longitude=${
+        userDefaultLocation.location.longitude
       }`
 
       void router.push(url)

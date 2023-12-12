@@ -1,5 +1,8 @@
 .contentBlock {
   margin-bottom: 1rem;
+  &:last-of-type {
+    margin: 0;
+  }
 }
 .flexContainer {
   display: flex;
@@ -13,12 +16,27 @@
       width: 50%;
       text-align: right;
     }
+    .condition {
+      display: block;
+    }
+    .temperature {
+      display: inline-block;
+      padding: 0 6px;
+      font-size: 2rem;
+      line-height: 2rem;
+      overflow: hidden;
+      p {
+        -ms-transform: scale(1.2);
+        -webkit-transform: scale(1.2);
+        transform: scale(1.2);
+      }
+    }
     .icon {
-      font-size: 3rem;
+      margin-bottom: 12px;
+      font-size: 2.3rem;
     }
   }
 }
 .forecastLink {
-  font-size: 14px;
   text-align: right;
 }

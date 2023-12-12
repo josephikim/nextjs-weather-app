@@ -35,6 +35,7 @@ export const userRouter = router({
 
       const response = {} as SerializedApiResponse
 
+      // convert all temperature values according to temperature unit parameter in API response
       if (queryTemperatureUnit === 'celsius') {
         const fahrenheitData = {
           latitude: parsed.latitude,

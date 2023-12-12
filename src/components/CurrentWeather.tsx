@@ -42,10 +42,10 @@ const CurrentWeather = ({ data }: CurrentWeatherProps) => {
     displayUnits[
       Unit[json.daily.precipitationSumUnit] as keyof typeof displayUnits
     ]
-  const displayHumidity = Math.round(json.hourly.relativeHumidity2m[0])
+  const displayHumidity = Math.round(json.current.relativeHumidity2m)
   const displayHumidityUnit =
     displayUnits[
-      Unit[json.hourly.relativeHumidity2mUnit] as keyof typeof displayUnits
+      Unit[json.current.relativeHumidity2mUnit] as keyof typeof displayUnits
     ]
   const displayWindSpeed = Math.round(json.current.windSpeed10m)
   const displayWindSpeedUnit =
@@ -77,7 +77,7 @@ const CurrentWeather = ({ data }: CurrentWeatherProps) => {
           <span>{displayPrecipitationUnit}</span>
         </div>
         <div className={classes.fieldName}>
-          <span className="heading">Humidity:</span>
+          <span className="heading">Relative Humidity:</span>
         </div>
         <div className={classes.fieldValue}>
           <span>{displayHumidity}</span>

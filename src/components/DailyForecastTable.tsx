@@ -96,13 +96,13 @@ const DailyForecastTable = ({ data }: DailyForecastTableProps) => {
           <th>
             <i
               className={`wi wi-rain ${classes.icon}`}
-              title="Precipitation"
+              title="Daily Precipitation"
             ></i>
           </th>
           <th>
             <i
               className={`wi wi-strong-wind ${classes.icon}`}
-              title="Wind Speed"
+              title="Max Wind Speed"
             ></i>
           </th>
           <th>

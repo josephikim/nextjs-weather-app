@@ -18,6 +18,7 @@ interface HourlyForecastTableRow {
   time: string
   tempHigh: string
   tempLow: string
+  humidity: string
   precipitation: string
   windSpeed: string
   windDirection: string
@@ -32,6 +33,10 @@ const getHourlyForecastTableRows = (
   const displayPrecipitationUnit =
     displayUnits[
       Unit[hourlyData.precipitationUnit] as keyof typeof displayUnits
+    ]
+  const displayRelativeHumidityUnit =
+    displayUnits[
+      Unit[hourlyData.relativeHumidity2mUnit] as keyof typeof displayUnits
     ]
   const displayWindSpeedUnit =
     displayUnits[Unit[hourlyData.windSpeed10mUnit] as keyof typeof displayUnits]
@@ -48,6 +53,9 @@ const getHourlyForecastTableRows = (
       tempLow: `${Math.round(
         hourlyData.temperature2m[i]
       )}\u00B0${temperatureUnit.toUpperCase()}`,
+      humidity: `${Math.trunc(
+        hourlyData.relativeHumidity2m[i]
+      )}${displayRelativeHumidityUnit}`,
       precipitation: `${Math.trunc(
         hourlyData.precipitation[i]
       )} ${displayPrecipitationUnit}`,
@@ -94,8 +102,14 @@ const HourlyForecastTable = ({ data }: HourlyForecastTableProps) => {
           <th title="Low Temperature">Low</th>
           <th>
             <i
+              className={`wi wi-humidity ${classes.icon}`}
+              title="Relative Humidity"
+            ></i>
+          </th>
+          <th>
+            <i
               className={`wi wi-rain ${classes.icon}`}
-              title="Precipitation"
+              title="Hourly Precipitation"
             ></i>
           </th>
           <th>
@@ -120,6 +134,7 @@ const HourlyForecastTable = ({ data }: HourlyForecastTableProps) => {
             <td>{row.time}</td>
             <td>{row.tempHigh}</td>
             <td>{row.tempLow}</td>
+            <td>{row.humidity}</td>
             <td>{row.precipitation}</td>
             <td>{row.windSpeed}</td>
             <td>{row.windDirection}</td>

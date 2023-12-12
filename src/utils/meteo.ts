@@ -1,6 +1,5 @@
 import { fetchWeatherApi } from 'openmeteo'
 import json from 'assets/wmoWeatherCodes.json'
-import { authRouter } from 'backend/routers/auth.router'
 
 export const getWeatherData = async (
   latitudeInput: string,
@@ -13,6 +12,7 @@ export const getWeatherData = async (
     timezone: 'auto',
     current: [
       'temperature_2m',
+      'relative_humidity_2m',
       'weather_code',
       'wind_speed_10m',
       'wind_direction_10m',
@@ -54,7 +54,7 @@ export const getWeatherData = async (
   const daily = response.daily()!
 
   // Note: The order of weather variables in the URL query and the indices below need to match!
-  // Note2: API returns typed arrays (Float32Array) for weather-related variables. We are converting to JS arrays in order to validate schema with Zod.
+  // Note 2: API returns typed arrays (Float32Array) for weather-related variables. We are converting to JS arrays in order to validate schema with Zod.
   const weatherData = {
     latitude: latitude,
     longitude: longitude,
@@ -66,12 +66,14 @@ export const getWeatherData = async (
       ).toISOString(),
       temperature2m: current.variables(0)!.value(),
       temperature2mUnit: current.variables(0)!.unit(),
-      weatherCode: current.variables(1)!.value(),
-      weatherCodeUnit: current.variables(1)!.unit(),
-      windSpeed10m: current.variables(2)!.value(),
-      windSpeed10mUnit: current.variables(2)!.unit(),
-      windDirection10m: current.variables(3)!.value(),
-      windDirection10mUnit: current.variables(3)!.unit(),
+      relativeHumidity2m: hourly.variables(1)!.value(),
+      relativeHumidity2mUnit: hourly.variables(1)!.unit()!,
+      weatherCode: current.variables(2)!.value(),
+      weatherCodeUnit: current.variables(2)!.unit(),
+      windSpeed10m: current.variables(3)!.value(),
+      windSpeed10mUnit: current.variables(3)!.unit(),
+      windDirection10m: current.variables(4)!.value(),
+      windDirection10mUnit: current.variables(4)!.unit(),
     },
     hourly: {
       time: range(

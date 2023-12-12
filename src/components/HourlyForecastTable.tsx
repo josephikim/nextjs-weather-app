@@ -6,70 +6,68 @@ import { Table } from 'react-bootstrap'
 import { getShortDisplayDay, degToCompass } from 'utils/weather'
 import { useLocalData } from 'hooks/useLocalData'
 import displayUnits from 'assets/displayUnits.json'
-import classes from 'styles/sass/DailyForecastTable.module.scss'
+import classes from 'styles/sass/HourlyForecastTable.module.scss'
 
 // set up dayjs plugins
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
-interface DailyForecastTableRow {
+interface HourlyForecastTableRow {
   dayShort: string
   date: string
+  time: string
   tempHigh: string
   tempLow: string
   precipitation: string
   windSpeed: string
   windDirection: string
-  weatherCode: number
 }
 
-// convert daily weather values to display format
-const getDailyForecastTableRows = (
-  dailyData: any,
+// convert hourly weather values to display format
+const getHourlyForecastTableRows = (
+  hourlyData: any,
   timezone: string,
   temperatureUnit: string
 ) => {
   const displayPrecipitationUnit =
     displayUnits[
-      Unit[dailyData.precipitationSumUnit] as keyof typeof displayUnits
+      Unit[hourlyData.precipitationUnit] as keyof typeof displayUnits
     ]
   const displayWindSpeedUnit =
-    displayUnits[
-      Unit[dailyData.windSpeed10mMaxUnit] as keyof typeof displayUnits
-    ]
-  const result: DailyForecastTableRow[] = []
+    displayUnits[Unit[hourlyData.windSpeed10mUnit] as keyof typeof displayUnits]
+  const result: HourlyForecastTableRow[] = []
 
-  for (let i = 0; i < dailyData.time.length; i++) {
+  for (let i = 0; i < hourlyData.time.length; i++) {
     result.push({
-      dayShort: getShortDisplayDay(dailyData.time[i], timezone),
-      date: dayjs.tz(dailyData.time[i], timezone).format('MM/DD/YYYY'),
+      dayShort: getShortDisplayDay(hourlyData.time[i], timezone),
+      date: dayjs.tz(hourlyData.time[i], timezone).format('MM/DD/YYYY'),
+      time: dayjs.tz(hourlyData.time[i], timezone).format('h:mm a'),
       tempHigh: `${Math.round(
-        dailyData.temperature2mMax[i]
+        hourlyData.temperature2m[i]
       )}\u00B0${temperatureUnit.toUpperCase()}`,
       tempLow: `${Math.round(
-        dailyData.temperature2mMin[i]
+        hourlyData.temperature2m[i]
       )}\u00B0${temperatureUnit.toUpperCase()}`,
       precipitation: `${Math.trunc(
-        dailyData.precipitationSum[i]
+        hourlyData.precipitation[i]
       )} ${displayPrecipitationUnit}`,
       windSpeed: `${Math.round(
-        dailyData.windSpeed10mMax[i]
+        hourlyData.windSpeed10m[i]
       )} ${displayWindSpeedUnit}`,
-      windDirection: degToCompass(dailyData.windDirection10mDominant[i]),
-      weatherCode: dailyData.weatherCode[i],
+      windDirection: degToCompass(hourlyData.windDirection10m[i]),
     })
   }
   return result
 }
 
-interface DailyForecastTableProps {
+interface HourlyForecastTableProps {
   data: {
     celsius: string
     fahrenheit: string
   }
 }
 
-const DailyForecastTable = ({ data }: DailyForecastTableProps) => {
+const HourlyForecastTable = ({ data }: HourlyForecastTableProps) => {
   const {
     state: { temperatureUnit },
   } = useLocalData()
@@ -79,8 +77,8 @@ const DailyForecastTable = ({ data }: DailyForecastTableProps) => {
       ? JSON.parse(data.celsius)
       : JSON.parse(data.fahrenheit)
 
-  const rowData = getDailyForecastTableRows(
-    json.daily,
+  const rowData = getHourlyForecastTableRows(
+    json.hourly,
     json.timezone,
     temperatureUnit
   )
@@ -91,6 +89,7 @@ const DailyForecastTable = ({ data }: DailyForecastTableProps) => {
         <tr>
           <th></th>
           <th title="Date">Date</th>
+          <th title="Time">Time</th>
           <th title="High Temperature">High</th>
           <th title="Low Temperature">Low</th>
           <th>
@@ -115,9 +114,10 @@ const DailyForecastTable = ({ data }: DailyForecastTableProps) => {
       </thead>
       <tbody>
         {rowData.map((row) => (
-          <tr key={`daily-row-data-${row.date}`}>
+          <tr key={`hourly-row-data-${row.date}-${row.time}`}>
             <td>{row.dayShort}</td>
             <td>{row.date}</td>
+            <td>{row.time}</td>
             <td>{row.tempHigh}</td>
             <td>{row.tempLow}</td>
             <td>{row.precipitation}</td>
@@ -130,4 +130,4 @@ const DailyForecastTable = ({ data }: DailyForecastTableProps) => {
   )
 }
 
-export default DailyForecastTable
+export default HourlyForecastTable

@@ -1,55 +1,54 @@
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
-import { useEffect } from 'react'
 import { trpc } from 'utils/trpc'
+import ContentWrapper from 'components/ContentWrapper'
+import { SyncLoader } from 'react-spinners'
 
 const HomePage: NextPage = () => {
-  const { data: session } = useSession()
-  const utils = trpc.useContext()
+  const { status } = useSession()
   const router = useRouter()
-  const isAuthed = !!session?.user.id
+  const isLoading = status === 'loading'
+  const isAuthed = status === 'authenticated'
+  const isGuest = status === 'unauthenticated'
 
   // Enable query if user is guest
   const { data: { data: defaultLocation } = {} } =
-    trpc.getDefaultLocation.useQuery(undefined, { enabled: !isAuthed })
+    trpc.getDefaultLocation.useQuery(undefined, { enabled: isGuest })
 
   // Enable query if user is authed
   const { data: { data: userLocations } = {} } =
     trpc.user.getLocations.useQuery(undefined, { enabled: isAuthed })
 
-  useEffect(() => {
-    utils.user.getLocations.invalidate()
-  }, [])
-
   const userDefaultLocation = userLocations?.filter(
     (location) => location.isUserDefault === true
   )[0]
 
-  // Redirect to default forecast page
-  if (isAuthed) {
-    if (userDefaultLocation) {
-      const url = `/forecast?location=${encodeURIComponent(
-        userDefaultLocation.location.label
-      )}&latitude=${userDefaultLocation.location.latitude}&longitude=${
-        userDefaultLocation.location.longitude
-      }`
-
-      void router.push(url)
-    }
-  } else {
-    if (defaultLocation) {
-      const url = `/forecast?location=${encodeURIComponent(
-        defaultLocation.label
-      )}&latitude=${defaultLocation.latitude}&longitude=${
-        defaultLocation.longitude
-      }`
-
-      void router.push(url)
-    }
+  // Redirect to forecast page
+  if (userDefaultLocation) {
+    const url = `/forecast?location=${encodeURIComponent(
+      userDefaultLocation.location.label
+    )}&latitude=${userDefaultLocation.location.latitude}&longitude=${
+      userDefaultLocation.location.longitude
+    }`
+    router.push(url)
+  } else if (defaultLocation) {
+    const url = `/forecast?location=${encodeURIComponent(
+      defaultLocation.label
+    )}&latitude=${defaultLocation.latitude}&longitude=${
+      defaultLocation.longitude
+    }`
+    router.push(url)
   }
-
-  return null
+  return (
+    <ContentWrapper>
+      <SyncLoader
+        loading={isLoading}
+        aria-label="Loading Spinner"
+        color="#36d7b7"
+      ></SyncLoader>
+    </ContentWrapper>
+  )
 }
 
 export default HomePage

@@ -3,6 +3,8 @@ import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import AuthForm from 'components/AuthForm'
+import ContentWrapper from 'components/ContentWrapper'
+import { SyncLoader } from 'react-spinners'
 
 const AuthPage: NextPage = () => {
   const [isLoading, setIsLoading] = useState(true)
@@ -19,7 +21,15 @@ const AuthPage: NextPage = () => {
   }, [status, router])
 
   if (isLoading) {
-    return <p>Loading...</p>
+    return (
+      <ContentWrapper>
+        <SyncLoader
+          loading={isLoading}
+          aria-label="Loading Spinner"
+          color="#36d7b7"
+        ></SyncLoader>
+      </ContentWrapper>
+    )
   }
 
   return <AuthForm />

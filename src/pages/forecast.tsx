@@ -3,6 +3,8 @@ import type { NextPage } from 'next'
 import { trpc } from 'utils/trpc'
 import Forecast from 'components/Forecast'
 import AddDashboardItemButton from 'components/AddDashboardItemButton'
+import ContentWrapper from 'components/ContentWrapper'
+import { SyncLoader } from 'react-spinners'
 import classes from 'styles/sass/ForecastPage.module.scss'
 
 const ForecastPage: NextPage = () => {
@@ -15,13 +17,17 @@ const ForecastPage: NextPage = () => {
   const isQueryParamMissing = !location || !latitude || !longitude
 
   // fetch forecast data
-  const { data: { data: forecastData } = {} } = trpc.user.getWeather.useQuery(
-    {
-      latitude,
-      longitude,
-    },
-    { enabled: !isQueryParamMissing }
-  )
+  const { data: { data: forecastData } = {}, status } =
+    trpc.user.getWeather.useQuery(
+      {
+        latitude,
+        longitude,
+      },
+      { enabled: !isQueryParamMissing }
+    )
+
+  const isLoading = status === 'loading'
+  const isSuccess = status === 'success'
 
   // fetch user locations
   const { data: { data: locationsOnUser } = {} } =
@@ -29,35 +35,42 @@ const ForecastPage: NextPage = () => {
 
   let jsx: JSX.Element
 
-  // If no forecast data, return early
-  if (!forecastData) {
-    jsx = <div>Loading forecast...</div>
-  } else {
+  if (isLoading) {
+    jsx = (
+      <ContentWrapper>
+        <SyncLoader
+          loading={isLoading}
+          aria-label="Loading Spinner"
+          color="#36d7b7"
+        ></SyncLoader>
+      </ContentWrapper>
+    )
+  } else if (isSuccess && forecastData) {
     // is forecast location in user locations
     const isUserLocation = locationsOnUser?.some(
       (locationOnUser) => locationOnUser.location.label === location
     )
     jsx = (
-      <>
-        <span className={classes.title}>Current forecast for {location}</span>
-        <span>
-          <AddDashboardItemButton
-            location={location}
-            latitude={latitude}
-            longitude={longitude}
-            isAdded={!!isUserLocation}
-          />
-        </span>
-        <Forecast data={forecastData} />
-      </>
+      <div className={classes.container}>
+        <div className={classes.child}>
+          <span className={classes.title}>Current forecast for {location}</span>
+          <span>
+            <AddDashboardItemButton
+              location={location}
+              latitude={latitude}
+              longitude={longitude}
+              isAdded={!!isUserLocation}
+            />
+          </span>
+          <Forecast data={forecastData} />
+        </div>
+      </div>
     )
+  } else {
+    jsx = <ContentWrapper>Error loading forecast</ContentWrapper>
   }
 
-  return (
-    <div className={classes.container}>
-      <div className={classes.child}>{jsx}</div>
-    </div>
-  )
+  return jsx
 }
 
 export default ForecastPage

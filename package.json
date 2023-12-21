@@ -42,6 +42,7 @@
     "react-dnd-touch-backend": "^16.0.1",
     "react-dom": "18.2.0",
     "react-select-async-paginate": "^0.7.2",
+    "react-spinners": "^0.13.8",
     "sass": "^1.55.0",
     "ts-node": "^10.9.1",
     "zod": "^3.20.5"

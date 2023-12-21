@@ -1,6 +1,8 @@
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
+import ContentWrapper from 'components/ContentWrapper'
+import { SyncLoader } from 'react-spinners'
 
 type Props = {
   children: React.ReactElement
@@ -37,7 +39,15 @@ export const ProtectedLayout = ({ children }: Props): JSX.Element => {
 
   // if the user refreshed the page or somehow navigated to the protected page
   if (loading) {
-    return <>Loading...</>
+    return (
+      <ContentWrapper>
+        <SyncLoader
+          loading={loading}
+          aria-label="Loading Spinner"
+          color="#36d7b7"
+        ></SyncLoader>
+      </ContentWrapper>
+    )
   }
 
   // if the user is authorized, render the page

@@ -31,7 +31,7 @@ const ForecastPreview = ({
     state: { temperatureUnit },
   } = useLocalData()
 
-  const { data: { data: forecast } = {} } = trpc.user.getWeather.useQuery({
+  const { data: forecast } = trpc.getWeather.useQuery({
     latitude,
     longitude,
   })

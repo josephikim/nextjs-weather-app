@@ -7,9 +7,11 @@ import type { Location } from '@prisma/client'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import { SyncLoader } from 'react-spinners'
 import { trpc } from 'utils/trpc'
 import ForecastPreview from 'components/ForecastPreview'
 import DndMovableItem from 'components/DndMovableItem'
+import ContentWrapper from 'components/ContentWrapper'
 import classes from 'styles/sass/DashboardPage.module.scss'
 
 const DashboardPage = () => {
@@ -17,8 +19,7 @@ const DashboardPage = () => {
   const [isMobile, setIsMobile] = useState(false)
   const utils = trpc.useContext()
 
-  const { data: { data: userLocations } = {} } =
-    trpc.user.getLocations.useQuery()
+  const { data: userLocations } = trpc.user.getLocations.useQuery()
 
   const { mutate: deleteUserLocation } = trpc.user.deleteLocation.useMutation({
     onSuccess() {
@@ -102,7 +103,15 @@ const DashboardPage = () => {
     }
   }
 
-  let jsx: JSX.Element = <div>Loading dashboard...</div>
+  let jsx: JSX.Element = (
+    <ContentWrapper>
+      <SyncLoader
+        loading={userLocations === undefined}
+        aria-label="Loading Spinner"
+        color="#36d7b7"
+      ></SyncLoader>
+    </ContentWrapper>
+  )
 
   if (userLocations) {
     const itemsJSX = movableItems.map((movableItem, index) => {
@@ -126,20 +135,22 @@ const DashboardPage = () => {
       )
     })
 
-    jsx = <Row>{itemsJSX}</Row>
+    jsx = (
+      <div className={classes.container}>
+        <main className={classes.main}>
+          <div className={classes.flexContainer}>
+            <DndProvider backend={isMobile ? TouchBackend : HTML5Backend}>
+              <Container>
+                <Row>{itemsJSX}</Row>
+              </Container>
+            </DndProvider>
+          </div>
+        </main>
+      </div>
+    )
   }
 
-  return (
-    <div className={classes.container}>
-      <main className={classes.main}>
-        <div className={classes.flexContainer}>
-          <DndProvider backend={isMobile ? TouchBackend : HTML5Backend}>
-            <Container>{jsx}</Container>
-          </DndProvider>
-        </div>
-      </main>
-    </div>
-  )
+  return jsx
 }
 
 DashboardPage.requireAuth = true

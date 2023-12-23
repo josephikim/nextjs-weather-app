@@ -32,6 +32,9 @@ const DashboardPage = () => {
 
   const { mutate: updateDisplayOrder } =
     trpc.user.updateLocationsDisplayOrder.useMutation({
+      onSuccess() {
+        utils.user.getLocations.invalidate()
+      },
       onError(error) {
         alert(error.message)
       },

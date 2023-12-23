@@ -42,10 +42,9 @@ const ForecastPage: NextPage = () => {
     jsx = <ContentWrapper>Error loading forecast</ContentWrapper>
   } else if (isSuccess && forecastData) {
     // check if user has saved location
-    const isUserLocation =
-      locationsOnUser?.some(
-        (locationOnUser) => locationOnUser.location.label === location
-      ) || false
+    const isUserLocation = !!locationsOnUser?.some(
+      (locationOnUser) => locationOnUser.location.label === location
+    )
 
     jsx = (
       <div className={classes.container}>
